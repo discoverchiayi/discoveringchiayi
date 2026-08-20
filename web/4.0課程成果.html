@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>課程成果 - 國立嘉義大學 數位跨域「嘉義巡禮」</title>
+  <link rel="icon" href="https://raw.githubusercontent.com/discoverchiayi/discoveringchiayi/refs/heads/main/%E5%9C%96%E7%89%87/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <style>
+    /* 全域基礎樣式 */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans TC", sans-serif;
+      color: #333;
+      line-height: 1.8;
+      background-color: #ffffff;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    ul {
+      list-style: none;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* 📦 通用容器 */
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    main {
+      flex: 1;
+      padding: 40px 0 0;
+    }
+
+    /* 頂部導覽列 Header & RWD Navigation */
+    header {
+      position: sticky;
+      top: 0;
+      background: #fff;
+      border-bottom: 1px solid #e5e5e5;
+      z-index: 1000;
+    }
+    .nav-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 70px;
+      position: relative;
+    }
+
+    .logo img {
+      height: 70px;
+      width: auto;
+      transition: height 0.3s ease;
+    }
+
+    /* 一級導覽列選單 */
+    .nav-menu {
+      display: flex;
+      gap: 30px;
+      height: 100%;
+    }
+    .nav-item {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .nav-link {
+      font-size: 16px;
+      color: #333;
+      font-weight: 500;
+      padding: 20px 0;
+      transition: color 0.2s;
+    }
+    .nav-item:hover .nav-link,
+    .nav-link.active {
+      color: #e06d27;
+      font-weight: bold;
+    }
+
+    /* 第一層下拉選單 */
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #ffffff;
+      box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+      border-radius: 4px;
+      padding: 12px 0;
+      display: none;
+      flex-direction: column;
+      z-index: 999;
+      white-space: nowrap;
+      min-width: 130px;
+    }
+    .nav-item:hover .dropdown-menu {
+      display: flex;
+    }
+
+    .dropdown-item {
+      position: relative;
+      padding: 8px 24px;
+      font-size: 15px;
+      color: #4b6b94;
+      display: block;
+      transition: background-color 0.2s, color 0.2s;
+      cursor: pointer;
+    }
+    .dropdown-item:hover,
+    .dropdown-item.active {
+      color: #e06d27 !important;
+      font-weight: bold;
+      background-color: #fcf8ee;
+    }
+
+    /* 第二層下拉選單 */
+    .submenu {
+      position: absolute;
+      top: 0;
+      left: 100%;
+      background-color: #ffffff;
+      box-shadow: 4px 8px 20px rgba(0, 0, 0, 0.1);
+      border-radius: 4px;
+      padding: 8px 0;
+      display: none;
+      flex-direction: column;
+      min-width: 100px;
+    }
+    .submenu a {
+      padding: 6px 20px;
+      font-size: 14px;
+      color: #555;
+      display: block;
+      transition: color 0.2s, background-color 0.2s;
+    }
+    .submenu a:hover {
+      color: #e06d27;
+      background-color: #fcf8ee;
+    }
+    .has-submenu:hover .submenu {
+      display: flex;
+    }
+
+    /* 手機版漢堡按鈕 (Mobile Toggle) */
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 5px;
+    }
+    .menu-toggle span {
+      display: block;
+      width: 25px;
+      height: 3px;
+      background-color: #333;
+      transition: all 0.3s;
+    }
+
+    /* 頁面大標題 */
+    .page-title {
+      text-align: center;
+      font-size: 30px;
+      color: #e06d27;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .title-line {
+      width: 40px;
+      height: 1px;
+      background-color: #666;
+      margin: 0 auto 50px;
+    }
+
+    /* 課程成果列表與交錯區塊設定 */
+    .outcome-row {
+      padding: 50px 0;
+      width: 100%;
+    }
+    .outcome-row.bg-yellow {
+      background-color: #fcf8ee;
+    }
+
+    .outcome-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px;
+      align-items: center;
+    }
+
+    /* 海報圖片容器 */
+    .poster-img-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .poster-img-wrapper img {
+      max-width: 420px;
+      width: 100%;
+      height: auto;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    }
+
+    /* 課程介紹內文區塊與標題超連結樣式 */
+    .course-info h2 {
+      font-size: 22px;
+      color: #e06d27;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .course-info h2::before {
+      content: "▶";
+      font-size: 18px;
+    }
+    .course-title-link {
+      color: #e06d27;
+      text-decoration: none;
+      transition: opacity 0.2s, text-decoration 0.2s;
+    }
+    .course-title-link:hover {
+      text-decoration: underline;
+      opacity: 0.85;
+    }
+
+    .teacher-meta {
+      font-size: 15px;
+      color: #555555;
+      margin-bottom: 20px;
+      line-height: 1.8;
+    }
+    .teacher-meta p {
+      margin-bottom: 4px;
+    }
+
+    .course-desc {
+      font-size: 15px;
+      color: #444444;
+      line-height: 1.8;
+      text-align: justify;
+    }
+
+    /* 頁尾 Footer */
+    footer {
+      background-color: #333333;
+      color: #ffffff;
+      padding: 40px 0;
+      font-size: 14px;
+    }
+    .footer-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 25px;
+    }
+    .footer-info p {
+      margin-bottom: 6px;
+      color: #ccc;
+    }
+    .footer-info h4 {
+      font-size: 18px;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    /* 📱 響應式媒體查詢 (RWD) */
+    @media (max-width: 868px) {
+      .container, .nav-container {
+        padding: 0 24px;
+      }
+      .menu-toggle {
+        display: flex;
+      }
+      .nav-menu {
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background-color: #ffffff;
+        flex-direction: column;
+        gap: 0;
+        height: auto;
+        box-shadow: 0 10px 15px rgba(0,0,0,0.05);
+        display: none;
+        padding: 10px 0;
+      }
+      .nav-menu.show {
+        display: flex;
+      }
+      .nav-item {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+      }
+      .nav-link {
+        width: 100%;
+        padding: 12px 25px;
+        border-bottom: 1px solid #f0f0f0;
+      }
+      .dropdown-menu {
+        position: static;
+        transform: none;
+        box-shadow: none;
+        width: 100%;
+        background-color: #fafafa;
+        padding: 0;
+        display: none;
+      }
+      .nav-item:hover .dropdown-menu {
+        display: flex;
+      }
+      .dropdown-item {
+        padding: 10px 35px;
+      }
+      .submenu {
+        position: static;
+        box-shadow: none;
+        background-color: #f0f0f0;
+        display: none;
+      }
+      .has-submenu:hover .submenu {
+        display: flex;
+      }
+      .submenu a {
+        padding-left: 50px;
+      }
+
+      .outcome-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+      .outcome-grid.reverse-mobile .poster-img-wrapper {
+        order: -1;
+      }
+
+      .footer-container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+    <!-- 頂部導覽列 Header -->
+  <header>
+    <div class="nav-container">
+      <div class="logo">
+        <a href="https://www.ncyu.edu.tw/" target="_blank"><img src="https://github.com/discoverchiayi/discoveringchiayi/blob/main/%E5%9C%96%E7%89%87/%E5%98%89%E7%BE%A9%E5%A4%A7%E5%AD%B8%E6%A0%A1%E5%BE%BD%E6%A8%99%E8%AA%8C%E8%88%87%E4%B8%AD%E8%8B%B1%E6%96%87%E6%A8%99%E6%BA%96%E5%AD%97ol-02%20(1).png?raw=true" alt="NCYU Logo"></a>
+      </div>
+      
+      <!-- 手機版漢堡按鈕 -->
+      <div class="menu-toggle" id="mobile-menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <nav>
+        <ul class="nav-menu" id="nav-menu">
+          <!-- 1. 首頁 -->
+          <li class="nav-item">
+            <a href="https://discoverchiayi.github.io/discoveringchiayi/web/1.0首頁.html
+" class="nav-link">首頁</a>
+          </li>
+
+          <!-- 2. 計畫團隊 -->
+          <li class="nav-item">
+            <a href="https://discoverchiayi.github.io/discoveringchiayi/web/2.0計畫團隊.html
+" class="nav-link">計畫團隊</a>
+          </li>
+
+          <!-- 3. 課程介紹 -->
+          <li class="nav-item">
+            <a href="https://discoverchiayi.github.io/discoveringchiayi/web/3.0課程介紹.html
+" class="nav-link active">課程介紹</a>
+            <div class="dropdown-menu">
+              <a href="https://discoverchiayi.github.io/discoveringchiayi/web/3.1課程地圖.html
+" class="dropdown-item">課程地圖</a>
+              <a href="https://discoverchiayi.github.io/discoveringchiayi/web/3.2課程內容.html
+" class="dropdown-item">課程內容</a>
+            </div>
+          </li>
+
+          <!-- 4. 課程成果 -->
+          <li class="nav-item">
+            <a href="https://discoverchiayi.github.io/discoveringchiayi/web/4.0課程成果.html
+" class="nav-link">課程成果</a>
+            <div class="dropdown-menu">
+              <a href="https://discoverchiayi.github.io/discoveringchiayi/web/4.1大學國文.html
+" class="dropdown-item">大學國文(III) -嘉義現代文學選讀</a>
+              <a href="https://discoverchiayi.github.io/discoveringchiayi/web/4.2詩歌吟唱.html
+" class="dropdown-item">詩歌吟唱與欣賞</a>
+              <a href="https://discoverchiayi.github.io/discoveringchiayi/web/4.3木都嘉義.html
+" class="dropdown-item">木都嘉義</a>
+              <a href="https://discoverchiayi.github.io/discoveringchiayi/web/4.4家將文化.html
+" class="dropdown-item">家將文化體驗與數位展示</a>
+              <a href="https://discoverchiayi.github.io/discoveringchiayi/web/4.5博物館.html
+" class="dropdown-item">博物館與地方文化</a>
+              <a href="https://discoverchiayi.github.io/discoveringchiayi/web/4.6編輯與設計.html
+" class="dropdown-item">編輯與設計</a>
+              <a href="https://discoverchiayi.github.io/discoveringchiayi/web/4.7空間資訊.html
+" class="dropdown-item">空間資訊在數位學習的應用</a>
+              <a href="https://discoverchiayi.github.io/discoveringchiayi/web/4.8網站建置.html
+" class="dropdown-item">網站建置與管理</a>
+            </div>
+          </li>
+
+          <!-- 5. 活動訊息 -->
+          <li class="nav-item">
+            <a href="https://discoverchiayi.github.io/discoveringchiayi/web/5.0活動訊息.html
+" class="nav-link">活動訊息</a>
+            <div class="dropdown-menu">
+              <a href="https://discoverchiayi.github.io/discoveringchiayi/web/5.1校內活動.html
+" class="dropdown-item">校內活動</a>
+              <a href="https://discoverchiayi.github.io/discoveringchiayi/web/5.2校外活動.html
+" class="dropdown-item">校外活動</a>
+              
+              <div class="dropdown-item has-submenu">
+    <span>活動紀實</span>
+    <span style="margin-left: 12px; font-size: 12px;">❯</span>
+    
+    <div class="submenu">
+      <a href="https://discoverchiayi.github.io/discoveringchiayi/web/5.3.1 113-2校內活動紀錄.html
+">113-2</a>
+      <a href="https://discoverchiayi.github.io/discoveringchiayi/web/5.3.2 114-1校內活動紀錄.html
+">114-1</a>
+      <a href="https://discoverchiayi.github.io/discoveringchiayi/web/5.3.3 114-2校內活動紀錄.html
+">114-2</a>
+      <a href="records-115-1.html">115-1</a>
+   	    </div>
+  	    </div>
+            </div>
+          </li>
+
+          <!-- 6. 相關連結 -->
+          <li class="nav-item">
+            <a href="https://discoverchiayi.github.io/discoveringchiayi/web/6.0%E7%9B%B8%E9%97%9C%E9%80%A3%E7%B5%90.html" class="nav-link">相關連結</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 主要內容區域 (課程成果) -->
+  <main>
+    
+    <div class="container">
+      <h1 class="page-title">課程成果</h1>
+      <div class="title-line"></div>
+    </div>
+
+    <!-- 1. 大學國文(III) -嘉義現代文學選讀 -->
+    <section class="outcome-row" id="course-1">
+      <div class="container">
+        <div class="outcome-grid">
+          <div class="poster-img-wrapper">
+            <img src="https://github.com/discoverchiayi/discoveringchiayi/blob/main/%E5%9C%96%E7%89%87/%E5%A4%A7%E5%AD%B8%E5%9C%8B%E6%96%87%E8%AA%B2%E7%A8%8Blogo.png?raw=true" alt="大學國文(III)-嘉義現代文學選讀海報">
+          </div>
+          <div class="course-info">
+            <h2><a href="https://discoverchiayi.github.io/discoveringchiayi/web/4.1大學國文.html
+" class="course-title-link">大學國文(III) -嘉義現代文學選讀</a></h2>
+            <div class="teacher-meta">
+              <p><strong>主授教授：</strong>蔡忠道、吳盈靜</p>
+              <p><strong>共授教授：</strong>李佩倫、王秀鳳、黃敏郎、王凱正、陳嘉柔、陳歆</p>
+            </div>
+            <div class="course-desc">
+              課程介紹：嘉義，不僅擁有豐富的自然景觀與美食，更蘊藏著深厚的人文底蘊。本課程將透過嘉義現代文學的閱讀與討論，帶領您深入探索這座城市的精彩人事物，並結合數位人文的學習，讓您以更個人化的方式，呈現您眼中的嘉義之美。
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. 詩歌吟唱與欣賞 -->
+    <section class="outcome-row bg-yellow" id="course-2">
+      <div class="container">
+        <div class="outcome-grid reverse-mobile">
+          <div class="course-info">
+            <h2><a href="https://discoverchiayi.github.io/discoveringchiayi/web/4.2詩歌吟唱.html
+" class="course-title-link">詩歌吟唱與欣賞</a></h2>
+            <div class="teacher-meta">
+              <p><strong>主授教授：</strong>陳茂仁</p>
+              <p><strong>共授教授：</strong>王秀鳳、陳嘉柔</p>
+            </div>
+            <div class="course-desc">
+              課程介紹：您是否對古典詩詞的吟誦充滿好奇？想深入了解嘉義早期文人的詩作，體驗傳統吟誦的獨特魅力？本課程將帶您穿越時空，透過閱讀嘉義古典詩，結合吟誦技法與數位多媒體應用，讓您以全新的方式感受古典文學之美。
+            </div>
+          </div>
+          <div class="poster-img-wrapper">
+            <img src="https://github.com/discoverchiayi/discoveringchiayi/blob/main/%E5%9C%96%E7%89%87/%E8%A9%A9%E6%AD%8C%E5%90%9F%E5%94%B1%E8%AA%B2%E7%A8%8Blogo.png?raw=true" alt="詩歌吟唱與欣賞海報">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. 木都嘉義 -->
+    <section class="outcome-row" id="course-3">
+      <div class="container">
+        <div class="outcome-grid">
+          <div class="poster-img-wrapper">
+            <img src="https://github.com/discoverchiayi/discoveringchiayi/blob/main/%E5%9C%96%E7%89%87/%E6%9C%A8%E9%83%BD%E5%98%89%E7%BE%A9%E8%AA%B2%E7%A8%8Blogo.png?raw=true" alt="木都嘉義海報">
+          </div>
+          <div class="course-info">
+            <h2><a href="https://discoverchiayi.github.io/discoveringchiayi/web/4.3木都嘉義.html
+" class="course-title-link">木都嘉義</a></h2>
+            <div class="teacher-meta">
+              <p><strong>主授教授：</strong>劉建男</p>
+              <p><strong>共授教授：</strong>林翰謙、夏滄琪、黃名媛、許富雄、趙偉村、謝婉婷</p>
+            </div>
+            <div class="course-desc">
+              課程介紹：嘉義，一個因阿里山林業而興盛的城市，被譽為「木都」。日治時期，阿里山森林鐵路的興建，帶動了嘉義木材產業的蓬勃發展，留下了豐富的林業文化資產。如今，我們將透過本課程，帶領您深入探索嘉義的林業歷史、文化與現代應用，並結合數位科技，呈現木都嘉義的多元魅力。
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. 家將文化體驗與數位展示 -->
+    <section class="outcome-row bg-yellow" id="course-4">
+      <div class="container">
+        <div class="outcome-grid reverse-mobile">
+          <div class="course-info">
+            <h2><a href="https://discoverchiayi.github.io/discoveringchiayi/web/4.4家將文化.html
+" class="course-title-link">家將文化體驗與數位展示</a></h2>
+            <div class="teacher-meta">
+              <p><strong>主授教授：</strong>吳建昇</p>
+              <p><strong>共授教授：</strong>溫宗翰、楊智傑、林民威</p>
+            </div>
+            <div class="course-desc">
+              課程介紹：家將，這項源自台南、興盛於嘉義的獨特陣頭文化，不僅是台灣獨特且重要的文化。然而，隨著時代變遷與媒體影響，曾一度面臨沒落危機。近年來，在無形文化資產保存的協助下，呈現生機。本課程將透過學術知識的教授與藝師藝能的教學，結合多媒體數位教學，運用數位科技和展覽，讓您在「寓教於樂」的氛圍中，全面認識嘉義家將文化，並學習欣賞陣頭文化及宗教藝術。
+            </div>
+          </div>
+          <div class="poster-img-wrapper">
+            <img src="https://github.com/discoverchiayi/discoveringchiayi/blob/main/%E5%9C%96%E7%89%87/%E5%AE%B6%E5%B0%87%E6%96%87%E5%8C%96%E8%AA%B2%E7%A8%8Blogo.png?raw=true" alt="家將文化體驗與數位展示海報">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. 博物館與地方文化 -->
+    <section class="outcome-row" id="course-5">
+      <div class="container">
+        <div class="outcome-grid">
+          <div class="poster-img-wrapper">
+            <img src="https://github.com/discoverchiayi/discoveringchiayi/blob/main/%E5%9C%96%E7%89%87/%E5%8D%9A%E7%89%A9%E9%A4%A8%E8%AA%B2%E7%A8%8Blogo.png?raw=true" alt="博物館與地方文化海報">
+          </div>
+          <div class="course-info">
+            <h2><a href="https://discoverchiayi.github.io/discoveringchiayi/web/4.5博物館.html
+" class="course-title-link">博物館與地方文化</a></h2>
+            <div class="teacher-meta">
+              <p><strong>主授教授：</strong>莊淑瓊</p>
+              <p><strong>共授教授：</strong>林致諺、莊金龍、卓建源</p>
+            </div>
+            <div class="course-desc">
+              課程介紹：您是否對博物館的運作充滿好奇？想深入了解地方文化館如何保存與傳承在地記憶？本課程將帶領您從博物館的基礎功能出發，探索博物館的多元面向，並透過實地參訪與數位科技應用，讓您全面認識博物館與地方文化館的專業性與公共性。
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. 編輯與設計 -->
+    <section class="outcome-row bg-yellow" id="course-6">
+      <div class="container">
+        <div class="outcome-grid reverse-mobile">
+          <div class="course-info">
+            <h2><a href="https://discoverchiayi.github.io/discoveringchiayi/web/4.6編輯與設計.html
+" class="course-title-link">編輯與設計</a></h2>
+            <div class="teacher-meta">
+              <p><strong>主授教授：</strong>王秀鳳</p>
+              <p><strong>共授教授：</strong>陳茂仁、林長信、張棣楨</p>
+            </div>
+            <div class="course-desc">
+              課程介紹：本課程結合數位學習與文學，帶領學生學習專業平面設計技巧，並將其應用於AR電子書教材開發，以嘉義文學為內容，創作具吸引力的數位作品。課程注重設計美感與資訊傳達，讓學生體驗從內容發想到作品完成的完整過程，培養獨立創作能力。
+            </div>
+          </div>
+          <div class="poster-img-wrapper">
+            <img src="https://github.com/discoverchiayi/discoveringchiayi/blob/main/%E5%9C%96%E7%89%87/%E7%B7%A8%E8%BC%AF%E8%88%87%E8%A8%AD%E8%A8%88%E8%AA%B2%E7%A8%8Blogo.png?raw=true" alt="編輯與設計海報">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. 空間資訊在數位學習的應用 -->
+    <section class="outcome-row" id="course-7">
+      <div class="container">
+        <div class="outcome-grid">
+          <div class="poster-img-wrapper">
+            <img src="https://github.com/discoverchiayi/discoveringchiayi/blob/main/%E5%9C%96%E7%89%87/%E7%A9%BA%E9%96%93%E8%B3%87%E8%A8%8A%E8%AA%B2%E7%A8%8Blogo.png?raw=true" alt="空間資訊在數位學習的應用海報">
+          </div>
+          <div class="course-info">
+            <h2><a href="https://discoverchiayi.github.io/discoveringchiayi/web/4.7空間資訊.html
+" class="course-title-link">空間資訊在數位學習的應用</a></h2>
+            <div class="teacher-meta">
+              <p><strong>主授教授：</strong>李佩倫</p>
+              <p><strong>共授教授：</strong>黃名媛、張智傑</p>
+            </div>
+            <div class="course-desc">
+              課程介紹：本課程將帶領您深入探索地理資訊系統（GIS）的奧秘，學習如何運用GIS技術將人文資訊視覺化呈現，並以人文議題為核心，進行問題分析與解決方案構思。我們將以嘉義地區的公開資料為基礎，結合「嘉義文學」及「蒜頭糖廠」等在地主題，讓您透過實作，掌握GIS專題製作、空間分析理論與方法，並將學習成果以數位展示的方式呈現。
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. 網站建置與管理 -->
+    <section class="outcome-row bg-yellow" id="course-8">
+      <div class="container">
+        <div class="outcome-grid reverse-mobile">
+          <div class="course-info">
+            <h2><a href="https://discoverchiayi.github.io/discoveringchiayi/web/4.8網站建置.html
+" class="course-title-link">網站建置與管理</a></h2>
+            <div class="teacher-meta">
+              <p><strong>主授教授：</strong>黃國鴻</p>
+            </div>
+            <div class="course-desc">
+              課程介紹：在數位學習時代，網站系統扮演著至關重要的角色。本課程將引導您學習網站建置與管理，並以數位人文課程產出之作品為素材，實作建置專題網站。透過系統分析與設計，您將深入了解完整的學習管理系統（LMS）運作，培養後端網站開發與管理能力。
+            </div>
+          </div>
+          <div class="poster-img-wrapper">
+            <img src="https://github.com/discoverchiayi/discoveringchiayi/blob/main/%E5%9C%96%E7%89%87/%E7%B6%B2%E7%AB%99%E5%BB%BA%E7%BD%AE%E8%AA%B2%E7%A8%8Blogo.png?raw=true" alt="網站建置與管理海報">
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+    <!-- 頁尾 (Footer) -->
+  <footer>
+    <div class="container footer-container">
+      <div>
+        <img src="https://raw.githubusercontent.com/discoverchiayi/discoveringchiayi/refs/heads/main/%E5%9C%96%E7%89%87/%E5%98%89%E7%BE%A9%E5%A4%A7%E5%AD%B8%E6%A0%A1%E5%BE%BD%E6%A8%99%E8%AA%8C%E8%88%87%E4%B8%AD%E8%8B%B1%E6%96%87%E6%A8%99%E6%BA%96%E5%AD%97ol-02.png" alt="NCYU Logo" style="height: 140px; align-items: center;">
+      </div>
+      <div class="footer-info">
+        <h4>數位跨域「嘉義巡禮」再現諸羅人文風華</h4>
+        <p>教育部第二期數位人文創新人才培育計畫</p>
+        <p>蘭潭校區：600嘉義市東區學府路300號</p>
+        <p>民雄校區：621嘉義縣民雄鄉文隆村85號</p>
+        <p>聯絡方式：ncyu.dh@gmail.com</p>
+      </div>
+      <div>
+        <img src="https://raw.githubusercontent.com/discoverchiayi/discoveringchiayi/refs/heads/main/%E5%9C%96%E7%89%87/%E6%95%B8%E4%BD%8D%E4%BA%BA%E6%96%87(%E7%9F%AD%E7%89%88)_%E7%99%BD.png" alt="教育部數位人文計畫 Logo" style="height: 80px; align-items: center; ">
+      </div>
+    </div>
+  </footer>
+
+  <!-- 行動版選單切換腳本 -->
+  <script>
+    const toggleBtn = document.getElementById('mobile-menu-toggle');
+    const navMenu = document.getElementById('nav-menu');
+
+    toggleBtn.addEventListener('click', () => {
+      navMenu.classList.toggle('show');
+    });
+  </script>
+
+</body>
+</html>

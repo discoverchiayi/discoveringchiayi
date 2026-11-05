@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>家將文化體驗與數位展示 - 課程介紹</title>
+  <link rel="icon" href="https://raw.githubusercontent.com/discoverchiayi/discoveringchiayi/refs/heads/main/%E5%9C%96%E7%89%87/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+  <style>
+    /* 🎨 核心色彩變數配置 (繼承溫暖橘黃調性) */
+    :root {
+      --primary: #d96b27;         /* 暖磚橘 / 焦糖橘 */
+      --primary-dark: #b84f10;    /* 深橘色 */
+      --primary-light: #fff3ea;   /* 淺杏橘底色 */
+      --accent-yellow: #f59e0b;   /* 活力金黃色 */
+      --accent-yellow-light: #fef9c3; /* 鵝黃色背景 */
+      --text-dark: #372b22;       /* 暖炭褐主文字色 */
+      --text-muted: #78695d;      /* 暖調次要說明文字 */
+      --bg-cream: #fdfbf7;        /* 奶油色頁面背景 */
+      --card-bg: #ffffff;         /* 內容卡片白底 */
+      --border-color: #f1e4d8;    /* 淺米褐邊框 */
+      --radius: 10px;
+    }
+
+    /* 全域基礎樣式 */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans TC", sans-serif;
+      color: var(--text-dark);
+      line-height: 1.8;
+      background-color: var(--bg-cream);
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    ul {
+      list-style: none;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* 📦 通用容器 */
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    /* 頂部導覽列 Header & RWD Navigation */
+    header {
+      position: sticky;
+      top: 0;
+      background: #fff;
+      border-bottom: 1px solid #e5e5e5;
+      z-index: 99999 !important; /* 拉高 header 層級 */
+    }
+    .nav-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 70px;
+      position: relative;
+    }
+    .logo img {
+      height: 70px;
+      width: auto;
+      transition: height 0.3s ease;
+    }
+
+    /* 一級導覽列選單 */
+    .nav-menu {
+      display: flex;
+      gap: 30px;
+      height: 100%;
+    }
+    .nav-item {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .nav-link {
+      font-size: 16px;
+      color: #333;
+      font-weight: 500;
+      padding: 20px 0;
+      transition: color 0.2s;
+    }
+    .nav-item:hover .nav-link,
+    .nav-link.active {
+      color: #e06d27;
+      font-weight: bold;
+    }
+
+    /* 第一層下拉選單 */
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #ffffff;
+      box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+      border-radius: 4px;
+      padding: 10px 0;
+      display: none;
+      flex-direction: column;
+      z-index: 100000 !important; /* 確保高於所有內容區塊 */
+      white-space: nowrap;
+      min-width: 140px;
+    }
+    .nav-item:hover .dropdown-menu {
+      display: flex;
+    }
+    .dropdown-item {
+      position: relative;
+      padding: 10px 24px;
+      font-size: 15px;
+      color: #4b6b94;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      text-align: left;
+      width: 100%;
+      transition: background-color 0.2s, color 0.2s;
+      cursor: pointer;
+    }
+    .dropdown-item:hover {
+      color: #e06d27 !important;
+      background-color: #fcf8ee;
+    }
+
+    /* 第二層下拉選單 */
+    .submenu {
+      position: absolute;
+      top: 0;
+      left: 100%;
+      background-color: #ffffff;
+      box-shadow: 4px 8px 20px rgba(0, 0, 0, 0.15);
+      border-radius: 4px;
+      padding: 8px 0;
+      display: none;
+      flex-direction: column;
+      min-width: 100px;
+      z-index: 100001 !important;
+    }
+    .submenu a {
+      padding: 6px 20px;
+      font-size: 14px;
+      color: #555;
+      display: block;
+      transition: color 0.2s, background-color 0.2s;
+    }
+    .submenu a:hover {
+      color: #e06d27;
+      background-color: #fcf8ee;
+    }
+    .has-submenu:hover .submenu {
+      display: flex;
+    }
+
+    /* 手機版漢堡按鈕 */
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 5px;
+    }
+    .menu-toggle span {
+      display: block;
+      width: 25px;
+      height: 3px;
+      background-color: #333;
+      transition: all 0.3s;
+    }
+
+    /* 📖 主要內容區域 (main) */
+    main {
+      flex: 1;
+      padding: 40px 20px 70px;
+    }
+
+    /* 確保橘色橫幅不會反客為主建立過高的層級 */
+    .course-container, .course-header {
+      position: relative;
+      z-index: 1; /* 明確設定為低層級 */
+    }
+    /* 課程卡片容器 */
+    .course-container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: 0 4px 20px rgba(184, 79, 16, 0.07);
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    /* 頂部 Header：橘黃漸層風格 */
+    .course-header {
+      background: linear-gradient(135deg, var(--primary) 0%, #e67e22 50%, var(--accent-yellow) 100%);
+      color: #ffffff;
+      padding: 40px;
+      position: relative;
+    }
+    .tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .tag {
+      background: rgba(255, 255, 255, 0.25);
+      font-size: 0.82rem;
+      padding: 3px 12px;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+      backdrop-filter: blur(4px);
+    }
+    .course-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+    }
+    .course-subtitle {
+      font-size: 1.05rem;
+      opacity: 0.95;
+    }
+
+    /* 內文各區塊 */
+    .course-body {
+      padding: 36px 40px;
+    }
+    .section-block {
+      margin-bottom: 40px;
+    }
+    .section-title {
+      font-size: 1.25rem;
+      color: var(--primary-dark);
+      margin-bottom: 16px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 2px solid var(--accent-yellow-light);
+      padding-bottom: 8px;
+    }
+
+    /* 一、基本資訊網格：改為標準 2x2 佈局 */
+    .info-grid-2x2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr); /* 2 欄 x 2 列 */
+      gap: 18px;
+      background: #fffdf9;
+      padding: 22px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-color);
+    }
+    .info-item {
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .info-label {
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 0.88rem;
+      display: block;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* 二、核心理念亮點框 */
+    .highlight-box {
+      background: var(--primary-light);
+      border-left: 4px solid var(--primary);
+      padding: 18px 20px;
+      border-radius: 4px;
+      font-size: 0.98rem;
+      color: var(--text-dark);
+      line-height: 1.9;
+    }
+
+    /* 三、學習目標 */
+    .competency-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .competency-card {
+      background: #fffdf9;
+      padding: 18px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      border-top: 4px solid var(--accent-yellow);
+    }
+    .competency-card h4 {
+      font-size: 1rem;
+      margin-bottom: 6px;
+      color: var(--primary-dark);
+    }
+    .competency-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* 四、週次/模組表格 */
+    .module-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+    .module-table th, .module-table td {
+      padding: 14px 16px;
+      border: 1px solid var(--border-color);
+      text-align: left;
+    }
+    .module-table th {
+      background: var(--accent-yellow-light);
+      color: var(--primary-dark);
+      font-weight: 700;
+    }
+    .module-table tbody tr:nth-child(even) {
+      background-color: #fffdf9;
+    }
+
+    /* 五、成果展示卡片 */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+    .gallery-card {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fff;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .gallery-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(217, 107, 39, 0.12);
+    }
+    .gallery-img-placeholder {
+      height: 140px;
+      background: #faebd7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #a3704c;
+      font-size: 0.9rem;
+      border-bottom: 1px solid var(--border-color);
+      padding: 12px;
+      text-align: center;
+    }
+    .gallery-content {
+      padding: 14px;
+    }
+    .gallery-content h4 {
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+      color: var(--primary-dark);
+    }
+    .gallery-content p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* 心得短評引言區塊 */
+    .feedback-box {
+      margin-top: 24px;
+      background: #fffdf9;
+      border-radius: var(--radius);
+      border: 1px dashed var(--border-color);
+      padding: 18px 22px;
+    }
+    .feedback-box blockquote {
+      font-size: 0.93rem;
+      color: var(--text-dark);
+      font-style: italic;
+      line-height: 1.8;
+      position: relative;
+      padding-left: 20px;
+      border-left: 3px solid var(--accent-yellow);
+    }
+    .feedback-author {
+      display: block;
+      margin-top: 8px;
+      font-size: 0.85rem;
+      color: var(--primary-dark);
+      font-weight: 600;
+      text-align: right;
+    }
+
+    /* 六、計畫支持標章 */
+    .plan-badge {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: #fff8eb;
+      border: 1.5px dashed var(--accent-yellow);
+      padding: 18px 22px;
+      border-radius: 8px;
+      font-size: 0.92rem;
+      color: #8c420b;
+    }
+
+    /* 頁尾 Footer */
+    footer {
+      background-color: #333333;
+      color: #ffffff;
+      padding: 40px 0;
+      font-size: 14px;
+    }
+    .footer-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 25px;
+    }
+    .footer-info p {
+      margin-bottom: 6px;
+      color: #ccc;
+    }
+    .footer-info h4 {
+      font-size: 18px;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    /* 📱 響應式媒體查詢 (Mobile & Tablet) */
+    @media (max-width: 868px) {
+      .container, .nav-container {
+        padding: 0 24px;
+      }
+      .menu-toggle {
+        display: flex;
+      }
+      .nav-menu {
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background-color: #ffffff;
+        flex-direction: column;
+        gap: 0;
+        height: auto;
+        box-shadow: 0 10px 15px rgba(0,0,0,0.05);
+        display: none;
+        padding: 10px 0;
+      }
+      .nav-menu.show {
+        display: flex;
+      }
+      .nav-item {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+      }
+      .nav-link {
+        width: 100%;
+        padding: 12px 25px;
+        border-bottom: 1px solid #f0f0f0;
+      }
+      .dropdown-menu {
+        position: static;
+        transform: none;
+        box-shadow: none;
+        width: 100%;
+        background-color: #fafafa;
+        padding: 0;
+        display: none;
+      }
+      .nav-item:hover .dropdown-menu {
+        display: flex;
+      }
+      .dropdown-item {
+        padding: 10px 35px;
+      }
+      .submenu {
+        position: static;
+        box-shadow: none;
+        background-color: #f0f0f0;
+        display: none;
+      }
+      .has-submenu:hover .submenu {
+        display: flex;
+      }
+      .submenu a {
+        padding-left: 50px;
+      }
+      .footer-container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .course-header { padding: 28px 24px; }
+      .course-body { padding: 24px 20px; }
+      .course-title { font-size: 1.6rem; }
+
+      /* 手機版自適應為單欄以維持閱讀舒適 */
+      .info-grid-2x2 {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 頂部導覽列 Header -->
+  <header>
+    <div class="nav-container">
+      <div class="logo">
+        <a href="index.html"><img src="https://github.com/discoverchiayi/discoveringchiayi/blob/main/%E5%9C%96%E7%89%87/%E5%98%89%E7%BE%A9%E5%A4%A7%E5%AD%B8%E6%A0%A1%E5%BE%BD%E6%A8%99%E8%AA%8C%E8%88%87%E4%B8%AD%E8%8B%B1%E6%96%87%E6%A8%99%E6%BA%96%E5%AD%97ol-02%20(1).png?raw=true" alt="NCYU Logo"></a>
+      </div>
+      
+      <!-- 手機版漢堡按鈕 -->
+      <div class="menu-toggle" id="mobile-menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <nav>
+        <ul class="nav-menu" id="nav-menu">
+          <li class="nav-item">
+            <a href="https://discoverchiayi.github.io/discoveringchiayi/web/1.0首頁.html
+" class="nav-link">首頁</a>
+          </li>
+          <li class="nav-item">
+            <a href="https://discoverchiayi.github.io/discoveringchiayi/web/2.0計畫團隊.html
+" class="nav-link">計畫團隊</a>
+          </li>
+          <li class="nav-item">
+            <a href="https://discoverchiayi.github.io/discoveringchiayi/web/3.0課程介紹.html
+" class="nav-link active">課程介紹</a>
+            <div class="dropdown-menu">
+              <a href="https://discoverchiayi.github.io/discoveringchiayi/web/3.1課程地圖.html
+" class="dropdown-item">課程地圖</a>
+              <a href="https://discoverchiayi.github.io/discoveringchiayi/web/3.2課程內容.html
+" class="dropdown-item">課程內容</a>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a href="https://discoverchiayi.github.io/discoveringchiayi/web/4.0課程成果.html
+" class="nav-link">課程成果</a>
+            <div class="dropdown-menu">
+              <a href="https://discoverchiayi.github.io/discoveringchiayi/web/4.1大學國文.html
+" class="dropdown-item">大學國文(II) -嘉義現代文學選讀</a>
+              <a href="https://discoverchiayi.github.io/discoveringchiayi/web/4.2詩歌吟唱.html
+" class="dropdown-item">詩歌吟唱與欣賞</a>
+              <a href="https://discoverchiayi.github.io/discoveringchiayi/web/4.3木都嘉義.html
+" class="dropdown-item">木都嘉義</a>
+              <a href="https://discoverchiayi.github.io/discoveringchiayi/web/4.4家將文化.html
+" class="dropdown-item">家將文化體驗與數位展示</a>
+              <a href="https://discoverchiayi.github.io/discoveringchiayi/web/4.5博物館.html
+" class="dropdown-item">博物館與地方文化</a>
+              <a href="https://discoverchiayi.github.io/discoveringchiayi/web/4.6編輯與設計.html
+" class="dropdown-item">編輯與設計</a>
+              <a href="https://discoverchiayi.github.io/discoveringchiayi/web/4.7空間資訊.html
+" class="dropdown-item">空間資訊在數位學習的應用</a>
+              <a href="https://discoverchiayi.github.io/discoveringchiayi/web/4.8網站建置.html
+" class="dropdown-item">網站建置與管理</a>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a href="https://discoverchiayi.github.io/discoveringchiayi/web/5.0活動訊息.html
+" class="nav-link">活動訊息</a>
+            <div class="dropdown-menu">
+              <a href="https://discoverchiayi.github.io/discoveringchiayi/web/5.1校內活動.html
+" class="dropdown-item">校內活動</a>
+              <a href="https://discoverchiayi.github.io/discoveringchiayi/web/5.2校外活動.html
+" class="dropdown-item">校外活動</a>
+              <div class="dropdown-item has-submenu">
+                <span>活動紀實</span>
+                <span style="margin-left: 12px; font-size: 12px;">❯</span>
+                <div class="submenu">
+                  <a href="https://discoverchiayi.github.io/discoveringchiayi/web/5.3.1 113-2校內活動紀錄.html
+">113-2</a>
+                  <a href="records-114-1.html">114-1</a>
+                  <a href="https://discoverchiayi.github.io/discoveringchiayi/web/5.3.2 114-1校內活動紀錄.html
+">114-2</a>
+                  <a href="https://discoverchiayi.github.io/discoveringchiayi/web/5.3.3 114-2校內活動紀錄.html
+">115-1</a>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a href="https://discoverchiayi.github.io/discoveringchiayi/web/6.0相關連結.html
+" class="nav-link">相關連結</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 📖 主要內容區域 -->
+  <main>
+    <article class="course-container">
+      
+      <!-- 頂部標題與標籤 -->
+      <header class="course-header">
+        <div class="tags">
+          <span class="tag">#無形文化資產</span>
+          <span class="tag">#民俗陣頭藝能</span>
+          <span class="tag">#數位轉譯展示</span>
+          <span class="tag">#虛擬動捕與VR</span>
+          <span class="tag">#PBL專案實作</span>
+        </div>
+        <h1 class="course-title">家將文化體驗與數位展示</h1>
+        <p class="course-subtitle">走入諸羅民俗堂館傳承陣頭底蘊，運用多媒體科技賦予傳統當代表達</p>
+      </header>
+
+      <div class="course-body">
+        <!-- 一、 課程基本資訊（2x2 格局） -->
+        <section class="section-block">
+          <h2 class="section-title">一、 課程基本資訊</h2>
+          <div class="info-grid-2x2">
+            <!-- 第 1 格：基本資料 -->
+            <div class="info-item">
+              <span class="info-label">● 基本資料與學制</span>
+              <strong>開課單位：</strong>人文藝術學院<br>
+              <strong>課程學分：</strong>跨領域學分學程 ｜ 選修課程<br>
+              <strong>核心範疇：</strong>無形文化資產保存與數位轉譯展示
+            </div>
+
+            <!-- 第 2 格：師資陣容 -->
+            <div class="info-item">
+              <span class="info-label">● 教學師資與共授團隊</span>
+              <strong>學術主講：</strong>吳建昇、温宗翰 老師<br>
+              <strong>傳承藝師：</strong>震安宮振祐堂、慈濟宮駕前如意振裕堂藝師群<br>
+              <strong>數位業師：</strong>廟會攝影師（林明威）、3D業師（陳遵旭）
+            </div>
+
+            <!-- 第 3 格：修讀對象與門檻 -->
+            <div class="info-item">
+              <span class="info-label">● 適合對象與先修門檻</span>
+              <strong>零基礎友善：</strong>歡迎文史、設計及全校跨領域學生修讀。<br>
+              課程循序漸進，無須任何武術、舞蹈肢體底子，亦不需程式技術背景，由藝師與業師團隊手把手實務引導。
+            </div>
+
+            <!-- 第 4 格：實作模式與設備 -->
+            <div class="info-item">
+              <span class="info-label">● 實作模式與設備支援</span>
+              <strong>實務演練：</strong>臉譜彩繪實作、陣法身段演練、出軍田野驗收。<br>
+              <strong>科技設備：</strong>支援廟會動態攝影器材、3D 紀錄設備。
+            </div>
+          </div>
+        </section>
+
+        <!-- 二、 核心理念與跨領域特色 -->
+        <section class="section-block">
+          <h2 class="section-title">二、 核心理念與跨域亮點</h2>
+          <div class="highlight-box">
+            本課程打破大眾對傳統陣頭的刻板標籤，結合「學術歷史考據」、「文化資產保存」與「數位展示科技」。透過地方文史脈絡與無形文化資產視角，引領學生親炙振祐堂藝師的臉譜彩繪與陣式美學；更結合陣頭動態攝影、虛擬實境（VR）動作捕捉與 3D 動畫技術，將傳統陣法轉譯為數位展演，讓在地廟會藝術在科技媒介中重現多元生命力。
+          </div>
+        </section>
+
+        <!-- 三、 核心學習目標與預期能力 -->
+        <section class="section-block">
+          <h2 class="section-title">三、 預期學習成效與核心能力</h2>
+          <div class="competency-list">
+            <div class="competency-card">
+              <h4>人文思維轉譯</h4>
+              <p>深化對嘉義家將聚落社會與信仰脈絡的理解，具備無形文化資產保存與論述詮釋能力。</p>
+            </div>
+            <div class="competency-card">
+              <h4>藝能身體感察</h4>
+              <p>透過臉譜彩繪實作、步法展扇與陣式演練，親身體會傳統家將肢體美學與儀式禁忌哲思。</p>
+            </div>
+            <div class="competency-card">
+              <h4>數位科技實作</h4>
+              <p>掌握廟會攝影動態紀錄、視覺海報設計，並實踐 3D 動畫動作捕捉與多媒體展演製作。</p>
+            </div>
+            <div class="competency-card">
+              <h4>跨域專題協作</h4>
+              <p>打破學科界線，共同策劃集結歷史展板、影音紀錄與虛擬實境的跨領域期末實體成果展。</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 四、 課程週次架構／階段模組 -->
+        <section class="section-block">
+          <h2 class="section-title">四、 課程階段模組架構</h2>
+          <table class="module-table">
+            <thead>
+              <tr>
+                <th style="width: 22%;">學習階段</th>
+                <th style="width: 33%;">模組主題</th>
+                <th>核心活動與教學內容</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>第一階段</strong><br>(第 1-4 週)</td>
+                <td>歷史脈絡與堂館信仰奠基</td>
+                <td>台灣陣頭源流探討、嘉義家將傳衍體系梳理；震安宮振祐堂角色故事、信仰特徵與出軍禁忌研討。</td>
+              </tr>
+              <tr>
+                <td><strong>第二階段</strong><br>(第 5-9 週)</td>
+                <td>臉譜彩繪與基礎身段實作</td>
+                <td>四季大神與差將臉譜意涵剖析與彩繪演練；八家將基本功（馬步、展扇、第一步、差籤）觀摩與陣式期中演練。</td>
+              </tr>
+              <tr>
+                <td><strong>第三階段</strong><br>(第 10-15 週)</td>
+                <td>組合陣式演練與數位影像紀錄</td>
+                <td>廟會陣頭攝影與錄影教學、文宣海報製作；八家將進階身段組合（落路、三步出入、龍虎包、走七星等）深造。</td>
+              </tr>
+              <tr>
+                <td><strong>第四階段</strong><br>(第 16-18 週)</td>
+                <td>專題展演、出軍驗收與科技轉譯</td>
+                <td>四大分組期末成果綜合展演、出軍田野驗收體驗；邀請逢甲業師示範家將出陣動作捕捉與 3D 動畫轉譯實習。</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- 五、 學生專題成果與實作歷程 -->
+        <section class="section-block">
+          <h2 class="section-title">五、 學生專題成果與實作歷程</h2>
+          <a href="https://discoverchiayi.github.io/discoveringchiayi/web/4.4.1家將文化_八家將介紹.html">
+	<div class="gallery-grid">
+	<div class="gallery-card">
+              <div class="gallery-img-placeholder">[家將文化介紹網頁]</div>
+              <div class="gallery-content">
+                <h4>家將文化介紹</h4>
+                <p>建構一站式家將數位知識庫。整合田野採集成果，以互動網站介紹諸羅家將歷史沿革、十三神將職責序列、面譜彩繪技法與經典陣法步態，轉譯傳統民俗為親民的數位閱讀體驗。</p>
+              </div>
+            </div></a>
+            <div class="gallery-card">
+            <a href="https://discoverchiayi.github.io/discoveringchiayi/web/4.4.2家將文化紀錄#poster.html">  
+	<div class="gallery-img-placeholder">[視覺文宣海報]</div>
+              <div class="gallery-content">
+                <h4>視覺轉譯</h4>
+                <p>跟隨藝師出陣實地拍攝田野影像，提煉宗教美學製作活動與推廣宣傳海報。</p>
+              </div>
+            </div></a>
+            <div class="gallery-card">
+	<a href="https://discoverchiayi.github.io/discoveringchiayi/web/4.4.2家將文化紀錄#photo.html"> 
+              <div class="gallery-img-placeholder">[課程紀錄]</div>
+              <div class="gallery-content">
+                <h4>學生實練課程記錄</h4>
+                <p>透過生動的課堂紀實與活動剪影，呈現青年學子接軌在地文化與跨域共創的學習足跡。</p>
+              </div></a>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- 六、 計畫支援與延伸效益 -->
+        <section class="section-block">
+          <h2 class="section-title">六、 計畫支持與延伸效益</h2>
+          <div class="plan-badge">
+            <div>
+              <strong>★ 本課程獲「教育部數位人文跨域人才智慧領航計畫」教學補助</strong><br>
+              支援專業藝師陣頭鐘點與 3D 工作坊，表現優異之期末專題將由計畫全額補助代表學校參與全國數位人文專題競賽與地方文資展覽。
+            </div>
+          </div>
+        </section>
+      </div>
+
+    </article>
+  </main>
+
+  <!-- 頁尾 Footer -->
+  <footer>
+    <div class="container footer-container">
+      <div>
+        <img src="https://raw.githubusercontent.com/discoverchiayi/discoveringchiayi/refs/heads/main/%E5%9C%96%E7%89%87/%E5%98%89%E7%BE%A9%E5%A4%A7%E5%AD%B8%E6%A0%A1%E5%BE%BD%E6%A8%99%E8%AA%8C%E8%88%87%E4%B8%AD%E8%8B%B1%E6%96%87%E6%A8%99%E6%BA%96%E5%AD%97ol-02.png" alt="NCYU Logo" style="height: 140px;">
+      </div>
+      <div class="footer-info">
+        <h4>數位跨域「嘉義巡禮」再現諸羅人文風華</h4>
+        <p>教育部數位人文跨域人才智慧領航計畫</p>
+        <p>蘭潭校區：600嘉義市東區學府路300號</p>
+        <p>民雄校區：621嘉義縣民雄鄉文隆村85號</p>
+        <p>聯絡方式：ncyu.dh@gmail.com</p>
+      </div>
+      <div>
+        <img src="https://raw.githubusercontent.com/discoverchiayi/discoveringchiayi/refs/heads/main/%E5%9C%96%E7%89%87/%E6%95%B8%E4%BD%8D%E4%BA%BA%E6%96%87(%E7%9F%AD%E7%89%88)_%E7%99%BD.png" alt="教育部數位人文計畫 Logo" style="height: 80px;">
+      </div>
+    </div>
+  </footer>
+
+  <!-- 行動版選單切換腳本 -->
+  <script>
+    const toggleBtn = document.getElementById('mobile-menu-toggle');
+    const navMenu = document.getElementById('nav-menu');
+
+    toggleBtn.addEventListener('click', () => {
+      navMenu.classList.toggle('show');
+    });
+  </script>
+
+</body>
+</html>

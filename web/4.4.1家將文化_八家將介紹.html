@@ -1,0 +1,2751 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>諸羅神將・嘉義家將文化數位圖鑑</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Noto Serif TC & Inter & Cinzel -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Noto+Serif+TC:wght@400;600;700;900&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              dark: '#0e0d10',
+              surface: '#151418',
+              surfaceCard: '#1a181d',
+              border: 'rgba(230, 162, 60, 0.22)',
+              gold: '#e6a23c',
+              goldLight: '#f5c869',
+              goldDim: '#99732b',
+              crimson: '#bc2424',
+              vermilion: '#e74c3c',
+            }
+          },
+          fontFamily: {
+            serif: ['"Noto Serif TC"', 'serif'],
+            sans: ['"Noto Sans TC"', 'sans-serif'],
+            display: ['Cinzel', '"Noto Serif TC"', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .text-gold-gradient {
+      background: linear-gradient(135deg, #f9e79f 0%, #e6a23c 50%, #b7950b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .text-red-gradient {
+      background: linear-gradient(135deg, #f87171 0%, #dc2626 50%, #991b1b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .bg-mesh-pattern {
+      background-color: #0e0d10;
+      background-image: radial-gradient(rgba(230, 162, 60, 0.08) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+    .card-hover-glow:hover {
+      border-color: rgba(245, 200, 105, 0.55);
+      box-shadow: 0 10px 30px -5px rgba(230, 162, 60, 0.18);
+    }
+    /* 3D Flip Card Styles */
+    .perspective-1000 {
+      perspective: 1200px;
+    }
+    .transform-style-3d {
+      transform-style: preserve-3d;
+    }
+    .backface-hidden {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    .rotate-y-180 {
+      transform: rotateY(180deg);
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(230, 162, 60, 0.35);
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(230, 162, 60, 0.7);
+    }
+  </style>
+</head>
+<body class="bg-brand-dark text-stone-200 font-sans selection:bg-brand-gold selection:text-black min-h-screen">
+
+  <!-- ================= Navigation Header ================= -->
+  <header class="fixed top-0 left-0 right-0 z-50 bg-brand-dark/90 backdrop-blur-md border-b border-brand-border transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <a href="#hero" class="flex items-center space-x-3 group">
+        <div class="w-10 h-10 rounded-full border border-brand-gold/70 flex items-center justify-center bg-brand-crimson/20 shadow-lg group-hover:border-brand-goldLight transition">
+          <span class="font-serif font-black text-brand-goldLight text-lg">將</span>
+        </div>
+        <div>
+          <span class="font-serif text-lg md:text-xl font-bold tracking-wider text-stone-100 block">諸羅神將</span>
+          <span class="text-[10px] tracking-widest text-brand-goldLight/80 block uppercase font-mono">Chiayi Ba Jia Jiang</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center space-x-8 text-sm font-medium tracking-wide font-serif">
+        <a href="#origin" class="text-stone-300 hover:text-brand-goldLight transition">源流窟譽</a>
+        <a href="#roster" class="text-stone-300 hover:text-brand-goldLight transition">神將序列</a>
+        <a href="#face-taboo" class="text-stone-300 hover:text-brand-goldLight transition">臉譜儀軌</a>
+        <a href="#formations" class="text-stone-300 hover:text-brand-goldLight transition">陣法步態</a>
+        <a href="#landmarks" class="text-stone-300 hover:text-brand-goldLight transition">代表堂館</a>
+        <a href="#quiz" class="px-4 py-2 rounded-full border border-brand-gold/60 text-brand-goldLight hover:bg-brand-gold hover:text-black transition text-xs font-bold tracking-wider">
+          神將堂測驗
+        </a>
+      </nav>
+
+      <!-- Mobile Menu Toggle Button -->
+      <button id="mobileMenuBtn" class="md:hidden text-stone-300 hover:text-brand-goldLight p-2" aria-label="切換選單">
+        <i data-lucide="menu" class="w-6 h-6"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Nav Dropdown -->
+    <div id="mobileMenu" class="hidden md:hidden bg-brand-surface border-b border-brand-border px-6 py-6 space-y-4 font-serif">
+      <a href="#origin" class="block text-stone-200 py-1 hover:text-brand-goldLight mobile-nav-link">源流窟譽</a>
+      <a href="#roster" class="block text-stone-200 py-1 hover:text-brand-goldLight mobile-nav-link">神將序列</a>
+      <a href="#face-taboo" class="block text-stone-200 py-1 hover:text-brand-goldLight mobile-nav-link">臉譜儀軌</a>
+      <a href="#formations" class="block text-stone-200 py-1 hover:text-brand-goldLight mobile-nav-link">陣法步態</a>
+      <a href="#landmarks" class="block text-stone-200 py-1 hover:text-brand-goldLight mobile-nav-link">代表堂館</a>
+      <a href="#quiz" class="block text-center py-2.5 rounded-lg bg-brand-gold text-black font-bold text-sm mobile-nav-link">
+        參與知識測驗
+      </a>
+    </div>
+  </header>
+
+  <main class="relative bg-mesh-pattern pt-20">
+
+    <!-- ================= 1. Hero Section ================= -->
+    <section id="hero" class="relative min-h-[90vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-20 overflow-hidden">
+      <div class="absolute top-1/4 -left-20 w-80 h-80 bg-brand-crimson/20 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute bottom-1/4 -right-20 w-96 h-96 bg-brand-gold/15 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="relative max-w-4xl mx-auto text-center z-10">
+        <div class="flex flex-wrap items-center justify-center gap-2 mb-6">
+          <span class="px-3.5 py-1 text-xs font-semibold tracking-widest rounded-full bg-brand-surfaceCard border border-brand-gold/40 text-brand-goldLight uppercase">
+            無形文化資產保存
+          </span>
+          <span class="px-3.5 py-1 text-xs font-semibold tracking-widest rounded-full bg-brand-surfaceCard border border-brand-crimson/50 text-red-400">
+            全台家將發祥搖籃
+          </span>
+          <span class="px-3.5 py-1 text-xs font-semibold tracking-widest rounded-full bg-brand-surfaceCard border border-stone-700 text-stone-400">
+            六大流派・三師古禮
+          </span>
+        </div>
+
+        <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl font-black tracking-tight leading-tight mb-6">
+          <span class="text-stone-100">威武諸羅</span>
+          <span class="block mt-2 text-gold-gradient">神將風華</span>
+        </h1>
+
+        <p class="font-serif text-lg sm:text-2xl text-stone-300 font-medium max-w-2xl mx-auto leading-relaxed mb-8">
+          探訪全台「家將窟」百年信仰、深邃臉譜神韻與森嚴步法之美。
+        </p>
+
+        <p class="text-stone-400 text-base sm:text-lg max-w-xl mx-auto leading-relaxed mb-10">
+          嘉義市為台灣家將文化的重鎮核心。由城隍、五福大帝巡狩駕前差役衍繹而來，兼具宗教護駕、除煞驅瘟與民間面具彩繪藝術的極致結晶。
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a href="#roster" class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-amber-600 via-amber-500 to-yellow-600 text-black font-black tracking-wider shadow-lg hover:shadow-amber-500/20 hover:scale-[1.02] active:scale-[0.98] transition flex items-center justify-center gap-2 font-serif text-base">
+            <span>觀照神將威儀</span>
+            <i data-lucide="shield-alert" class="w-4 h-4"></i>
+          </a>
+          <a href="#origin" class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-brand-surface border border-brand-border hover:border-brand-goldLight text-stone-200 hover:text-brand-goldLight transition flex items-center justify-center gap-2 font-serif text-base">
+            <span>探索家將窟歷史</span>
+            <i data-lucide="scroll" class="w-4 h-4"></i>
+          </a>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-16 pt-10 border-t border-brand-border">
+          <div class="p-3">
+            <div class="font-serif text-3xl font-bold text-brand-goldLight">1918</div>
+            <div class="text-xs text-stone-400 mt-1">慈濟宮如意振裕堂創立</div>
+          </div>
+          <div class="p-3">
+            <div class="font-serif text-3xl font-bold text-brand-goldLight">六大派</div>
+            <div class="text-xs text-stone-400 mt-1">吉・義・拱・廣・振・巡</div>
+          </div>
+          <div class="p-3">
+            <div class="font-serif text-3xl font-bold text-brand-goldLight">三師制</div>
+            <div class="text-xs text-stone-400 mt-1">法師・導師・面師古禮</div>
+          </div>
+          <div class="p-3">
+            <div class="font-serif text-3xl font-bold text-brand-goldLight">國家級</div>
+            <div class="text-xs text-stone-400 mt-1">民俗重要文化資產</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 2. Origin & Lineages ================= -->
+    <section id="origin" class="py-24 px-4 sm:px-6 lg:px-8 border-t border-brand-border relative">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center max-w-4xl mx-auto mb-16">
+          <div class="inline-flex items-center gap-2 text-brand-goldLight text-xs font-bold tracking-widest uppercase mb-3">
+            <i data-lucide="history" class="w-4 h-4"></i>
+            <span>百年源流・開枝散葉 | ORIGINS & LINEAGE</span>
+          </div>
+
+          <h2 class="font-serif text-3xl sm:text-5xl font-black text-stone-100 tracking-tight leading-tight">
+            嘉義為何被尊為「家將窟」？
+          </h2>
+          <p class="font-serif text-xl sm:text-3xl font-bold text-gold-gradient mt-3 tracking-wide">
+            源於白龍庵，鼎盛於諸羅城
+          </p>
+
+          <div class="mt-8 space-y-5 text-left sm:text-center text-stone-300 text-base sm:text-lg leading-relaxed bg-brand-surfaceCard p-6 sm:p-9 rounded-2xl border border-brand-border shadow-xl">
+            <p>
+              「家將」發源於臺南府城，最早源自全臺白龍庵與全臺西來庵五福大帝信仰。日治時期爆發余清芳領導的「西來庵事件」後，部分家將藝師與人員為避官方追捕遷往嘉義地區，隨後慈濟宮奉請台南白龍庵名師傳承並成立如意振裕堂，將高深技藝與嚴謹宗教儀規帶到諸羅。
+            </p>
+            <p>
+              建於 1715 年的嘉義城隍廟，在日治時期傳統廟宇受壓抑的歷史背景下，積極庇護了地方信仰與神將團體；戰後隨著宗教活動復甦，家將文化在此深根怒放，演變出什家將（吉、義、拱、廣四大系統）與八家將（振、巡等主要派系）共六大流派，奠定了嘉義全臺家將重鎮的崇高地位。
+            </p>
+            <p class="text-stone-400">
+              嘉義完整保留了家將「三師」（法師、導師、面師）與古禮出軍的嚴謹傳統，密度之高、身段之講究、面譜之精巧冠絕全臺，因而搏得<strong class="text-brand-goldLight font-semibold">「家將窟」</strong>與<strong class="text-brand-goldLight font-semibold">「全台家將之鄉」</strong>的歷史盛譽。
+            </p>
+          </div>
+        </div>
+
+        <!-- 3 Pillars of History -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+          <div class="bg-brand-surfaceCard rounded-2xl p-7 border border-brand-border card-hover-glow transition group">
+            <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-brand-goldLight mb-6 group-hover:scale-110 transition">
+              <i data-lucide="landmark" class="w-6 h-6"></i>
+            </div>
+            <h3 class="font-serif text-2xl font-bold text-stone-100 mb-2">府城源流・避難深耕</h3>
+            <p class="text-sm text-brand-goldLight/90 mb-3 font-semibold">白龍庵・西來庵避難入嘉</p>
+            <p class="text-base text-stone-400 leading-relaxed">
+              家將發源於臺南，西來庵事件後藝師避難入嘉；嘉義城隍廟於日治宗教壓抑之際大力庇護地方神將，戰後全面復甦。
+            </p>
+          </div>
+
+          <div class="bg-brand-surfaceCard rounded-2xl p-7 border border-brand-border card-hover-glow transition group">
+            <div class="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-400 mb-6 group-hover:scale-110 transition">
+              <i data-lucide="git-branch" class="w-6 h-6"></i>
+            </div>
+            <h3 class="font-serif text-2xl font-bold text-stone-100 mb-2">六大流派・百家爭鳴</h3>
+            <p class="text-sm text-red-400/90 mb-3 font-semibold">什家將四大系・八家將兩派</p>
+            <p class="text-base text-stone-400 leading-relaxed">
+              傳入嘉義後演繹出什家將「吉、義、拱、廣」四大系統與八家將「振、巡」等主要派系，步伐各具剛猛、莊嚴與矯健之美。
+            </p>
+          </div>
+
+          <div class="bg-brand-surfaceCard rounded-2xl p-7 border border-brand-border card-hover-glow transition group">
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mb-6 group-hover:scale-110 transition">
+              <i data-lucide="sparkles" class="w-6 h-6"></i>
+            </div>
+            <h3 class="font-serif text-2xl font-bold text-stone-100 mb-2">三師傳承・古禮出軍</h3>
+            <p class="text-sm text-emerald-400/90 mb-3 font-semibold">法師・導師・面師法統完整</p>
+            <p class="text-base text-stone-400 leading-relaxed">
+              完備保存科儀法統，全台各地籌組將團多延請嘉義名師「開館」傳授，確立嘉義不可撼動的家將原真信仰地標。
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 3. Roster Showcase (Interactive Filter & 3D Flip Cards) ================= -->
+    <section id="roster" class="py-24 px-4 sm:px-6 lg:px-8 border-t border-brand-border bg-brand-surface/50">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center max-w-3xl mx-auto mb-10">
+          <div class="inline-flex items-center gap-2 text-brand-goldLight text-xs font-bold tracking-widest uppercase mb-2">
+            <i data-lucide="shield" class="w-4 h-4"></i>
+            <span>THE DIVINE HIERARCHY・將爺神職</span>
+          </div>
+          <h2 class="font-serif text-3xl sm:text-5xl font-black text-stone-100 tracking-wider">
+            神將序列・<span class="text-gold-gradient">各司其職</span>
+          </h2>
+          <p class="text-stone-400 text-base sm:text-lg mt-3 font-sans leading-relaxed">
+            家將隊伍如同一座行動的陰陽法庭，從開路、傳令、拘提、審問、行刑至判決，十三位尊神職責分明、軍容嚴整。
+          </p>
+          <p class="text-xs sm:text-sm text-brand-goldLight/80 mt-2 font-serif flex items-center justify-center gap-1.5">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+            點選卡片即可翻轉，查閱將爺面譜、法器與步態詳述
+          </p>
+        </div>
+
+        <!-- Filter Buttons Bar -->
+        <div class="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3.5 mb-12">
+          <button data-filter="all" class="filter-btn active-filter px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-serif font-bold transition-all duration-300 flex items-center gap-1.5 bg-gradient-to-r from-amber-600 via-amber-500 to-yellow-600 text-black shadow-lg shadow-amber-500/20 scale-105 border border-amber-400/80">
+            <i data-lucide="layers" class="w-4 h-4"></i>
+            <span>全部 (13)</span>
+          </button>
+
+          <button data-filter="vanguard" class="filter-btn px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-serif font-bold transition-all duration-300 flex items-center gap-1.5 bg-brand-surfaceCard border border-brand-border text-stone-300 hover:border-brand-gold hover:text-brand-goldLight">
+            <i data-lucide="shield-alert" class="w-4 h-4"></i>
+            <span>先鋒前哨 (刑具爺/文武差)</span>
+          </button>
+
+          <button data-filter="generals" class="filter-btn px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-serif font-bold transition-all duration-300 flex items-center gap-1.5 bg-brand-surfaceCard border border-brand-border text-stone-300 hover:border-brand-gold hover:text-brand-goldLight">
+            <i data-lucide="swords" class="w-4 h-4"></i>
+            <span>四大將軍 (甘柳謝范)</span>
+          </button>
+
+          <button data-filter="seasons" class="filter-btn px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-serif font-bold transition-all duration-300 flex items-center gap-1.5 bg-brand-surfaceCard border border-brand-border text-stone-300 hover:border-brand-gold hover:text-brand-goldLight">
+            <i data-lucide="sun-snow" class="w-4 h-4"></i>
+            <span>四季大神 (春夏秋冬)</span>
+          </button>
+
+          <button data-filter="judges" class="filter-btn px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-serif font-bold transition-all duration-300 flex items-center gap-1.5 bg-brand-surfaceCard border border-brand-border text-stone-300 hover:border-brand-gold hover:text-brand-goldLight">
+            <i data-lucide="scale" class="w-4 h-4"></i>
+            <span>司法裁判 (文武判官)</span>
+          </button>
+        </div>
+
+        <!-- 13 Standardized 3D Flip Cards Grid -->
+        <div id="rosterGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+          <!-- 00. 刑具爺（什役） -->
+          <div class="roster-card group perspective-1000 h-[460px] sm:h-[480px] cursor-pointer" data-category="vanguard">
+            <div class="flip-inner relative w-full h-full transform-style-3d transition-transform duration-700 rounded-2xl shadow-xl">
+              <!-- FRONT -->
+              <div class="flip-front absolute inset-0 w-full h-full backface-hidden bg-brand-surfaceCard rounded-2xl border border-brand-border p-6 sm:p-7 flex flex-col justify-between card-hover-glow transition">
+                <div>
+                  <div class="flex justify-between items-start mb-4">
+                    <div>
+                      <span class="inline-block px-3 py-1 rounded-md text-xs font-bold bg-[#e6a23c]/15 text-brand-goldLight border border-brand-gold/40">
+                        持刑開路・前哨先鋒
+                      </span>
+                      <h3 class="text-2xl sm:text-3xl font-serif font-black text-stone-100 mt-2">刑具爺</h3>
+                      <p class="text-xs sm:text-sm text-stone-400 mt-0.5">什役 / 將團先鋒領隊</p>
+                    </div>
+                    <span class="text-4xl sm:text-5xl font-display font-bold text-brand-goldDim/40">00</span>
+                  </div>
+
+                  <!-- Summary info on front -->
+                  <div class="space-y-3 mt-4 pt-4 border-t border-brand-border/60">
+                    <div>
+                      <span class="text-xs font-bold text-brand-goldLight uppercase tracking-wider block font-serif">【職責總述】</span>
+                      <p class="text-sm sm:text-base text-stone-300 mt-1 leading-relaxed">
+                        挑刑具擔位列全陣最前鋒，負責開路引道、震懾幽冥邪祟，以金屬清脆敲擊聲通告陰陽神將巡境，號令全陣前進。
+                      </p>
+                    </div>
+                    <div>
+                      <span class="text-xs font-bold text-stone-400 uppercase tracking-wider block font-serif">【象徵意義】</span>
+                      <p class="text-sm sm:text-stone-300 text-stone-300 mt-0.5">
+                        開路引道・震懾幽冥・整飭軍紀法紀
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="pt-4 border-t border-brand-border flex items-center justify-between text-xs text-brand-goldLight/90 font-serif">
+                  <span class="flex items-center gap-1.5">
+                    <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+                    點擊查看面譜、法器與步法
+                  </span>
+                  <span class="w-7 h-7 rounded-full bg-brand-gold/10 border border-brand-gold/30 flex items-center justify-center">
+                    <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-brand-gold"></i>
+                  </span>
+                </div>
+              </div>
+
+              <!-- BACK -->
+              <div class="flip-back absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-brand-surface rounded-2xl border border-brand-gold/50 p-6 sm:p-7 flex flex-col justify-between shadow-2xl">
+                <div class="flex justify-between items-center pb-3 border-b border-brand-border/80">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-brand-gold"></span>
+                    <h4 class="font-serif text-lg font-bold text-stone-100">刑具爺・詳細典故</h4>
+                  </div>
+                  <span class="text-xs font-mono text-brand-goldLight/80">NO. 00</span>
+                </div>
+
+                <div class="space-y-3 text-xs sm:text-sm text-stone-300 leading-relaxed overflow-y-auto pr-1 my-3 custom-scrollbar flex-1">
+                  <p><strong class="text-brand-goldLight font-bold">【職司任務】</strong>挑刑具擔位列全陣最前鋒，負責開路引道、震懾幽冥邪祟，以金屬敲擊聲通告陰陽神將巡境。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【臉譜特徵】</strong>通常不開全臉，著素臉或清秀面、畫兩撇威嚴鬍渣，頭戴斗笠，神態莊重自若。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【執掌法器】</strong>挑「刑具擔」，內掛火籤、夾棍、皮鞭、手銬、腳鐐、戒木等各類拷問刑具。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【身段步法】</strong>步伐節奏沉穩鏗鏘，肩挑扁擔隨步伐搖曳撞擊，以清脆法器聲響號令引導全陣進退。</p>
+                </div>
+
+                <div class="pt-3 border-t border-brand-border flex items-center justify-between text-xs text-stone-400">
+                  <span class="text-brand-goldLight flex items-center gap-1 font-serif">
+                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                    點擊翻回正面
+                  </span>
+                  <span class="font-mono text-stone-500">Chiayi Heritage</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 01. 文差爺 -->
+          <div class="roster-card group perspective-1000 h-[460px] sm:h-[480px] cursor-pointer" data-category="vanguard">
+            <div class="flip-inner relative w-full h-full transform-style-3d transition-transform duration-700 rounded-2xl shadow-xl">
+              <!-- FRONT -->
+              <div class="flip-front absolute inset-0 w-full h-full backface-hidden bg-brand-surfaceCard rounded-2xl border border-brand-border p-6 sm:p-7 flex flex-col justify-between card-hover-glow transition">
+                <div>
+                  <div class="flex justify-between items-start mb-4">
+                    <div>
+                      <span class="inline-block px-3 py-1 rounded-md text-xs font-bold bg-[#e6a23c]/15 text-brand-goldLight border border-brand-gold/40">
+                        接令傳檄・前哨差爺
+                      </span>
+                      <h3 class="text-2xl sm:text-3xl font-serif font-black text-stone-100 mt-2">文差爺</h3>
+                      <p class="text-xs sm:text-sm text-stone-400 mt-0.5">陳將軍 / 接令官</p>
+                    </div>
+                    <span class="text-4xl sm:text-5xl font-display font-bold text-brand-goldDim/40">01</span>
+                  </div>
+
+                  <div class="space-y-3 mt-4 pt-4 border-t border-brand-border/60">
+                    <div>
+                      <span class="text-xs font-bold text-brand-goldLight uppercase tracking-wider block font-serif">【職責總述】</span>
+                      <p class="text-sm sm:text-base text-stone-300 mt-1 leading-relaxed">
+                        專門負責接領主神（王爺、城隍）之法旨令意，行走前哨宣達軍令，是全軍溝通主神意志的關鍵樞紐。
+                      </p>
+                    </div>
+                    <div>
+                      <span class="text-xs font-bold text-stone-400 uppercase tracking-wider block font-serif">【象徵意義】</span>
+                      <p class="text-sm sm:text-stone-300 text-stone-300 mt-0.5">
+                        銜奉神命・宣諭三界・令出必行
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="pt-4 border-t border-brand-border flex items-center justify-between text-xs text-brand-goldLight/90 font-serif">
+                  <span class="flex items-center gap-1.5">
+                    <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+                    點擊查看面譜、法器與步法
+                  </span>
+                  <span class="w-7 h-7 rounded-full bg-brand-gold/10 border border-brand-gold/30 flex items-center justify-center">
+                    <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-brand-gold"></i>
+                  </span>
+                </div>
+              </div>
+
+              <!-- BACK -->
+              <div class="flip-back absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-brand-surface rounded-2xl border border-brand-gold/50 p-6 sm:p-7 flex flex-col justify-between shadow-2xl">
+                <div class="flex justify-between items-center pb-3 border-b border-brand-border/80">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-brand-gold"></span>
+                    <h4 class="font-serif text-lg font-bold text-stone-100">文差爺・詳細典故</h4>
+                  </div>
+                  <span class="text-xs font-mono text-brand-goldLight/80">NO. 01</span>
+                </div>
+
+                <div class="space-y-3 text-xs sm:text-sm text-stone-300 leading-relaxed overflow-y-auto pr-1 my-3 custom-scrollbar flex-1">
+                  <p><strong class="text-brand-goldLight font-bold">【職司任務】</strong>專門負責接領主神（王爺、城隍）之法旨令意，並行走前哨宣達軍令任務。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【臉譜特徵】</strong>小開臉，通常為俊秀童子臉或花臉，神韻莊嚴靈敏且雙目澄澈。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【執掌法器】</strong>手執「主神令旗」與令牌，負有宣示神威之權責。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【身段步法】</strong>身形輕捷俐落，走「走馬」步伐前哨引導，與武差互為表裡、緊密呼應。</p>
+                </div>
+
+                <div class="pt-3 border-t border-brand-border flex items-center justify-between text-xs text-stone-400">
+                  <span class="text-brand-goldLight flex items-center gap-1 font-serif">
+                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                    點擊翻回正面
+                  </span>
+                  <span class="font-mono text-stone-500">Chiayi Heritage</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 02. 武差爺 -->
+          <div class="roster-card group perspective-1000 h-[460px] sm:h-[480px] cursor-pointer" data-category="vanguard">
+            <div class="flip-inner relative w-full h-full transform-style-3d transition-transform duration-700 rounded-2xl shadow-xl">
+              <!-- FRONT -->
+              <div class="flip-front absolute inset-0 w-full h-full backface-hidden bg-brand-surfaceCard rounded-2xl border border-brand-border p-6 sm:p-7 flex flex-col justify-between card-hover-glow transition">
+                <div>
+                  <div class="flex justify-between items-start mb-4">
+                    <div>
+                      <span class="inline-block px-3 py-1 rounded-md text-xs font-bold bg-brand-crimson/25 text-red-400 border border-brand-crimson/50">
+                        傳令緝拿・督軍押陣
+                      </span>
+                      <h3 class="text-2xl sm:text-3xl font-serif font-black text-stone-100 mt-2">武差爺</h3>
+                      <p class="text-xs sm:text-sm text-stone-400 mt-0.5">劉將軍 / 差令官</p>
+                    </div>
+                    <span class="text-4xl sm:text-5xl font-display font-bold text-brand-crimson/40">02</span>
+                  </div>
+
+                  <div class="space-y-3 mt-4 pt-4 border-t border-brand-border/60">
+                    <div>
+                      <span class="text-xs font-bold text-brand-goldLight uppercase tracking-wider block font-serif">【職責總述】</span>
+                      <p class="text-sm sm:text-base text-stone-300 mt-1 leading-relaxed">
+                        督軍押陣，接獲主神命令後迅捷傳達前方四大將軍，回報前線巡查敵情並督促拘捕罪魂。
+                      </p>
+                    </div>
+                    <div>
+                      <span class="text-xs font-bold text-stone-400 uppercase tracking-wider block font-serif">【象徵意義】</span>
+                      <p class="text-sm sm:text-stone-300 text-stone-300 mt-0.5">
+                        令旗揮動・群將景從・軍令如山
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="pt-4 border-t border-brand-border flex items-center justify-between text-xs text-brand-goldLight/90 font-serif">
+                  <span class="flex items-center gap-1.5">
+                    <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+                    點擊查看面譜、法器與步法
+                  </span>
+                  <span class="w-7 h-7 rounded-full bg-brand-gold/10 border border-brand-gold/30 flex items-center justify-center">
+                    <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-brand-gold"></i>
+                  </span>
+                </div>
+              </div>
+
+              <!-- BACK -->
+              <div class="flip-back absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-brand-surface rounded-2xl border border-brand-gold/50 p-6 sm:p-7 flex flex-col justify-between shadow-2xl">
+                <div class="flex justify-between items-center pb-3 border-b border-brand-border/80">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-brand-crimson"></span>
+                    <h4 class="font-serif text-lg font-bold text-stone-100">武差爺・詳細典故</h4>
+                  </div>
+                  <span class="text-xs font-mono text-red-400">NO. 02</span>
+                </div>
+
+                <div class="space-y-3 text-xs sm:text-sm text-stone-300 leading-relaxed overflow-y-auto pr-1 my-3 custom-scrollbar flex-1">
+                  <p><strong class="text-brand-goldLight font-bold">【職司任務】</strong>督軍押陣，接令後將法旨迅捷傳達前方四大將軍，回報前線巡查敵情。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【臉譜特徵】</strong>開小武面，眉宇英氣逼人，威猛剛毅，目光如炬。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【執掌法器】</strong>手執「令旗」與法器（火籤），專司傳令與督促部隊緝拿。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【身段步法】</strong>架勢勇猛沉著，開步剛勁有力，常跨大步跳躍，與文差交錯巡查。</p>
+                </div>
+
+                <div class="pt-3 border-t border-brand-border flex items-center justify-between text-xs text-stone-400">
+                  <span class="text-brand-goldLight flex items-center gap-1 font-serif">
+                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                    點擊翻回正面
+                  </span>
+                  <span class="font-mono text-stone-500">Chiayi Heritage</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 03. 謝將軍 (七爺) -->
+          <div class="roster-card group perspective-1000 h-[460px] sm:h-[480px] cursor-pointer" data-category="generals">
+            <div class="flip-inner relative w-full h-full transform-style-3d transition-transform duration-700 rounded-2xl shadow-xl">
+              <!-- FRONT -->
+              <div class="flip-front absolute inset-0 w-full h-full backface-hidden bg-brand-surfaceCard rounded-2xl border border-brand-border p-6 sm:p-7 flex flex-col justify-between card-hover-glow transition">
+                <div>
+                  <div class="flex justify-between items-start mb-4">
+                    <div>
+                      <span class="inline-block px-3 py-1 rounded-md text-xs font-bold bg-[#e6a23c]/15 text-brand-goldLight border border-brand-gold/40">
+                        四大將軍・前排捕盜
+                      </span>
+                      <h3 class="text-2xl sm:text-3xl font-serif font-black text-stone-100 mt-2">謝將軍（七爺）</h3>
+                      <p class="text-xs sm:text-sm text-stone-400 mt-0.5">謝必安 / 白無常</p>
+                    </div>
+                    <span class="text-4xl sm:text-5xl font-display font-bold text-brand-goldDim/40">03</span>
+                  </div>
+
+                  <div class="space-y-3 mt-4 pt-4 border-t border-brand-border/60">
+                    <div>
+                      <span class="text-xs font-bold text-brand-goldLight uppercase tracking-wider block font-serif">【職責總述】</span>
+                      <p class="text-sm sm:text-base text-stone-300 mt-1 leading-relaxed">
+                        專司日間巡緝陽壽已盡之惡徒亡魂，手持火籤明正典刑、緝捕拘押，威武莊嚴而神聖不可犯。
+                      </p>
+                    </div>
+                    <div>
+                      <span class="text-xs font-bold text-stone-400 uppercase tracking-wider block font-serif">【象徵意義】</span>
+                      <p class="text-sm sm:text-stone-300 text-stone-300 mt-0.5">
+                        一見大吉・善念長存・剛柔並濟
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="pt-4 border-t border-brand-border flex items-center justify-between text-xs text-brand-goldLight/90 font-serif">
+                  <span class="flex items-center gap-1.5">
+                    <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+                    點擊查看面譜、法器與步法
+                  </span>
+                  <span class="w-7 h-7 rounded-full bg-brand-gold/10 border border-brand-gold/30 flex items-center justify-center">
+                    <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-brand-gold"></i>
+                  </span>
+                </div>
+              </div>
+
+              <!-- BACK -->
+              <div class="flip-back absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-brand-surface rounded-2xl border border-brand-gold/50 p-6 sm:p-7 flex flex-col justify-between shadow-2xl">
+                <div class="flex justify-between items-center pb-3 border-b border-brand-border/80">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-brand-gold"></span>
+                    <h4 class="font-serif text-lg font-bold text-stone-100">謝將軍（七爺）・詳細典故</h4>
+                  </div>
+                  <span class="text-xs font-mono text-brand-goldLight/80">NO. 03</span>
+                </div>
+
+                <div class="space-y-3 text-xs sm:text-sm text-stone-300 leading-relaxed overflow-y-auto pr-1 my-3 custom-scrollbar flex-1">
+                  <p><strong class="text-brand-goldLight font-bold">【職司任務】</strong>專司日間巡緝陽壽已盡之惡徒亡魂，手持火籤明正典刑、緝捕拘押。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【臉譜特徵】</strong>白底鶴面，額頭描繪鮮紅迎福「蝙蝠」，吐長舌，威嚴而內斂。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【執掌法器】</strong>一手持羽扇護面，一手執「魚枷」或「火籤（虎頭牌）」。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【身段步法】</strong>身形修長高挑，步伐輕盈飄逸，常走鶴步、高踏步，身段飄灑如仙。</p>
+                </div>
+
+                <div class="pt-3 border-t border-brand-border flex items-center justify-between text-xs text-stone-400">
+                  <span class="text-brand-goldLight flex items-center gap-1 font-serif">
+                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                    點擊翻回正面
+                  </span>
+                  <span class="font-mono text-stone-500">Chiayi Heritage</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 04. 范將軍 (八爺) -->
+          <div class="roster-card group perspective-1000 h-[460px] sm:h-[480px] cursor-pointer" data-category="generals">
+            <div class="flip-inner relative w-full h-full transform-style-3d transition-transform duration-700 rounded-2xl shadow-xl">
+              <!-- FRONT -->
+              <div class="flip-front absolute inset-0 w-full h-full backface-hidden bg-brand-surfaceCard rounded-2xl border border-brand-border p-6 sm:p-7 flex flex-col justify-between card-hover-glow transition">
+                <div>
+                  <div class="flex justify-between items-start mb-4">
+                    <div>
+                      <span class="inline-block px-3 py-1 rounded-md text-xs font-bold bg-brand-crimson/25 text-red-400 border border-brand-crimson/50">
+                        四大將軍・前排捕盜
+                      </span>
+                      <h3 class="text-2xl sm:text-3xl font-serif font-black text-stone-100 mt-2">范將軍（八爺）</h3>
+                      <p class="text-xs sm:text-sm text-stone-400 mt-0.5">范無救 / 黑無常</p>
+                    </div>
+                    <span class="text-4xl sm:text-5xl font-display font-bold text-brand-crimson/40">04</span>
+                  </div>
+
+                  <div class="space-y-3 mt-4 pt-4 border-t border-brand-border/60">
+                    <div>
+                      <span class="text-xs font-bold text-brand-goldLight uppercase tracking-wider block font-serif">【職責總述】</span>
+                      <p class="text-sm sm:text-base text-stone-300 mt-1 leading-relaxed">
+                        專司鎖拿抵抗拒捕之凶煞厲鬼，緝捕窮凶極惡重犯，與謝將軍情深義重、前後包夾合力執法。
+                      </p>
+                    </div>
+                    <div>
+                      <span class="text-xs font-bold text-stone-400 uppercase tracking-wider block font-serif">【象徵意義】</span>
+                      <p class="text-sm sm:text-stone-300 text-stone-300 mt-0.5">
+                        善惡分明・雷霆重擊・邪魅喪膽
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="pt-4 border-t border-brand-border flex items-center justify-between text-xs text-brand-goldLight/90 font-serif">
+                  <span class="flex items-center gap-1.5">
+                    <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+                    點擊查看面譜、法器與步法
+                  </span>
+                  <span class="w-7 h-7 rounded-full bg-brand-gold/10 border border-brand-gold/30 flex items-center justify-center">
+                    <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-brand-gold"></i>
+                  </span>
+                </div>
+              </div>
+
+              <!-- BACK -->
+              <div class="flip-back absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-brand-surface rounded-2xl border border-brand-gold/50 p-6 sm:p-7 flex flex-col justify-between shadow-2xl">
+                <div class="flex justify-between items-center pb-3 border-b border-brand-border/80">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-brand-crimson"></span>
+                    <h4 class="font-serif text-lg font-bold text-stone-100">范將軍（八爺）・詳細典故</h4>
+                  </div>
+                  <span class="text-xs font-mono text-red-400">NO. 04</span>
+                </div>
+
+                <div class="space-y-3 text-xs sm:text-sm text-stone-300 leading-relaxed overflow-y-auto pr-1 my-3 custom-scrollbar flex-1">
+                  <p><strong class="text-brand-goldLight font-bold">【職司任務】</strong>專司鎖拿抵抗拒捕之凶煞厲鬼，緝捕重犯，與謝將軍情深義重、合力執法。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【臉譜特徵】</strong>全黑底猴臉或虎面，雙目暴凸圓睜，滿面怒容，令邪魔望風披靡。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【執掌法器】</strong>手執「方牌」（書寫善惡分明）與「鐵鍊（鎖鐐、腳鐐）」。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【身段步法】</strong>身矮步沉，走虎步、低盤蹬步，左右急閃跳躍，動作剛猛無比。</p>
+                </div>
+
+                <div class="pt-3 border-t border-brand-border flex items-center justify-between text-xs text-stone-400">
+                  <span class="text-brand-goldLight flex items-center gap-1 font-serif">
+                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                    點擊翻回正面
+                  </span>
+                  <span class="font-mono text-stone-500">Chiayi Heritage</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 05. 甘將軍（甘鵬飛） -->
+          <div class="roster-card group perspective-1000 h-[460px] sm:h-[480px] cursor-pointer" data-category="generals">
+            <div class="flip-inner relative w-full h-full transform-style-3d transition-transform duration-700 rounded-2xl shadow-xl">
+              <!-- FRONT -->
+              <div class="flip-front absolute inset-0 w-full h-full backface-hidden bg-brand-surfaceCard rounded-2xl border border-brand-border p-6 sm:p-7 flex flex-col justify-between card-hover-glow transition">
+                <div>
+                  <div class="flex justify-between items-start mb-4">
+                    <div>
+                      <span class="inline-block px-3 py-1 rounded-md text-xs font-bold bg-[#e6a23c]/15 text-brand-goldLight border border-brand-gold/40">
+                        四大將軍・掌刑訊問
+                      </span>
+                      <h3 class="text-2xl sm:text-3xl font-serif font-black text-stone-100 mt-2">甘將軍</h3>
+                      <p class="text-xs sm:text-sm text-stone-400 mt-0.5">甘鵬飛 / 日巡將軍</p>
+                    </div>
+                    <span class="text-4xl sm:text-5xl font-display font-bold text-brand-goldDim/40">05</span>
+                  </div>
+
+                  <div class="space-y-3 mt-4 pt-4 border-t border-brand-border/60">
+                    <div>
+                      <span class="text-xs font-bold text-brand-goldLight uppercase tracking-wider block font-serif">【職責總述】</span>
+                      <p class="text-sm sm:text-base text-stone-300 mt-1 leading-relaxed">
+                        掌管日間巡行與查察陽界善惡，大堂審訊時負責掌管行刑訊問、整飭威儀，與柳將軍相輔相成。
+                      </p>
+                    </div>
+                    <div>
+                      <span class="text-xs font-bold text-stone-400 uppercase tracking-wider block font-serif">【象徵意義】</span>
+                      <p class="text-sm sm:text-stone-300 text-stone-300 mt-0.5">
+                        陰陽雙面・秉公執法・鐵面無私
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="pt-4 border-t border-brand-border flex items-center justify-between text-xs text-brand-goldLight/90 font-serif">
+                  <span class="flex items-center gap-1.5">
+                    <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+                    點擊查看面譜、法器與步法
+                  </span>
+                  <span class="w-7 h-7 rounded-full bg-brand-gold/10 border border-brand-gold/30 flex items-center justify-center">
+                    <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-brand-gold"></i>
+                  </span>
+                </div>
+              </div>
+
+              <!-- BACK -->
+              <div class="flip-back absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-brand-surface rounded-2xl border border-brand-gold/50 p-6 sm:p-7 flex flex-col justify-between shadow-2xl">
+                <div class="flex justify-between items-center pb-3 border-b border-brand-border/80">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-brand-gold"></span>
+                    <h4 class="font-serif text-lg font-bold text-stone-100">甘將軍・詳細典故</h4>
+                  </div>
+                  <span class="text-xs font-mono text-brand-goldLight/80">NO. 05</span>
+                </div>
+
+                <div class="space-y-3 text-xs sm:text-sm text-stone-300 leading-relaxed overflow-y-auto pr-1 my-3 custom-scrollbar flex-1">
+                  <p><strong class="text-brand-goldLight font-bold">【職司任務】</strong>掌管日間巡行與查察陽界善惡，大堂審訊時負責掌管行刑訊問、整飭威儀。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【臉譜特徵】</strong>黑紅對開之「陰陽臉」（或紅底黑紋面），象徵日審陽界、鐵面無私。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【執掌法器】</strong>手持「板批（戒棍）」與羽扇，拍擊地面發出震撼巨響。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【身段步法】</strong>身形端正開闊，行沉穩大步，與柳爺左右對峙互為犄角。</p>
+                </div>
+
+                <div class="pt-3 border-t border-brand-border flex items-center justify-between text-xs text-stone-400">
+                  <span class="text-brand-goldLight flex items-center gap-1 font-serif">
+                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                    點擊翻回正面
+                  </span>
+                  <span class="font-mono text-stone-500">Chiayi Heritage</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 06. 柳將軍（柳鈺） -->
+          <div class="roster-card group perspective-1000 h-[460px] sm:h-[480px] cursor-pointer" data-category="generals">
+            <div class="flip-inner relative w-full h-full transform-style-3d transition-transform duration-700 rounded-2xl shadow-xl">
+              <!-- FRONT -->
+              <div class="flip-front absolute inset-0 w-full h-full backface-hidden bg-brand-surfaceCard rounded-2xl border border-brand-border p-6 sm:p-7 flex flex-col justify-between card-hover-glow transition">
+                <div>
+                  <div class="flex justify-between items-start mb-4">
+                    <div>
+                      <span class="inline-block px-3 py-1 rounded-md text-xs font-bold bg-[#e6a23c]/15 text-brand-goldLight border border-brand-gold/40">
+                        四大將軍・掌刑訊問
+                      </span>
+                      <h3 class="text-2xl sm:text-3xl font-serif font-black text-stone-100 mt-2">柳將軍</h3>
+                      <p class="text-xs sm:text-sm text-stone-400 mt-0.5">柳鈺 / 夜巡將軍</p>
+                    </div>
+                    <span class="text-4xl sm:text-5xl font-display font-bold text-brand-goldDim/40">06</span>
+                  </div>
+
+                  <div class="space-y-3 mt-4 pt-4 border-t border-brand-border/60">
+                    <div>
+                      <span class="text-xs font-bold text-brand-goldLight uppercase tracking-wider block font-serif">【職責總述】</span>
+                      <p class="text-sm sm:text-base text-stone-300 mt-1 leading-relaxed">
+                        專司夜間巡狩與拘拿幽冥厲鬼，防範凶煞夜間作祟，專責審問行刑，氣度森嚴肅穆。
+                      </p>
+                    </div>
+                    <div>
+                      <span class="text-xs font-bold text-stone-400 uppercase tracking-wider block font-serif">【象徵意義】</span>
+                      <p class="text-sm sm:text-stone-300 text-stone-300 mt-0.5">
+                        夜巡震魔・鐵腕拷訊・幽冥辟易
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="pt-4 border-t border-brand-border flex items-center justify-between text-xs text-brand-goldLight/90 font-serif">
+                  <span class="flex items-center gap-1.5">
+                    <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+                    點擊查看面譜、法器與步法
+                  </span>
+                  <span class="w-7 h-7 rounded-full bg-brand-gold/10 border border-brand-gold/30 flex items-center justify-center">
+                    <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-brand-gold"></i>
+                  </span>
+                </div>
+              </div>
+
+              <!-- BACK -->
+              <div class="flip-back absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-brand-surface rounded-2xl border border-brand-gold/50 p-6 sm:p-7 flex flex-col justify-between shadow-2xl">
+                <div class="flex justify-between items-center pb-3 border-b border-brand-border/80">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-brand-gold"></span>
+                    <h4 class="font-serif text-lg font-bold text-stone-100">柳將軍・詳細典故</h4>
+                  </div>
+                  <span class="text-xs font-mono text-brand-goldLight/80">NO. 06</span>
+                </div>
+
+                <div class="space-y-3 text-xs sm:text-sm text-stone-300 leading-relaxed overflow-y-auto pr-1 my-3 custom-scrollbar flex-1">
+                  <p><strong class="text-brand-goldLight font-bold">【職司任務】</strong>專司夜間巡狩與拘拿幽冥厲鬼，防範凶煞夜間作祟，專責審問行刑。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【臉譜特徵】</strong>開「歪嘴章魚臉」或黑白凹臉，嘴歪眼斜、神態猙獰可怖，令惡鬼膽寒。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【執掌法器】</strong>手執「板批（戒棍）」與羽扇，揮舞時風聲凜冽。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【身段步法】</strong>身段偏低且扭轉幅度大，身法靈活刁鑽且武術張力十足，透出肅殺威嚴。</p>
+                </div>
+
+                <div class="pt-3 border-t border-brand-border flex items-center justify-between text-xs text-stone-400">
+                  <span class="text-brand-goldLight flex items-center gap-1 font-serif">
+                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                    點擊翻回正面
+                  </span>
+                  <span class="font-mono text-stone-500">Chiayi Heritage</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 07. 春大神（春生） -->
+          <div class="roster-card group perspective-1000 h-[460px] sm:h-[480px] cursor-pointer" data-category="seasons">
+            <div class="flip-inner relative w-full h-full transform-style-3d transition-transform duration-700 rounded-2xl shadow-xl">
+              <!-- FRONT -->
+              <div class="flip-front absolute inset-0 w-full h-full backface-hidden bg-brand-surfaceCard rounded-2xl border border-brand-border p-6 sm:p-7 flex flex-col justify-between card-hover-glow transition">
+                <div>
+                  <div class="flex justify-between items-start mb-4">
+                    <div>
+                      <span class="inline-block px-3 py-1 rounded-md text-xs font-bold bg-[#e6a23c]/15 text-brand-goldLight border border-brand-gold/40">
+                        四季大神・東方春令
+                      </span>
+                      <h3 class="text-2xl sm:text-3xl font-serif font-black text-stone-100 mt-2">春大神</h3>
+                      <p class="text-xs sm:text-sm text-stone-400 mt-0.5">春生 / 洪將軍</p>
+                    </div>
+                    <span class="text-4xl sm:text-5xl font-display font-bold text-brand-goldDim/40">07</span>
+                  </div>
+
+                  <div class="space-y-3 mt-4 pt-4 border-t border-brand-border/60">
+                    <div>
+                      <span class="text-xs font-bold text-brand-goldLight uppercase tracking-wider block font-serif">【職責總述】</span>
+                      <p class="text-sm sm:text-base text-stone-300 mt-1 leading-relaxed">
+                        著青袍，掌管東方與春季生機；大堂審訊時負責施以「火烙之刑」嚴懲惡徒，明正幽律。
+                      </p>
+                    </div>
+                    <div>
+                      <span class="text-xs font-bold text-stone-400 uppercase tracking-wider block font-serif">【象徵意義】</span>
+                      <p class="text-sm sm:text-stone-300 text-stone-300 mt-0.5">
+                        東方春生・火烙明刑・萬物生發
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="pt-4 border-t border-brand-border flex items-center justify-between text-xs text-brand-goldLight/90 font-serif">
+                  <span class="flex items-center gap-1.5">
+                    <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+                    點擊查看面譜、法器與步法
+                  </span>
+                  <span class="w-7 h-7 rounded-full bg-brand-gold/10 border border-brand-gold/30 flex items-center justify-center">
+                    <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-brand-gold"></i>
+                  </span>
+                </div>
+              </div>
+
+              <!-- BACK -->
+              <div class="flip-back absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-brand-surface rounded-2xl border border-brand-gold/50 p-6 sm:p-7 flex flex-col justify-between shadow-2xl">
+                <div class="flex justify-between items-center pb-3 border-b border-brand-border/80">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                    <h4 class="font-serif text-lg font-bold text-stone-100">春大神・詳細典故</h4>
+                  </div>
+                  <span class="text-xs font-mono text-emerald-400">NO. 07</span>
+                </div>
+
+                <div class="space-y-3 text-xs sm:text-sm text-stone-300 leading-relaxed overflow-y-auto pr-1 my-3 custom-scrollbar flex-1">
+                  <p><strong class="text-brand-goldLight font-bold">【職司任務】</strong>著青袍，掌管東方與春季生機；大堂審訊時負責施以「火烙之刑」嚴懲惡徒。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【臉譜特徵】</strong>開青面或紅面「蓮花臉」，色彩斑斕典雅，具萬物萌發之神聖美感。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【執掌法器】</strong>手提「火盆（烙刑器具）」與刑具擔，審核冥頑不靈的惡徒。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【身段步法】</strong>步法平穩深沉，鎮守東方陣位，與夏大神相互交錯走位。</p>
+                </div>
+
+                <div class="pt-3 border-t border-brand-border flex items-center justify-between text-xs text-stone-400">
+                  <span class="text-brand-goldLight flex items-center gap-1 font-serif">
+                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                    點擊翻回正面
+                  </span>
+                  <span class="font-mono text-stone-500">Chiayi Heritage</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 08. 夏大神（夏長） -->
+          <div class="roster-card group perspective-1000 h-[460px] sm:h-[480px] cursor-pointer" data-category="seasons">
+            <div class="flip-inner relative w-full h-full transform-style-3d transition-transform duration-700 rounded-2xl shadow-xl">
+              <!-- FRONT -->
+              <div class="flip-front absolute inset-0 w-full h-full backface-hidden bg-brand-surfaceCard rounded-2xl border border-brand-border p-6 sm:p-7 flex flex-col justify-between card-hover-glow transition">
+                <div>
+                  <div class="flex justify-between items-start mb-4">
+                    <div>
+                      <span class="inline-block px-3 py-1 rounded-md text-xs font-bold bg-[#e6a23c]/15 text-brand-goldLight border border-brand-gold/40">
+                        四季大神・南方夏令
+                      </span>
+                      <h3 class="text-2xl sm:text-3xl font-serif font-black text-stone-100 mt-2">夏大神</h3>
+                      <p class="text-xs sm:text-sm text-stone-400 mt-0.5">夏長 / 曹將軍</p>
+                    </div>
+                    <span class="text-4xl sm:text-5xl font-display font-bold text-brand-goldDim/40">08</span>
+                  </div>
+
+                  <div class="space-y-3 mt-4 pt-4 border-t border-brand-border/60">
+                    <div>
+                      <span class="text-xs font-bold text-brand-goldLight uppercase tracking-wider block font-serif">【職責總述】</span>
+                      <p class="text-sm sm:text-base text-stone-300 mt-1 leading-relaxed">
+                        著紅袍，掌管南方與夏季烈陽；當受審罪徒受烙刑昏厥時，負責以冷水或符藥澆淋潑醒復審。
+                      </p>
+                    </div>
+                    <div>
+                      <span class="text-xs font-bold text-stone-400 uppercase tracking-wider block font-serif">【象徵意義】</span>
+                      <p class="text-sm sm:text-stone-300 text-stone-300 mt-0.5">
+                        南方夏長・銅鼎復審・烈陽熾盛
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="pt-4 border-t border-brand-border flex items-center justify-between text-xs text-brand-goldLight/90 font-serif">
+                  <span class="flex items-center gap-1.5">
+                    <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+                    點擊查看面譜、法器與步法
+                  </span>
+                  <span class="w-7 h-7 rounded-full bg-brand-gold/10 border border-brand-gold/30 flex items-center justify-center">
+                    <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-brand-gold"></i>
+                  </span>
+                </div>
+              </div>
+
+              <!-- BACK -->
+              <div class="flip-back absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-brand-surface rounded-2xl border border-brand-gold/50 p-6 sm:p-7 flex flex-col justify-between shadow-2xl">
+                <div class="flex justify-between items-center pb-3 border-b border-brand-border/80">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span>
+                    <h4 class="font-serif text-lg font-bold text-stone-100">夏大神・詳細典故</h4>
+                  </div>
+                  <span class="text-xs font-mono text-red-400">NO. 08</span>
+                </div>
+
+                <div class="space-y-3 text-xs sm:text-sm text-stone-300 leading-relaxed overflow-y-auto pr-1 my-3 custom-scrollbar flex-1">
+                  <p><strong class="text-brand-goldLight font-bold">【職司任務】</strong>著紅袍，掌管南方與夏季烈陽；當受審罪徒受烙刑昏厥時，負責澆水潑醒復審。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【臉譜特徵】</strong>開紅面「葫蘆臉」，威風堂堂，神采飛揚，象徵盛夏陽剛之威。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【執掌法器】</strong>手捧「銅鼎（火鼎或潑醒器具）」，以冷水或符藥澆淋昏迷罪魂。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【身段步法】</strong>身法剛猛，步伐躍動有力，走四角八卦陣南位，氣勢如虹。</p>
+                </div>
+
+                <div class="pt-3 border-t border-brand-border flex items-center justify-between text-xs text-stone-400">
+                  <span class="text-brand-goldLight flex items-center gap-1 font-serif">
+                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                    點擊翻回正面
+                  </span>
+                  <span class="font-mono text-stone-500">Chiayi Heritage</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 09. 秋大神（秋收） -->
+          <div class="roster-card group perspective-1000 h-[460px] sm:h-[480px] cursor-pointer" data-category="seasons">
+            <div class="flip-inner relative w-full h-full transform-style-3d transition-transform duration-700 rounded-2xl shadow-xl">
+              <!-- FRONT -->
+              <div class="flip-front absolute inset-0 w-full h-full backface-hidden bg-brand-surfaceCard rounded-2xl border border-brand-border p-6 sm:p-7 flex flex-col justify-between card-hover-glow transition">
+                <div>
+                  <div class="flex justify-between items-start mb-4">
+                    <div>
+                      <span class="inline-block px-3 py-1 rounded-md text-xs font-bold bg-[#e6a23c]/15 text-brand-goldLight border border-brand-gold/40">
+                        四季大神・西方秋令
+                      </span>
+                      <h3 class="text-2xl sm:text-3xl font-serif font-black text-stone-100 mt-2">秋大神</h3>
+                      <p class="text-xs sm:text-sm text-stone-400 mt-0.5">秋收 / 劉將軍</p>
+                    </div>
+                    <span class="text-4xl sm:text-5xl font-display font-bold text-brand-goldDim/40">09</span>
+                  </div>
+
+                  <div class="space-y-3 mt-4 pt-4 border-t border-brand-border/60">
+                    <div>
+                      <span class="text-xs font-bold text-brand-goldLight uppercase tracking-wider block font-serif">【職責總述】</span>
+                      <p class="text-sm sm:text-base text-stone-300 mt-1 leading-relaxed">
+                        著白袍，掌管西方秋令；施加「敲骨刑（竹板拷訊）」，取天地肅殺之律法嚴威，迫使罪魂吐實。
+                      </p>
+                    </div>
+                    <div>
+                      <span class="text-xs font-bold text-stone-400 uppercase tracking-wider block font-serif">【象徵意義】</span>
+                      <p class="text-sm sm:text-stone-300 text-stone-300 mt-0.5">
+                        西方秋收・銅錘肅殺・無可遁形
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="pt-4 border-t border-brand-border flex items-center justify-between text-xs text-brand-goldLight/90 font-serif">
+                  <span class="flex items-center gap-1.5">
+                    <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+                    點擊查看面譜、法器與步法
+                  </span>
+                  <span class="w-7 h-7 rounded-full bg-brand-gold/10 border border-brand-gold/30 flex items-center justify-center">
+                    <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-brand-gold"></i>
+                  </span>
+                </div>
+              </div>
+
+              <!-- BACK -->
+              <div class="flip-back absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-brand-surface rounded-2xl border border-brand-gold/50 p-6 sm:p-7 flex flex-col justify-between shadow-2xl">
+                <div class="flex justify-between items-center pb-3 border-b border-brand-border/80">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                    <h4 class="font-serif text-lg font-bold text-stone-100">秋大神・詳細典故</h4>
+                  </div>
+                  <span class="text-xs font-mono text-amber-300">NO. 09</span>
+                </div>
+
+                <div class="space-y-3 text-xs sm:text-sm text-stone-300 leading-relaxed overflow-y-auto pr-1 my-3 custom-scrollbar flex-1">
+                  <p><strong class="text-brand-goldLight font-bold">【職司任務】</strong>著白袍，掌管西方秋令；施加「敲骨刑（竹板拷訊）」，取天地肅殺之律法嚴威。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【臉譜特徵】</strong>開金黃花臉或白底「鳥面（鵬鳥啄紋）」，雙目如鷹隼般銳利逼人。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【執掌法器】</strong>手持「銅錘」與蛇竹（竹節刑具），使狡黠罪犯不敢隱瞞欺妄。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【身段步法】</strong>起落迅捷俐落，眼神專注鎖定前方，走八卦四角之西方陣位。</p>
+                </div>
+
+                <div class="pt-3 border-t border-brand-border flex items-center justify-between text-xs text-stone-400">
+                  <span class="text-brand-goldLight flex items-center gap-1 font-serif">
+                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                    點擊翻回正面
+                  </span>
+                  <span class="font-mono text-stone-500">Chiayi Heritage</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 10. 冬大神（冬藏） -->
+          <div class="roster-card group perspective-1000 h-[460px] sm:h-[480px] cursor-pointer" data-category="seasons">
+            <div class="flip-inner relative w-full h-full transform-style-3d transition-transform duration-700 rounded-2xl shadow-xl">
+              <!-- FRONT -->
+              <div class="flip-front absolute inset-0 w-full h-full backface-hidden bg-brand-surfaceCard rounded-2xl border border-brand-border p-6 sm:p-7 flex flex-col justify-between card-hover-glow transition">
+                <div>
+                  <div class="flex justify-between items-start mb-4">
+                    <div>
+                      <span class="inline-block px-3 py-1 rounded-md text-xs font-bold bg-[#e6a23c]/15 text-brand-goldLight border border-brand-gold/40">
+                        四季大神・北方冬令
+                      </span>
+                      <h3 class="text-2xl sm:text-3xl font-serif font-black text-stone-100 mt-2">冬大神</h3>
+                      <p class="text-xs sm:text-sm text-stone-400 mt-0.5">冬藏 / 何將軍</p>
+                    </div>
+                    <span class="text-4xl sm:text-5xl font-display font-bold text-brand-goldDim/40">10</span>
+                  </div>
+
+                  <div class="space-y-3 mt-4 pt-4 border-t border-brand-border/60">
+                    <div>
+                      <span class="text-xs font-bold text-brand-goldLight uppercase tracking-wider block font-serif">【職責總述】</span>
+                      <p class="text-sm sm:text-base text-stone-300 mt-1 leading-relaxed">
+                        著黑袍，掌管北方與冬季寒凍；在審訊末段以「毒蛇威嚇之刑」逼令重犯俯首認罪。
+                      </p>
+                    </div>
+                    <div>
+                      <span class="text-xs font-bold text-stone-400 uppercase tracking-wider block font-serif">【象徵意義】</span>
+                      <p class="text-sm sm:text-stone-300 text-stone-300 mt-0.5">
+                        北方冬藏・玄冥威懾・終局裁判
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="pt-4 border-t border-brand-border flex items-center justify-between text-xs text-brand-goldLight/90 font-serif">
+                  <span class="flex items-center gap-1.5">
+                    <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+                    點擊查看面譜、法器與步法
+                  </span>
+                  <span class="w-7 h-7 rounded-full bg-brand-gold/10 border border-brand-gold/30 flex items-center justify-center">
+                    <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-brand-gold"></i>
+                  </span>
+                </div>
+              </div>
+
+              <!-- BACK -->
+              <div class="flip-back absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-brand-surface rounded-2xl border border-brand-gold/50 p-6 sm:p-7 flex flex-col justify-between shadow-2xl">
+                <div class="flex justify-between items-center pb-3 border-b border-brand-border/80">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-sky-500"></span>
+                    <h4 class="font-serif text-lg font-bold text-stone-100">冬大神・詳細典故</h4>
+                  </div>
+                  <span class="text-xs font-mono text-sky-400">NO. 10</span>
+                </div>
+
+                <div class="space-y-3 text-xs sm:text-sm text-stone-300 leading-relaxed overflow-y-auto pr-1 my-3 custom-scrollbar flex-1">
+                  <p><strong class="text-brand-goldLight font-bold">【職司任務】</strong>著黑袍，掌管北方與冬季寒凍；在審訊末段以「毒蛇威嚇之刑」逼令重犯招供。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【臉譜特徵】</strong>開黑面「虎紋臉」或金瓜紋臉，線條粗獷霸氣，神態極為兇悍威武。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【執掌法器】</strong>手拿「巨蟒（毒蛇）」與鎖鏈，以玄冥寒氣與毒物懾服冥頑惡鬼。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【身段步法】</strong>腳步沉穩凝重，蹲襠坐馬沉著壓陣，演繹陰陽互化四時之末。</p>
+                </div>
+
+                <div class="pt-3 border-t border-brand-border flex items-center justify-between text-xs text-stone-400">
+                  <span class="text-brand-goldLight flex items-center gap-1 font-serif">
+                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                    點擊翻回正面
+                  </span>
+                  <span class="font-mono text-stone-500">Chiayi Heritage</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 11. 文判官 -->
+          <div class="roster-card group perspective-1000 h-[460px] sm:h-[480px] cursor-pointer" data-category="judges">
+            <div class="flip-inner relative w-full h-full transform-style-3d transition-transform duration-700 rounded-2xl shadow-xl">
+              <!-- FRONT -->
+              <div class="flip-front absolute inset-0 w-full h-full backface-hidden bg-brand-surfaceCard rounded-2xl border border-brand-border p-6 sm:p-7 flex flex-col justify-between card-hover-glow transition">
+                <div>
+                  <div class="flex justify-between items-start mb-4">
+                    <div>
+                      <span class="inline-block px-3 py-1 rounded-md text-xs font-bold bg-brand-crimson/25 text-red-400 border border-brand-crimson/50">
+                        最高裁判・司法樞紐
+                      </span>
+                      <h3 class="text-2xl sm:text-3xl font-serif font-black text-stone-100 mt-2">文判官</h3>
+                      <p class="text-xs sm:text-sm text-stone-400 mt-0.5">主判善惡・生死簿主掌官</p>
+                    </div>
+                    <span class="text-4xl sm:text-5xl font-display font-bold text-brand-crimson/40">11</span>
+                  </div>
+
+                  <div class="space-y-3 mt-4 pt-4 border-t border-brand-border/60">
+                    <div>
+                      <span class="text-xs font-bold text-brand-goldLight uppercase tracking-wider block font-serif">【職責總述】</span>
+                      <p class="text-sm sm:text-base text-stone-300 mt-1 leading-relaxed">
+                        位列主神身側，職掌陽世與陰間之功過福禍，依律翻查並裁定魂魄善惡發落，掌司陰陽鐵律。
+                      </p>
+                    </div>
+                    <div>
+                      <span class="text-xs font-bold text-stone-400 uppercase tracking-wider block font-serif">【象徵意義】</span>
+                      <p class="text-sm sm:text-stone-300 text-stone-300 mt-0.5">
+                        硃筆生死・功過明鏡・報應不爽
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="pt-4 border-t border-brand-border flex items-center justify-between text-xs text-brand-goldLight/90 font-serif">
+                  <span class="flex items-center gap-1.5">
+                    <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+                    點擊查看面譜、法器與步法
+                  </span>
+                  <span class="w-7 h-7 rounded-full bg-brand-gold/10 border border-brand-gold/30 flex items-center justify-center">
+                    <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-brand-gold"></i>
+                  </span>
+                </div>
+              </div>
+
+              <!-- BACK -->
+              <div class="flip-back absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-brand-surface rounded-2xl border border-brand-gold/50 p-6 sm:p-7 flex flex-col justify-between shadow-2xl">
+                <div class="flex justify-between items-center pb-3 border-b border-brand-border/80">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-brand-crimson"></span>
+                    <h4 class="font-serif text-lg font-bold text-stone-100">文判官・詳細典故</h4>
+                  </div>
+                  <span class="text-xs font-mono text-red-400">NO. 11</span>
+                </div>
+
+                <div class="space-y-3 text-xs sm:text-sm text-stone-300 leading-relaxed overflow-y-auto pr-1 my-3 custom-scrollbar flex-1">
+                  <p><strong class="text-brand-goldLight font-bold">【職司任務】</strong>位列主神身側，職掌陽世與陰間之功過福禍，依律翻查並裁定魂魄善惡發落。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【臉譜特徵】</strong>溫文儒雅的面具或莊嚴白臉赤髯，頭戴文官官帽，身穿大紅文官朝服。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【執掌法器】</strong>右手執「硃砂毛筆」，左手捧「生死簿（善惡簿）」，硃筆一點定善惡。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【身段步法】</strong>行步方正端莊，文官端坐身段，居於陣容中後方樞紐，體現至高法理。</p>
+                </div>
+
+                <div class="pt-3 border-t border-brand-border flex items-center justify-between text-xs text-stone-400">
+                  <span class="text-brand-goldLight flex items-center gap-1 font-serif">
+                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                    點擊翻回正面
+                  </span>
+                  <span class="font-mono text-stone-500">Chiayi Heritage</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 12. 武判官 -->
+          <div class="roster-card group perspective-1000 h-[460px] sm:h-[480px] cursor-pointer" data-category="judges">
+            <div class="flip-inner relative w-full h-full transform-style-3d transition-transform duration-700 rounded-2xl shadow-xl">
+              <!-- FRONT -->
+              <div class="flip-front absolute inset-0 w-full h-full backface-hidden bg-brand-surfaceCard rounded-2xl border border-brand-border p-6 sm:p-7 flex flex-col justify-between card-hover-glow transition">
+                <div>
+                  <div class="flex justify-between items-start mb-4">
+                    <div>
+                      <span class="inline-block px-3 py-1 rounded-md text-xs font-bold bg-brand-crimson/25 text-red-400 border border-brand-crimson/50">
+                        最高裁判・行刑總管
+                      </span>
+                      <h3 class="text-2xl sm:text-3xl font-serif font-black text-stone-100 mt-2">武判官</h3>
+                      <p class="text-xs sm:text-sm text-stone-400 mt-0.5">督導行刑・押解總管</p>
+                    </div>
+                    <span class="text-4xl sm:text-5xl font-display font-bold text-brand-crimson/40">12</span>
+                  </div>
+
+                  <div class="space-y-3 mt-4 pt-4 border-t border-brand-border/60">
+                    <div>
+                      <span class="text-xs font-bold text-brand-goldLight uppercase tracking-wider block font-serif">【職責總述】</span>
+                      <p class="text-sm sm:text-base text-stone-300 mt-1 leading-relaxed">
+                        負責押解冥頑重刑犯魂魄，並在文判裁決確定後，嚴厲督促差役行刑或押入阿鼻地獄。
+                      </p>
+                    </div>
+                    <div>
+                      <span class="text-xs font-bold text-stone-400 uppercase tracking-wider block font-serif">【象徵意義】</span>
+                      <p class="text-sm sm:text-stone-300 text-stone-300 mt-0.5">
+                        金鞭裂地・執法嚴明・鬼魅伏誅
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="pt-4 border-t border-brand-border flex items-center justify-between text-xs text-brand-goldLight/90 font-serif">
+                  <span class="flex items-center gap-1.5">
+                    <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+                    點擊查看面譜、法器與步法
+                  </span>
+                  <span class="w-7 h-7 rounded-full bg-brand-gold/10 border border-brand-gold/30 flex items-center justify-center">
+                    <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-brand-gold"></i>
+                  </span>
+                </div>
+              </div>
+
+              <!-- BACK -->
+              <div class="flip-back absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-brand-surface rounded-2xl border border-brand-gold/50 p-6 sm:p-7 flex flex-col justify-between shadow-2xl">
+                <div class="flex justify-between items-center pb-3 border-b border-brand-border/80">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-brand-crimson"></span>
+                    <h4 class="font-serif text-lg font-bold text-stone-100">武判官・詳細典故</h4>
+                  </div>
+                  <span class="text-xs font-mono text-red-400">NO. 12</span>
+                </div>
+
+                <div class="space-y-3 text-xs sm:text-sm text-stone-300 leading-relaxed overflow-y-auto pr-1 my-3 custom-scrollbar flex-1">
+                  <p><strong class="text-brand-goldLight font-bold">【職司任務】</strong>負責押解冥頑重刑犯魂魄，並在文判判決確定後，嚴厲督促差役行刑或斬立決。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【臉譜特徵】</strong>金臉或怒目朱面、虯髯怒張，威嚴肅穆，全副金甲戰袍。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【執掌法器】</strong>手執「九節雙鞭」或金錘、鐵鐧，專責震懾鎮壓頑抗幽靈。</p>
+                  <p><strong class="text-brand-goldLight font-bold">【身段步法】</strong>步履威武剛猛，開闔間有萬鈞之勢，鎮守家將後方防線，維持大堂秩序肅整。</p>
+                </div>
+
+                <div class="pt-3 border-t border-brand-border flex items-center justify-between text-xs text-stone-400">
+                  <span class="text-brand-goldLight flex items-center gap-1 font-serif">
+                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                    點擊翻回正面
+                  </span>
+                  <span class="font-mono text-stone-500">Chiayi Heritage</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 4. Face Makeup & Taboos ================= -->
+    <section id="face-taboo" class="py-24 px-4 sm:px-6 lg:px-8 border-t border-brand-border">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <div class="inline-flex items-center gap-2 text-brand-goldLight text-xs font-bold tracking-widest uppercase mb-3">
+            <i data-lucide="palette" class="w-4 h-4"></i>
+            <span>畫臉通神・嚴肅敬畏</span>
+          </div>
+          <h2 class="font-serif text-3xl sm:text-5xl font-black text-stone-100 tracking-wider">
+            開臉美學・<span class="text-gold-gradient">儀軌禁忌</span>
+          </h2>
+          <p class="mt-4 text-stone-400 text-base sm:text-lg leading-relaxed">
+            家將未開臉是凡人，一旦面師以油彩「開臉」並請神附身、含下「開口草」之後，即具有神格，必須遵循極為森嚴的古制戒律。
+          </p>
+          <p class="text-xs sm:text-sm text-brand-goldLight/80 mt-2 font-serif flex items-center justify-center gap-1.5">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+            點擊各步驟或戒律項目卡片，即可翻閱詳細說明
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <!-- 區塊 1：畫臉的方法 -->
+          <div class="bg-brand-surfaceCard rounded-2xl p-6 sm:p-8 border border-brand-border flex flex-col justify-between shadow-xl">
+            <div>
+              <div class="flex items-center justify-between mb-6 pb-4 border-b border-brand-border/60">
+                <h3 class="font-serif text-2xl font-bold text-brand-goldLight flex items-center gap-2">
+                  <i data-lucide="brush" class="w-6 h-6"></i>
+                  畫臉的方法
+                </h3>
+                <span class="text-xs font-serif text-stone-400 flex items-center gap-1">
+                  <i data-lucide="rotate-cw" class="w-3.5 h-3.5 text-brand-goldLight"></i>
+                  點擊步驟翻頁
+                </span>
+              </div>
+
+              <!-- 四大步驟 2x2 方形翻牌網格 -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- 第一步 -->
+                <div class="sub-flip-card group perspective-1000 min-h-[140px] cursor-pointer">
+                  <div class="sub-flip-inner relative w-full h-full transform-style-3d transition-transform duration-500 rounded-xl">
+                    <!-- FRONT: 僅標題與標籤 -->
+                    <div class="sub-flip-front absolute inset-0 w-full h-full backface-hidden bg-black/40 border border-brand-border/60 rounded-xl p-5 flex flex-col justify-between group-hover:border-brand-gold/60 transition">
+                      <div class="flex items-center justify-between">
+                        <span class="w-8 h-8 rounded-lg bg-stone-300/15 border border-stone-400/30 flex items-center justify-center font-mono text-xs font-bold text-stone-200">
+                          01
+                        </span>
+                        <i data-lucide="rotate-cw" class="w-4 h-4 text-stone-500 group-hover:text-brand-goldLight transition"></i>
+                      </div>
+                      <div>
+                        <span class="text-[10px] text-brand-goldLight font-mono uppercase tracking-wider block">STEP 01</span>
+                        <h4 class="font-serif font-bold text-stone-100 text-sm sm:text-base leading-snug mt-1">第一步：淨身洗面與抹底</h4>
+                      </div>
+                    </div>
+                    <!-- BACK: 詳細細節 -->
+                    <div class="sub-flip-back absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-brand-surface border border-brand-gold/60 rounded-xl p-4 flex flex-col justify-between text-xs sm:text-sm text-stone-300 leading-relaxed shadow-lg">
+                      <p>
+                        <strong class="text-brand-goldLight font-bold block mb-1">【工序細節】</strong>將員開臉前需淨水潔面、靜心默禱。面師依將爺神格，以白粉或特定底彩打底，勾繪面部基本輪廓。
+                      </p>
+                      <span class="text-[11px] text-brand-goldLight flex items-center gap-1 font-serif mt-1">
+                        <i data-lucide="rotate-ccw" class="w-3 h-3"></i>
+                        點擊翻回正面
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 第二步 -->
+                <div class="sub-flip-card group perspective-1000 min-h-[140px] cursor-pointer">
+                  <div class="sub-flip-inner relative w-full h-full transform-style-3d transition-transform duration-500 rounded-xl">
+                    <!-- FRONT -->
+                    <div class="sub-flip-front absolute inset-0 w-full h-full backface-hidden bg-black/40 border border-brand-border/60 rounded-xl p-5 flex flex-col justify-between group-hover:border-brand-gold/60 transition">
+                      <div class="flex items-center justify-between">
+                        <span class="w-8 h-8 rounded-lg bg-stone-800 border border-stone-600 flex items-center justify-center font-mono text-xs font-bold text-stone-300">
+                          02
+                        </span>
+                        <i data-lucide="rotate-cw" class="w-4 h-4 text-stone-500 group-hover:text-brand-goldLight transition"></i>
+                      </div>
+                      <div>
+                        <span class="text-[10px] text-brand-goldLight font-mono uppercase tracking-wider block">STEP 02</span>
+                        <h4 class="font-serif font-bold text-stone-100 text-sm sm:text-base leading-snug mt-1">第二步：勾勒主形與神情定型</h4>
+                      </div>
+                    </div>
+                    <!-- BACK -->
+                    <div class="sub-flip-back absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-brand-surface border border-brand-gold/60 rounded-xl p-4 flex flex-col justify-between text-xs sm:text-sm text-stone-300 leading-relaxed shadow-lg">
+                      <p>
+                        <strong class="text-brand-goldLight font-bold block mb-1">【工序細節】</strong>以黑墨線條精準勾出眉眼位置、嘴角獠牙與五官架構，決定凶煞威嚴、清秀儒雅或歪嘴怒目的神態意象。
+                      </p>
+                      <span class="text-[11px] text-brand-goldLight flex items-center gap-1 font-serif mt-1">
+                        <i data-lucide="rotate-ccw" class="w-3 h-3"></i>
+                        點擊翻回正面
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 第三步 -->
+                <div class="sub-flip-card group perspective-1000 min-h-[140px] cursor-pointer">
+                  <div class="sub-flip-inner relative w-full h-full transform-style-3d transition-transform duration-500 rounded-xl">
+                    <!-- FRONT -->
+                    <div class="sub-flip-front absolute inset-0 w-full h-full backface-hidden bg-black/40 border border-brand-border/60 rounded-xl p-5 flex flex-col justify-between group-hover:border-brand-gold/60 transition">
+                      <div class="flex items-center justify-between">
+                        <span class="w-8 h-8 rounded-lg bg-brand-gold/20 border border-brand-gold/40 flex items-center justify-center font-mono text-xs font-bold text-brand-goldLight">
+                          03
+                        </span>
+                        <i data-lucide="rotate-cw" class="w-4 h-4 text-stone-500 group-hover:text-brand-goldLight transition"></i>
+                      </div>
+                      <div>
+                        <span class="text-[10px] text-brand-goldLight font-mono uppercase tracking-wider block">STEP 03</span>
+                        <h4 class="font-serif font-bold text-stone-100 text-sm sm:text-base leading-snug mt-1">第三步：五行填彩與圖騰填花</h4>
+                      </div>
+                    </div>
+                    <!-- BACK -->
+                    <div class="sub-flip-back absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-brand-surface border border-brand-gold/60 rounded-xl p-4 flex flex-col justify-between text-xs sm:text-sm text-stone-300 leading-relaxed shadow-lg">
+                      <p>
+                        <strong class="text-brand-goldLight font-bold block mb-1">【工序細節】</strong>按五行陰陽填入紅、黑、青、白、金等油彩，並於額頂或雙頰繪入蝙蝠、火燄、蓮花、虎紋或金翅鳥羽等神聖紋樣。
+                      </p>
+                      <span class="text-[11px] text-brand-goldLight flex items-center gap-1 font-serif mt-1">
+                        <i data-lucide="rotate-ccw" class="w-3 h-3"></i>
+                        點擊翻回正面
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 第四步 -->
+                <div class="sub-flip-card group perspective-1000 min-h-[140px] cursor-pointer">
+                  <div class="sub-flip-inner relative w-full h-full transform-style-3d transition-transform duration-500 rounded-xl">
+                    <!-- FRONT -->
+                    <div class="sub-flip-front absolute inset-0 w-full h-full backface-hidden bg-black/40 border border-brand-border/60 rounded-xl p-5 flex flex-col justify-between group-hover:border-brand-gold/60 transition">
+                      <div class="flex items-center justify-between">
+                        <span class="w-8 h-8 rounded-lg bg-red-600/20 border border-red-500/40 flex items-center justify-center font-mono text-xs font-bold text-red-300">
+                          04
+                        </span>
+                        <i data-lucide="rotate-cw" class="w-4 h-4 text-stone-500 group-hover:text-brand-goldLight transition"></i>
+                      </div>
+                      <div>
+                        <span class="text-[10px] text-brand-goldLight font-mono uppercase tracking-wider block">STEP 04</span>
+                        <h4 class="font-serif font-bold text-stone-100 text-sm sm:text-base leading-snug mt-1">第四步：催神點硃與開靈戴冠</h4>
+                      </div>
+                    </div>
+                    <!-- BACK -->
+                    <div class="sub-flip-back absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-brand-surface border border-brand-gold/60 rounded-xl p-4 flex flex-col justify-between text-xs sm:text-sm text-stone-300 leading-relaxed shadow-lg">
+                      <p>
+                        <strong class="text-brand-goldLight font-bold block mb-1">【工序細節】</strong>最後以硃砂於印堂點硃開靈，將員含入開口草斷絕凡語，戴頂雉尾神冠與戰甲盔帽，正式完備神格顯化。
+                      </p>
+                      <span class="text-[11px] text-brand-goldLight flex items-center gap-1 font-serif mt-1">
+                        <i data-lucide="rotate-ccw" class="w-3 h-3"></i>
+                        點擊翻回正面
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-brand-border/60 flex items-center justify-between text-xs text-stone-400 font-serif">
+              <span>面師匠藝・以意成神</span>
+              <span class="text-brand-goldLight font-mono">Tradition Art</span>
+            </div>
+          </div>
+
+          <!-- 區塊 2：不可觸犯之神聖戒律 -->
+          <div class="bg-brand-surfaceCard rounded-2xl p-6 sm:p-8 border border-brand-border flex flex-col justify-between shadow-xl">
+            <div>
+              <div class="flex items-center justify-between mb-6 pb-4 border-b border-brand-border/60">
+                <h3 class="font-serif text-2xl font-bold text-red-400 flex items-center gap-2">
+                  <i data-lucide="alert-octagon" class="w-6 h-6"></i>
+                  不可觸犯之神聖戒律
+                </h3>
+                <span class="text-xs font-serif text-stone-400 flex items-center gap-1">
+                  <i data-lucide="rotate-cw" class="w-3.5 h-3.5 text-red-400"></i>
+                  點擊戒律翻頁
+                </span>
+              </div>
+
+              <!-- 四大戒律翻牌網格 -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- 戒律 1: 禁聲絕言 -->
+                <div class="sub-flip-card group perspective-1000 min-h-[140px] cursor-pointer">
+                  <div class="sub-flip-inner relative w-full h-full transform-style-3d transition-transform duration-500 rounded-xl">
+                    <!-- FRONT: 僅標題 -->
+                    <div class="sub-flip-front absolute inset-0 w-full h-full backface-hidden bg-black/40 border border-brand-border/60 rounded-xl p-5 flex flex-col justify-between group-hover:border-red-500/60 transition">
+                      <div class="flex items-center justify-between">
+                        <span class="w-8 h-8 rounded-lg bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-400">
+                          <i data-lucide="volume-x" class="w-4 h-4"></i>
+                        </span>
+                        <i data-lucide="rotate-cw" class="w-4 h-4 text-stone-500 group-hover:text-red-400 transition"></i>
+                      </div>
+                      <div>
+                        <h4 class="text-brand-goldLight font-bold text-base sm:text-lg font-serif">禁聲絕言</h4>
+                        <span class="text-[11px] text-stone-500 block mt-0.5">點擊觀看規範</span>
+                      </div>
+                    </div>
+                    <!-- BACK: 詳細細節 -->
+                    <div class="sub-flip-back absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-brand-surface border border-red-500/60 rounded-xl p-4 flex flex-col justify-between text-xs sm:text-sm text-stone-300 leading-relaxed shadow-lg">
+                      <p>
+                        開臉後含「開口草」象徵由神做主，不得開口交談、嬉笑謾罵，違者遭神罰。
+                      </p>
+                      <span class="text-[11px] text-red-400 flex items-center gap-1 font-serif mt-2">
+                        <i data-lucide="rotate-ccw" class="w-3 h-3"></i>
+                        點擊翻回正面
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 戒律 2: 不得穿堂越陣 -->
+                <div class="sub-flip-card group perspective-1000 min-h-[140px] cursor-pointer">
+                  <div class="sub-flip-inner relative w-full h-full transform-style-3d transition-transform duration-500 rounded-xl">
+                    <!-- FRONT -->
+                    <div class="sub-flip-front absolute inset-0 w-full h-full backface-hidden bg-black/40 border border-brand-border/60 rounded-xl p-5 flex flex-col justify-between group-hover:border-red-500/60 transition">
+                      <div class="flex items-center justify-between">
+                        <span class="w-8 h-8 rounded-lg bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-400">
+                          <i data-lucide="shield-alert" class="w-4 h-4"></i>
+                        </span>
+                        <i data-lucide="rotate-cw" class="w-4 h-4 text-stone-500 group-hover:text-red-400 transition"></i>
+                      </div>
+                      <div>
+                        <h4 class="text-brand-goldLight font-bold text-base sm:text-lg font-serif">不得穿堂越陣</h4>
+                        <span class="text-[11px] text-stone-500 block mt-0.5">點擊觀看規範</span>
+                      </div>
+                    </div>
+                    <!-- BACK -->
+                    <div class="sub-flip-back absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-brand-surface border border-red-500/60 rounded-xl p-4 flex flex-col justify-between text-xs sm:text-sm text-stone-300 leading-relaxed shadow-lg">
+                      <p>
+                        行進間閒雜人等不可由將員之間穿過或衝撞陣法，會破壞神聖結界與靈力。
+                      </p>
+                      <span class="text-[11px] text-red-400 flex items-center gap-1 font-serif mt-2">
+                        <i data-lucide="rotate-ccw" class="w-3 h-3"></i>
+                        點擊翻回正面
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 戒律 3: 開光坐禁 -->
+                <div class="sub-flip-card group perspective-1000 min-h-[140px] cursor-pointer">
+                  <div class="sub-flip-inner relative w-full h-full transform-style-3d transition-transform duration-500 rounded-xl">
+                    <!-- FRONT -->
+                    <div class="sub-flip-front absolute inset-0 w-full h-full backface-hidden bg-black/40 border border-brand-border/60 rounded-xl p-5 flex flex-col justify-between group-hover:border-red-500/60 transition">
+                      <div class="flex items-center justify-between">
+                        <span class="w-8 h-8 rounded-lg bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-400">
+                          <i data-lucide="flame" class="w-4 h-4"></i>
+                        </span>
+                        <i data-lucide="rotate-cw" class="w-4 h-4 text-stone-500 group-hover:text-red-400 transition"></i>
+                      </div>
+                      <div>
+                        <h4 class="text-brand-goldLight font-bold text-base sm:text-lg font-serif">開光坐禁</h4>
+                        <span class="text-[11px] text-stone-500 block mt-0.5">點擊觀看規範</span>
+                      </div>
+                    </div>
+                    <!-- BACK -->
+                    <div class="sub-flip-back absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-brand-surface border border-red-500/60 rounded-xl p-4 flex flex-col justify-between text-xs sm:text-sm text-stone-300 leading-relaxed shadow-lg">
+                      <p>
+                        出軍前需於廟內齋戒坐禁數日，淨身斷慾、洗滌俗世心智以迎神附靈。
+                      </p>
+                      <span class="text-[11px] text-red-400 flex items-center gap-1 font-serif mt-2">
+                        <i data-lucide="rotate-ccw" class="w-3 h-3"></i>
+                        點擊翻回正面
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 戒律 4: 避諱穢物血光 -->
+                <div class="sub-flip-card group perspective-1000 min-h-[140px] cursor-pointer">
+                  <div class="sub-flip-inner relative w-full h-full transform-style-3d transition-transform duration-500 rounded-xl">
+                    <!-- FRONT -->
+                    <div class="sub-flip-front absolute inset-0 w-full h-full backface-hidden bg-black/40 border border-brand-border/60 rounded-xl p-5 flex flex-col justify-between group-hover:border-red-500/60 transition">
+                      <div class="flex items-center justify-between">
+                        <span class="w-8 h-8 rounded-lg bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-400">
+                          <i data-lucide="eye-off" class="w-4 h-4"></i>
+                        </span>
+                        <i data-lucide="rotate-cw" class="w-4 h-4 text-stone-500 group-hover:text-red-400 transition"></i>
+                      </div>
+                      <div>
+                        <h4 class="text-brand-goldLight font-bold text-base sm:text-lg font-serif">避諱穢物血光</h4>
+                        <span class="text-[11px] text-stone-500 block mt-0.5">點擊觀看規範</span>
+                      </div>
+                    </div>
+                    <!-- BACK -->
+                    <div class="sub-flip-back absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-brand-surface border border-red-500/60 rounded-xl p-4 flex flex-col justify-between text-xs sm:text-sm text-stone-300 leading-relaxed shadow-lg">
+                      <p>
+                        不得靠近產婦、月經、喪家或不潔之處；遇到月內房須繞道或用法器遮掩。
+                      </p>
+                      <span class="text-[11px] text-red-400 flex items-center gap-1 font-serif mt-2">
+                        <i data-lucide="rotate-ccw" class="w-3 h-3"></i>
+                        點擊翻回正面
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 提示註腳 -->
+              <div class="mt-5 p-4 rounded-xl bg-brand-gold/10 border border-brand-gold/30 text-xs sm:text-sm text-stone-300 flex items-center gap-3">
+                <i data-lucide="info" class="w-5 h-5 text-brand-goldLight shrink-0"></i>
+                <span>出陣前夕「點通神火」、面師一筆一劃「催神令」，是全台罕有的原真宗教民俗奇景。</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 5. Formations and Footwork ================= -->
+    <section id="formations" class="py-24 px-4 sm:px-6 lg:px-8 border-t border-brand-border bg-brand-surface/30">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <div class="inline-flex items-center gap-2 text-brand-goldLight text-xs font-bold tracking-widest uppercase mb-3">
+            <i data-lucide="footprints" class="w-4 h-4"></i>
+            <span>步步生威・玄妙陣法</span>
+          </div>
+          <h2 class="font-serif text-3xl sm:text-5xl font-black text-stone-100 tracking-wider">
+            陣法排闔・<span class="text-gold-gradient">招式精粹</span>
+          </h2>
+          <p class="mt-4 text-stone-400 text-base sm:text-lg leading-relaxed">
+            嘉義家將陣法融合陰陽五行、八卦九宮與傳統武術，每一步踩踏皆鏗鏘有力、虎虎生風，兼具除穢鎮煞與藝術張力。
+          </p>
+          <p class="text-xs sm:text-sm text-brand-goldLight/80 mt-2 font-serif flex items-center justify-center gap-1.5">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+            點擊各陣法卡片，即可翻轉查看身段步法與科儀細節
+          </p>
+        </div>
+
+        <!-- 2x2 方型陣法翻牌卡片佈局 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+          
+          <!-- 陣法 1: 踏七星步 -->
+          <div class="formation-flip-card group perspective-1000 min-h-[360px] cursor-pointer">
+            <div class="formation-flip-inner relative w-full h-full transform-style-3d transition-transform duration-700 rounded-2xl shadow-xl">
+              <!-- FRONT -->
+              <div class="formation-flip-front absolute inset-0 w-full h-full backface-hidden bg-brand-surfaceCard p-7 rounded-2xl border border-brand-border card-hover-glow transition flex flex-col justify-between">
+                <div>
+                  <div class="flex items-start justify-between mb-3">
+                    <div>
+                      <div class="text-brand-goldLight font-serif text-2xl font-bold mb-1">踏七星步</div>
+                      <p class="text-sm text-stone-400">效法北斗七星排列，踏破四方邪穢</p>
+                    </div>
+                    <span class="w-8 h-8 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-brand-goldLight group-hover:rotate-180 transition-transform duration-500">
+                      <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+                    </span>
+                  </div>
+
+                  <!-- SVG 圖解 -->
+                  <div class="w-full h-36 bg-black/40 rounded-xl flex items-center justify-center p-3 mb-2 border border-brand-border/60">
+                    <svg viewBox="0 0 100 60" class="w-full h-full stroke-amber-400 fill-amber-400">
+                      <circle cx="10" cy="45" r="2.5" />
+                      <circle cx="22" cy="35" r="2.5" />
+                      <circle cx="36" cy="38" r="2.5" />
+                      <circle cx="50" cy="24" r="2.5" />
+                      <circle cx="65" cy="25" r="2.5" />
+                      <circle cx="78" cy="12" r="2.5" />
+                      <circle cx="90" cy="20" r="2.5" />
+                      <polyline points="10,45 22,35 36,38 50,24 65,25 78,12 90,20" fill="none" stroke-width="1.2" stroke-dasharray="2,2" />
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between pt-3 border-t border-brand-border/60">
+                  <span class="text-xs text-brand-goldLight/80 font-mono">▸ 常用於開路、安廟門</span>
+                  <span class="text-xs text-brand-goldLight flex items-center gap-1 font-serif">
+                    <span>點擊看細節</span>
+                    <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                  </span>
+                </div>
+              </div>
+
+              <!-- BACK -->
+              <div class="formation-flip-back absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-brand-surface p-7 rounded-2xl border border-brand-gold/60 flex flex-col justify-between shadow-2xl">
+                <div>
+                  <div class="flex items-center justify-between pb-3 border-b border-brand-border/80 mb-4">
+                    <div class="flex items-center gap-2">
+                      <span class="w-2.5 h-2.5 rounded-full bg-brand-gold"></span>
+                      <h4 class="font-serif text-lg font-bold text-stone-100">踏七星步・身段與義理</h4>
+                    </div>
+                    <span class="text-xs font-mono text-brand-goldLight">NORTH STAR FORMATION</span>
+                  </div>
+
+                  <div class="space-y-3 text-sm text-stone-300 leading-relaxed overflow-y-auto max-h-[200px] pr-1 custom-scrollbar">
+                    <p>
+                      <strong class="text-brand-goldLight font-bold">【步法身段】</strong>將員以七星步為基底，左右移步穿梭如北斗璇璣。腳掌深踩踏地、跨步剛毅沉重，身姿隨節奏微晃卻下盤如磐石。
+                    </p>
+                    <p>
+                      <strong class="text-brand-goldLight font-bold">【科儀象徵】</strong>藉由效法天罡七星罡氣，引天威下臨陰陽交界，鎖定地氣、踏碎埋藏於土木之中的邪穢凶魅，為神駕開道掃除幽靈障礙。
+                    </p>
+                    <p>
+                      <strong class="text-brand-goldLight font-bold">【常見時機】</strong>將團巡境最前導開路、行經岔路口收煞、進駐宮廟或安廟門鎮煞之際。
+                    </p>
+                  </div>
+                </div>
+
+                <div class="pt-3 border-t border-brand-border flex items-center justify-between text-xs text-stone-400">
+                  <span class="text-brand-goldLight flex items-center gap-1 font-serif">
+                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                    點擊翻回正面圖解
+                  </span>
+                  <span class="font-mono text-stone-500">Chiayi Heritage</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 陣法 2: 走八卦陣 -->
+          <div class="formation-flip-card group perspective-1000 min-h-[360px] cursor-pointer">
+            <div class="formation-flip-inner relative w-full h-full transform-style-3d transition-transform duration-700 rounded-2xl shadow-xl">
+              <!-- FRONT -->
+              <div class="formation-flip-front absolute inset-0 w-full h-full backface-hidden bg-brand-surfaceCard p-7 rounded-2xl border border-brand-border card-hover-glow transition flex flex-col justify-between">
+                <div>
+                  <div class="flex items-start justify-between mb-3">
+                    <div>
+                      <div class="text-brand-goldLight font-serif text-2xl font-bold mb-1">走八卦陣</div>
+                      <p class="text-sm text-stone-400">乾坤震巽坎離艮兌，結下無漏羅網</p>
+                    </div>
+                    <span class="w-8 h-8 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-brand-goldLight group-hover:rotate-180 transition-transform duration-500">
+                      <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+                    </span>
+                  </div>
+
+                  <!-- SVG 圖解 -->
+                  <div class="w-full h-36 bg-black/40 rounded-xl flex items-center justify-center p-3 mb-2 border border-brand-border/60">
+                    <svg viewBox="0 0 100 100" class="w-20 h-20 stroke-amber-400 fill-none">
+                      <polygon points="50,5 82,18 95,50 82,82 50,95 18,82 5,50 18,18" stroke-width="1.5" />
+                      <circle cx="50" cy="50" r="16" stroke-dasharray="2,2" stroke-width="1" />
+                      <circle cx="50" cy="42" r="2" fill="#f59e0b" />
+                      <circle cx="50" cy="58" r="2" fill="#ef4444" />
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between pt-3 border-t border-brand-border/60">
+                  <span class="text-xs text-brand-goldLight/80 font-mono">▸ 常用於巡狩交會、大拜廟</span>
+                  <span class="text-xs text-brand-goldLight flex items-center gap-1 font-serif">
+                    <span>點擊看細節</span>
+                    <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                  </span>
+                </div>
+              </div>
+
+              <!-- BACK -->
+              <div class="formation-flip-back absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-brand-surface p-7 rounded-2xl border border-brand-gold/60 flex flex-col justify-between shadow-2xl">
+                <div>
+                  <div class="flex items-center justify-between pb-3 border-b border-brand-border/80 mb-4">
+                    <div class="flex items-center gap-2">
+                      <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                      <h4 class="font-serif text-lg font-bold text-stone-100">走八卦陣・身段與義理</h4>
+                    </div>
+                    <span class="text-xs font-mono text-brand-goldLight">BAGUA FORMATION</span>
+                  </div>
+
+                  <div class="space-y-3 text-sm text-stone-300 leading-relaxed overflow-y-auto max-h-[200px] pr-1 custom-scrollbar">
+                    <p>
+                      <strong class="text-brand-goldLight font-bold">【步法身段】</strong>將員依乾、坤、震、巽、坎、離、艮、兌方位交叉穿梭環繞，前排四大將軍與四季神交錯走位，演繹太極生兩儀、兩儀生四象之卦序。
+                    </p>
+                    <p>
+                      <strong class="text-brand-goldLight font-bold">【科儀象徵】</strong>在祭祀中心形成無形能量護盾與天羅地網，封鎖一切空間死角，防止邪魔惡鬼破空遁逃，亦是展現神將嚴整軍容之最極致。
+                    </p>
+                    <p>
+                      <strong class="text-brand-goldLight font-bold">【常見時機】</strong>廟會重大拜廟覲見、兩大將團於路口交會參禮、或巡狩入廟舉行大型安座儀式。
+                    </p>
+                  </div>
+                </div>
+
+                <div class="pt-3 border-t border-brand-border flex items-center justify-between text-xs text-stone-400">
+                  <span class="text-brand-goldLight flex items-center gap-1 font-serif">
+                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                    點擊翻回正面圖解
+                  </span>
+                  <span class="font-mono text-stone-500">Chiayi Heritage</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 陣法 3: 三進三出 -->
+          <div class="formation-flip-card group perspective-1000 min-h-[360px] cursor-pointer">
+            <div class="formation-flip-inner relative w-full h-full transform-style-3d transition-transform duration-700 rounded-2xl shadow-xl">
+              <!-- FRONT -->
+              <div class="formation-flip-front absolute inset-0 w-full h-full backface-hidden bg-brand-surfaceCard p-7 rounded-2xl border border-brand-border card-hover-glow transition flex flex-col justify-between">
+                <div>
+                  <div class="flex items-start justify-between mb-3">
+                    <div>
+                      <div class="text-brand-goldLight font-serif text-2xl font-bold mb-1">三進三出</div>
+                      <p class="text-sm text-stone-400">朝覲正神、崇敬最高之三獻大禮</p>
+                    </div>
+                    <span class="w-8 h-8 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-brand-goldLight group-hover:rotate-180 transition-transform duration-500">
+                      <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+                    </span>
+                  </div>
+
+                  <!-- SVG 圖解 -->
+                  <div class="w-full h-36 bg-black/40 rounded-xl flex items-center justify-center p-3 mb-2 border border-brand-border/60">
+                    <svg viewBox="0 0 100 60" class="w-full h-full stroke-amber-400 fill-none">
+                      <path d="M15,45 L15,15 L35,30 L35,50" stroke-width="1.2" />
+                      <path d="M45,45 L45,15 L65,30 L65,50" stroke-width="1.2" />
+                      <path d="M75,45 L75,15 L95,30 L95,50" stroke-width="1.2" />
+                      <circle cx="15" cy="15" r="2" fill="#f59e0b" />
+                      <circle cx="45" cy="15" r="2" fill="#f59e0b" />
+                      <circle cx="75" cy="15" r="2" fill="#f59e0b" />
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between pt-3 border-t border-brand-border/60">
+                  <span class="text-xs text-brand-goldLight/80 font-mono">▸ 晉見主神、入宮謁祖</span>
+                  <span class="text-xs text-brand-goldLight flex items-center gap-1 font-serif">
+                    <span>點擊看細節</span>
+                    <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                  </span>
+                </div>
+              </div>
+
+              <!-- BACK -->
+              <div class="formation-flip-back absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-brand-surface p-7 rounded-2xl border border-brand-gold/60 flex flex-col justify-between shadow-2xl">
+                <div>
+                  <div class="flex items-center justify-between pb-3 border-b border-brand-border/80 mb-4">
+                    <div class="flex items-center gap-2">
+                      <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span>
+                      <h4 class="font-serif text-lg font-bold text-stone-100">三進三出・身段與義理</h4>
+                    </div>
+                    <span class="text-xs font-mono text-brand-goldLight">THREE BOW PROTOCOL</span>
+                  </div>
+
+                  <div class="space-y-3 text-sm text-stone-300 leading-relaxed overflow-y-auto max-h-[200px] pr-1 custom-scrollbar">
+                    <p>
+                      <strong class="text-brand-goldLight font-bold">【步法身段】</strong>隊伍成雙成對依序向前大步邁進，至廟門中軸前深躬作揖、擺動法器，隨後退步返位，如是一而再、再而三重複三次，進退節奏森然不紊。
+                    </p>
+                    <p>
+                      <strong class="text-brand-goldLight font-bold">【科儀象徵】</strong>體現家將身為正神部屬差役對至高神格的絕對臣服與軍威，仿古代臣子朝覲君主之「三叩九拜」禮節，敬畏而莊重。
+                    </p>
+                    <p>
+                      <strong class="text-brand-goldLight font-bold">【常見時機】</strong>晉見主神王爺或城隍爺、隊伍抵達友廟山門、入宮謁祖進香之開場最敬禮。
+                    </p>
+                  </div>
+                </div>
+
+                <div class="pt-3 border-t border-brand-border flex items-center justify-between text-xs text-stone-400">
+                  <span class="text-brand-goldLight flex items-center gap-1 font-serif">
+                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                    點擊翻回正面圖解
+                  </span>
+                  <span class="font-mono text-stone-500">Chiayi Heritage</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 陣法 4: 收驚除煞陣 -->
+          <div class="formation-flip-card group perspective-1000 min-h-[360px] cursor-pointer">
+            <div class="formation-flip-inner relative w-full h-full transform-style-3d transition-transform duration-700 rounded-2xl shadow-xl">
+              <!-- FRONT -->
+              <div class="formation-flip-front absolute inset-0 w-full h-full backface-hidden bg-brand-surfaceCard p-7 rounded-2xl border border-brand-border card-hover-glow transition flex flex-col justify-between">
+                <div>
+                  <div class="flex items-start justify-between mb-3">
+                    <div>
+                      <div class="text-brand-goldLight font-serif text-2xl font-bold mb-1">收驚除煞陣</div>
+                      <p class="text-sm text-stone-400">撫慰民心、為信眾消災解難之儀軌</p>
+                    </div>
+                    <span class="w-8 h-8 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-brand-goldLight group-hover:rotate-180 transition-transform duration-500">
+                      <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+                    </span>
+                  </div>
+
+                  <!-- SVG 圖解 -->
+                  <div class="w-full h-36 bg-black/40 rounded-xl flex items-center justify-center p-3 mb-2 border border-brand-border/60">
+                    <div class="flex items-center gap-3">
+                      <div class="w-9 h-9 rounded-full border border-amber-400/60 bg-amber-500/10 flex items-center justify-center text-xs font-bold text-amber-300">信</div>
+                      <i data-lucide="arrow-left-right" class="w-4 h-4 text-stone-500"></i>
+                      <div class="w-9 h-9 rounded-full bg-red-950 border border-red-500 flex items-center justify-center text-xs font-bold text-red-200">將</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between pt-3 border-t border-brand-border/60">
+                  <span class="text-xs text-brand-goldLight/80 font-mono">▸ 駐駕定點祈安科儀</span>
+                  <span class="text-xs text-brand-goldLight flex items-center gap-1 font-serif">
+                    <span>點擊看細節</span>
+                    <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                  </span>
+                </div>
+              </div>
+
+              <!-- BACK -->
+              <div class="formation-flip-back absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-brand-surface p-7 rounded-2xl border border-brand-gold/60 flex flex-col justify-between shadow-2xl">
+                <div>
+                  <div class="flex items-center justify-between pb-3 border-b border-brand-border/80 mb-4">
+                    <div class="flex items-center gap-2">
+                      <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                      <h4 class="font-serif text-lg font-bold text-stone-100">收驚除煞陣・身段與義理</h4>
+                    </div>
+                    <span class="text-xs font-mono text-brand-goldLight">EXORCISM BLESSING</span>
+                  </div>
+
+                  <div class="space-y-3 text-sm text-stone-300 leading-relaxed overflow-y-auto max-h-[200px] pr-1 custom-scrollbar">
+                    <p>
+                      <strong class="text-brand-goldLight font-bold">【步法身段】</strong>甘柳將軍持戒棍板批鎮壓地面發出響聲，謝范將軍揮舞羽扇自頭頂至背後輕撫拂拭，將員圍繞信眾踏動小七星步化解驚慌。
+                    </p>
+                    <p>
+                      <strong class="text-brand-goldLight font-bold">【科儀象徵】</strong>將神威化為慈悲護佑，驅散信眾身上的晦氣、邪崇與無形驚懼，使元辰光彩、合家平安，是家將親民撫慰的重要科儀。
+                    </p>
+                    <p>
+                      <strong class="text-brand-goldLight font-bold">【常見時機】</strong>神將團於巡境途中駐駕休息、信眾跪求祈安解厄，或特設祈福站供老幼鑽轎底除煞之時。
+                    </p>
+                  </div>
+                </div>
+
+                <div class="pt-3 border-t border-brand-border flex items-center justify-between text-xs text-stone-400">
+                  <span class="text-brand-goldLight flex items-center gap-1 font-serif">
+                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                    點擊翻回正面圖解
+                  </span>
+                  <span class="font-mono text-stone-500">Chiayi Heritage</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 6. Chiayi Landmarks ================= -->
+    <section id="landmarks" class="py-24 px-4 sm:px-6 lg:px-8 border-t border-brand-border">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <div class="inline-flex items-center gap-2 text-brand-goldLight text-xs font-bold tracking-widest uppercase mb-3">
+            <i data-lucide="map-pin" class="w-4 h-4"></i>
+            <span>文化地景・尋根巡禮</span>
+          </div>
+          <h2 class="font-serif text-3xl sm:text-5xl font-black text-stone-100 tracking-wider">
+            文化地景・<span class="text-gold-gradient">代表名堂巡禮</span>
+          </h2>
+          <p class="mt-4 text-stone-400 text-base sm:text-lg leading-relaxed">
+            走進嘉義市街廓，每一座老廟與將堂，都鐫刻著世代相傳的護境熱血與工藝記憶。
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="bg-brand-surfaceCard rounded-2xl p-8 border border-brand-border card-hover-glow transition group flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="px-3 py-1 text-xs rounded-md bg-amber-500/10 text-brand-goldLight border border-amber-500/30">無形文化資產保存團體</span>
+                <span class="text-xs text-stone-500 font-mono">創始堂館</span>
+              </div>
+              <h3 class="font-serif text-2xl sm:text-3xl font-bold text-stone-100 group-hover:text-brand-goldLight transition">嘉義慈濟宮・如意振裕堂</h3>
+              <p class="text-sm text-stone-400 mt-1 mb-4">嘉義市西區國華街</p>
+              <p class="text-base text-stone-300 leading-relaxed">
+                全台家將之祖廟基石。承襲台南白龍庵五福大帝之令，維持清代官式威儀，服飾樸雅、行步沈著，至今仍完整傳承十三位將員完備體制。
+              </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-brand-border flex items-center justify-between text-xs text-stone-400">
+              <span>特色：全台振字派大本營</span>
+              <span class="text-brand-goldLight font-bold">創建於1918</span>
+            </div>
+          </div>
+
+          <div class="bg-brand-surfaceCard rounded-2xl p-8 border border-brand-border card-hover-glow transition group flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="px-3 py-1 text-xs rounded-md bg-red-500/10 text-red-400 border border-red-500/30">重要將堂</span>
+                <span class="text-xs text-stone-500 font-mono">共字脈系</span>
+              </div>
+              <h3 class="font-serif text-2xl sm:text-3xl font-bold text-stone-100 group-hover:text-brand-goldLight transition">嘉義共義堂（宣信街等）</h3>
+              <p class="text-sm text-stone-400 mt-1 mb-4">嘉義市東區宣信街 / 九天五義</p>
+              <p class="text-base text-stone-300 leading-relaxed">
+                以風格剽悍、身法俐落著稱。在傳統八家將架構上衍生出獨具一格的高段武法對打，在南台灣民間香期中具備極強的號召力。
+              </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-brand-border flex items-center justify-between text-xs text-stone-400">
+              <span>特色：步法矯健、身段緊湊</span>
+              <span class="text-brand-goldLight font-bold">雲嘉南大宗</span>
+            </div>
+          </div>
+
+          <div class="bg-brand-surfaceCard rounded-2xl p-8 border border-brand-border card-hover-glow transition group flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="px-3 py-1 text-xs rounded-md bg-stone-700/50 text-stone-300 border border-stone-600">百年廟宇護駕</span>
+                <span class="text-xs text-stone-500 font-mono">官將護巡</span>
+              </div>
+              <h3 class="font-serif text-2xl sm:text-3xl font-bold text-stone-100 group-hover:text-brand-goldLight transition">嘉邑城隍廟・綏靖侯部將</h3>
+              <p class="text-sm text-stone-400 mt-1 mb-4">嘉義市東區吳鳳北路</p>
+              <p class="text-base text-stone-300 leading-relaxed">
+                國定古蹟嘉邑城隍廟每年中元鬼門關後的「城隍夜巡」，家將與范謝將軍肅穆巡街抓拿逃逸遊魂，為諸羅城最具震撼力的年度民俗盛事。
+              </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-brand-border flex items-center justify-between text-xs text-stone-400">
+              <span>特色：城隍夜巡夯枷夜祭</span>
+              <span class="text-brand-goldLight font-bold">國定古蹟盛典</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= NEW: 諸羅家將文化地圖・堂館法統巡禮 ================= -->
+        <div id="jiang-map-section" class="mt-16 pt-12 border-t border-brand-border">
+          <div class="text-center max-w-2xl mx-auto mb-10">
+            <div class="inline-flex items-center gap-2 text-brand-goldLight text-xs font-bold tracking-widest uppercase mb-2">
+              <i data-lucide="compass" class="w-4 h-4"></i>
+              <span>INTERACTIVE JIA-JIANG MAP・諸羅地理巡禮</span>
+            </div>
+            <h3 class="font-serif text-2xl sm:text-4xl font-black text-stone-100 tracking-wider">
+              諸羅家將・<span class="text-gold-gradient">聚落脈絡圖鑑</span>
+            </h3>
+            <p class="text-stone-400 text-sm sm:text-base mt-2">
+              點擊地圖標記或下方堂館列表，即時聯動聚焦該名堂的派系法統、武韻風格與歷史淵源。
+            </p>
+
+            <!-- 派系篩選標籤 -->
+            <div class="flex flex-wrap items-center justify-center gap-2 mt-6" id="lineageFilterBar">
+              <button data-lineage="all" class="lineage-filter-btn active-lineage-filter px-3.5 py-1.5 rounded-full text-xs font-serif font-bold transition bg-gradient-to-r from-amber-600 to-yellow-600 text-black shadow-md">
+                全部堂館 (6)
+              </button>
+              <button data-lineage="振" class="lineage-filter-btn px-3.5 py-1.5 rounded-full text-xs font-serif font-bold transition bg-brand-surfaceCard border border-brand-border text-stone-300 hover:border-brand-gold">
+                振字派 (台南白龍庵系)
+              </button>
+              <button data-lineage="吉" class="lineage-filter-btn px-3.5 py-1.5 rounded-full text-xs font-serif font-bold transition bg-brand-surfaceCard border border-brand-border text-stone-300 hover:border-brand-gold">
+                吉字派 (城隍境主系)
+              </button>
+              <button data-lineage="義" class="lineage-filter-btn px-3.5 py-1.5 rounded-full text-xs font-serif font-bold transition bg-brand-surfaceCard border border-brand-border text-stone-300 hover:border-brand-gold">
+                義字派 (九天剛猛系)
+              </button>
+              <button data-lineage="拱" class="lineage-filter-btn px-3.5 py-1.5 rounded-full text-xs font-serif font-bold transition bg-brand-surfaceCard border border-brand-border text-stone-300 hover:border-brand-gold">
+                拱字派 (古樓儒雅系)
+              </button>
+            </div>
+          </div>
+
+          <!-- 互動地圖與看板雙欄佈局 -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- 左側/上方: 嘉義諸羅家將 SVG 互動座標地圖 (佔 7 欄) -->
+            <div class="lg:col-span-7 bg-brand-surfaceCard p-5 sm:p-6 rounded-2xl border border-brand-border relative overflow-hidden shadow-2xl">
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2 text-xs font-mono text-stone-400">
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span>CHIAYI HISTORIC JIA-JIANG GEOLOCATION</span>
+                </div>
+                <span class="text-xs text-brand-goldLight/80 font-serif">座標：嘉義諸羅城廓中心</span>
+              </div>
+
+              <!-- SVG 地圖繪製區 -->
+              <div class="relative w-full aspect-[4/3] bg-black/60 rounded-xl border border-brand-border/60 overflow-hidden select-none">
+                <svg viewBox="0 0 600 450" class="w-full h-full" id="chiayiJiangSvgMap">
+                  <!-- 網格與諸羅古城街道背景裝飾線條 -->
+                  <defs>
+                    <radialGradient id="mapGlow" cx="50%" cy="50%" r="50%">
+                      <stop offset="0%" stop-color="#e6a23c" stop-opacity="0.12" />
+                      <stop offset="100%" stop-color="#0e0d10" stop-opacity="0" />
+                    </radialGradient>
+                    <filter id="goldPinGlow" x="-50%" y="-50%" width="200%" height="200%">
+                      <feGaussianBlur in="SourceGraphic" stdDeviation="3" />
+                    </filter>
+                  </defs>
+
+                  <rect width="600" height="450" fill="url(#mapGlow)" />
+                  
+                  <!-- 城市主要幹道 (象徵諸羅四城門與軸線) -->
+                  <g stroke="#332d25" stroke-width="2" stroke-linecap="round" stroke-dasharray="2,3">
+                    <!-- 北門 - 南門 (吳鳳路/忠孝路縱向) -->
+                    <line x1="330" y1="30" x2="330" y2="420" />
+                    <!-- 國華街縱向 -->
+                    <line x1="220" y1="50" x2="220" y2="400" />
+                    <!-- 宣信街縱向 -->
+                    <line x1="460" y1="80" x2="460" y2="430" />
+                    <!-- 中山路橫向 -->
+                    <line x1="40" y1="190" x2="560" y2="190" stroke-width="2.5" stroke="#4a3e2a" stroke-dasharray="none" />
+                    <!-- 民族路橫向 -->
+                    <line x1="40" y1="260" x2="560" y2="260" />
+                    <!-- 垂楊路橫向 -->
+                    <line x1="50" y1="330" x2="550" y2="330" />
+                  </g>
+
+                  <!-- 舊諸羅古城桃城範圍圓弧輪廓 -->
+                  <path d="M 200 120 C 320 80, 410 100, 440 180 C 470 270, 390 350, 290 340 C 190 330, 160 210, 200 120 Z" fill="none" stroke="#e6a23c" stroke-opacity="0.25" stroke-width="1.8" stroke-dasharray="4,4" />
+                  <text x="285" y="140" fill="#786c55" font-size="11" font-family="'Noto Serif TC', serif" text-anchor="middle">諸羅古桃城核心域</text>
+
+                  <!-- 路名小標記 -->
+                  <text x="545" y="185" fill="#665b47" font-size="9" text-anchor="end" font-family="sans-serif">中山路</text>
+                  <text x="545" y="255" fill="#665b47" font-size="9" text-anchor="end" font-family="sans-serif">民族路</text>
+                  <text x="220" y="45" fill="#665b47" font-size="9" text-anchor="middle" font-family="sans-serif">國華街</text>
+                  <text x="330" y="45" fill="#665b47" font-size="9" text-anchor="middle" font-family="sans-serif">吳鳳北路</text>
+                  <text x="460" y="75" fill="#665b47" font-size="9" text-anchor="middle" font-family="sans-serif">宣信街</text>
+                  <text x="80" y="325" fill="#665b47" font-size="9" font-family="sans-serif">嘉義火車站方向 ➔</text>
+
+                  <!-- 堂館地圖標記點 (互動 Pins) -->
+                  <!-- Pin 1: 慈濟宮如意振裕堂 (X: 220, Y: 185) -->
+                  <g class="map-marker-pin cursor-pointer transition-all duration-300" data-id="zhenyutang" transform="translate(220, 185)">
+                    <circle cx="0" cy="0" r="14" fill="#e6a23c" fill-opacity="0.25" class="pin-pulse animate-ping" />
+                    <circle cx="0" cy="0" r="8" fill="#e6a23c" stroke="#f5c869" stroke-width="2.5" class="pin-core" />
+                    <text x="0" y="3.5" fill="#000" font-size="9" font-weight="bold" text-anchor="middle">振</text>
+                    <rect x="-48" y="-30" width="96" height="18" rx="4" fill="#151418" stroke="#e6a23c" stroke-width="1.2" class="pin-tag-box" />
+                    <text x="0" y="-18" fill="#f5c869" font-size="9.5" font-family="'Noto Serif TC', serif" font-weight="bold" text-anchor="middle">慈濟宮如意振裕堂</text>
+                  </g>
+
+                  <!-- Pin 2: 嘉邑城隍廟吉勝堂 (X: 330, Y: 220) -->
+                  <g class="map-marker-pin cursor-pointer transition-all duration-300" data-id="jishengtang" transform="translate(330, 220)">
+                    <circle cx="0" cy="0" r="12" fill="#bc2424" fill-opacity="0.25" class="pin-pulse" />
+                    <circle cx="0" cy="0" r="8" fill="#bc2424" stroke="#fff" stroke-width="1.5" class="pin-core" />
+                    <text x="0" y="3.5" fill="#fff" font-size="9" font-weight="bold" text-anchor="middle">吉</text>
+                    <rect x="-42" y="-30" width="84" height="18" rx="4" fill="#151418" stroke="#bc2424" stroke-width="0.8" class="pin-tag-box" />
+                    <text x="0" y="-18" fill="#f87171" font-size="9.5" font-family="'Noto Serif TC', serif" font-weight="bold" text-anchor="middle">城隍廟・吉勝堂</text>
+                  </g>
+
+                  <!-- Pin 3: 宣信街共義堂 (X: 460, Y: 320) -->
+                  <g class="map-marker-pin cursor-pointer transition-all duration-300" data-id="gongyitang" transform="translate(460, 320)">
+                    <circle cx="0" cy="0" r="12" fill="#e74c3c" fill-opacity="0.25" class="pin-pulse" />
+                    <circle cx="0" cy="0" r="8" fill="#e74c3c" stroke="#fff" stroke-width="1.5" class="pin-core" />
+                    <text x="0" y="3.5" fill="#fff" font-size="9" font-weight="bold" text-anchor="middle">義</text>
+                    <rect x="-40" y="-30" width="80" height="18" rx="4" fill="#151418" stroke="#e74c3c" stroke-width="0.8" class="pin-tag-box" />
+                    <text x="0" y="-18" fill="#fca5a5" font-size="9.5" font-family="'Noto Serif TC', serif" font-weight="bold" text-anchor="middle">宣信街共義堂</text>
+                  </g>
+
+                  <!-- Pin 4: 古樓拱吉堂 (X: 380, Y: 170) -->
+                  <g class="map-marker-pin cursor-pointer transition-all duration-300" data-id="gongjitang" transform="translate(380, 170)">
+                    <circle cx="0" cy="0" r="12" fill="#10b981" fill-opacity="0.25" class="pin-pulse" />
+                    <circle cx="0" cy="0" r="8" fill="#10b981" stroke="#fff" stroke-width="1.5" class="pin-core" />
+                    <text x="0" y="3.5" fill="#000" font-size="9" font-weight="bold" text-anchor="middle">拱</text>
+                    <rect x="-38" y="-30" width="76" height="18" rx="4" fill="#151418" stroke="#10b981" stroke-width="0.8" class="pin-tag-box" />
+                    <text x="0" y="-18" fill="#6ee7b7" font-size="9.5" font-family="'Noto Serif TC', serif" font-weight="bold" text-anchor="middle">古樓拱吉堂</text>
+                  </g>
+
+                  <!-- Pin 5: 桃城振樂堂 (X: 180, Y: 240) -->
+                  <g class="map-marker-pin cursor-pointer transition-all duration-300" data-id="zhenletang" transform="translate(180, 240)">
+                    <circle cx="0" cy="0" r="12" fill="#f59e0b" fill-opacity="0.25" class="pin-pulse" />
+                    <circle cx="0" cy="0" r="8" fill="#f59e0b" stroke="#fff" stroke-width="1.5" class="pin-core" />
+                    <text x="0" y="3.5" fill="#000" font-size="9" font-weight="bold" text-anchor="middle">振</text>
+                    <rect x="-38" y="-30" width="76" height="18" rx="4" fill="#151418" stroke="#f59e0b" stroke-width="0.8" class="pin-tag-box" />
+                    <text x="0" y="-18" fill="#fde68a" font-size="9.5" font-family="'Noto Serif TC', serif" font-weight="bold" text-anchor="middle">桃城振樂堂</text>
+                  </g>
+
+                  <!-- Pin 6: 九天殿五義堂 (X: 420, Y: 240) -->
+                  <g class="map-marker-pin cursor-pointer transition-all duration-300" data-id="wuyitang" transform="translate(420, 240)">
+                    <circle cx="0" cy="0" r="12" fill="#e74c3c" fill-opacity="0.25" class="pin-pulse" />
+                    <circle cx="0" cy="0" r="8" fill="#e74c3c" stroke="#fff" stroke-width="1.5" class="pin-core" />
+                    <text x="0" y="3.5" fill="#fff" font-size="9" font-weight="bold" text-anchor="middle">義</text>
+                    <rect x="-42" y="-30" width="84" height="18" rx="4" fill="#151418" stroke="#e74c3c" stroke-width="0.8" class="pin-tag-box" />
+                    <text x="0" y="-18" fill="#fca5a5" font-size="9.5" font-family="'Noto Serif TC', serif" font-weight="bold" text-anchor="middle">九天殿五義堂</text>
+                  </g>
+                </svg>
+
+                <!-- 地圖圖例 -->
+                <div class="absolute bottom-3 left-3 bg-brand-dark/90 backdrop-blur-md px-3 py-2 rounded-lg border border-brand-border/70 text-[11px] space-y-1">
+                  <div class="font-serif font-bold text-stone-300 mb-0.5">四大主流派色標：</div>
+                  <div class="flex items-center gap-3">
+                    <span class="flex items-center gap-1 text-amber-400"><span class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block"></span> 振字派</span>
+                    <span class="flex items-center gap-1 text-red-400"><span class="w-2.5 h-2.5 rounded-full bg-red-500 inline-block"></span> 吉字派</span>
+                    <span class="flex items-center gap-1 text-rose-400"><span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span> 義字派</span>
+                    <span class="flex items-center gap-1 text-emerald-400"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> 拱字派</span>
+                  </div>
+                </div>
+
+                <div class="absolute top-3 right-3 bg-brand-dark/80 px-2.5 py-1 rounded-md border border-brand-border text-[10px] text-stone-400 font-mono">
+                  點選地圖錨點切換資訊
+                </div>
+              </div>
+
+              <!-- 快捷切換清單按鈕 -->
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 mt-4">
+                <button data-id="zhenyutang" class="hall-select-btn p-2.5 rounded-xl bg-black/40 border border-brand-gold text-brand-goldLight text-xs font-serif font-bold text-left transition flex items-center justify-between">
+                  <span>如意振裕堂</span>
+                  <span class="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono">振系</span>
+                </button>
+                <button data-id="jishengtang" class="hall-select-btn p-2.5 rounded-xl bg-black/40 border border-brand-border text-stone-300 text-xs font-serif font-bold text-left hover:border-brand-gold transition flex items-center justify-between">
+                  <span>城隍廟吉勝堂</span>
+                  <span class="text-[10px] px-1.5 py-0.5 rounded bg-red-500/20 text-red-300 font-mono">吉系</span>
+                </button>
+                <button data-id="gongyitang" class="hall-select-btn p-2.5 rounded-xl bg-black/40 border border-brand-border text-stone-300 text-xs font-serif font-bold text-left hover:border-brand-gold transition flex items-center justify-between">
+                  <span>宣信街共義堂</span>
+                  <span class="text-[10px] px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300 font-mono">義系</span>
+                </button>
+                <button data-id="gongjitang" class="hall-select-btn p-2.5 rounded-xl bg-black/40 border border-brand-border text-stone-300 text-xs font-serif font-bold text-left hover:border-brand-gold transition flex items-center justify-between">
+                  <span>古樓拱吉堂</span>
+                  <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono">拱系</span>
+                </button>
+                <button data-id="zhenletang" class="hall-select-btn p-2.5 rounded-xl bg-black/40 border border-brand-border text-stone-300 text-xs font-serif font-bold text-left hover:border-brand-gold transition flex items-center justify-between">
+                  <span>桃城振樂堂</span>
+                  <span class="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono">振系</span>
+                </button>
+                <button data-id="wuyitang" class="hall-select-btn p-2.5 rounded-xl bg-black/40 border border-brand-border text-stone-300 text-xs font-serif font-bold text-left hover:border-brand-gold transition flex items-center justify-between">
+                  <span>九天殿五義堂</span>
+                  <span class="text-[10px] px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300 font-mono">義系</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- 右側/下方: 聯動焦點詳細堂館介紹卡片 (佔 5 欄) -->
+            <div class="lg:col-span-5 bg-brand-surfaceCard p-6 sm:p-7 rounded-2xl border border-brand-gold/50 shadow-2xl relative min-h-[460px] flex flex-col justify-between" id="hallDetailCard">
+              <div>
+                <!-- 標題與流派 Badge -->
+                <div class="flex items-start justify-between mb-4">
+                  <div>
+                    <div class="flex items-center gap-2 mb-1.5">
+                      <span id="cardLineageBadge" class="px-2.5 py-0.5 rounded text-[11px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 font-serif">
+                        振字派始祖・台南白龍庵法脈
+                      </span>
+                      <span id="cardYearBadge" class="text-xs font-mono text-stone-400">創立於 1918 年</span>
+                    </div>
+                    <h4 id="cardHallName" class="font-serif text-2xl sm:text-3xl font-black text-stone-100">
+                      嘉義慈濟宮・如意振裕堂
+                    </h4>
+                  </div>
+                  <div id="cardIconWrap" class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-brand-goldLight shrink-0">
+                    <i data-lucide="landmark" class="w-6 h-6"></i>
+                  </div>
+                </div>
+
+                <!-- 關鍵指標 (主祀、地址、流派核心) -->
+                <div class="grid grid-cols-2 gap-3 p-3.5 rounded-xl bg-black/40 border border-brand-border/60 mb-5 text-xs">
+                  <div>
+                    <span class="text-stone-500 block">主祀神祇</span>
+                    <span id="cardDeity" class="font-serif font-bold text-stone-200 text-sm">五福大帝（五靈公）</span>
+                  </div>
+                  <div>
+                    <span class="text-stone-500 block">所在區域</span>
+                    <span id="cardAddress" class="font-serif font-bold text-stone-200 text-sm">西區國華街216巷</span>
+                  </div>
+                  <div>
+                    <span class="text-stone-500 block">將陣編制</span>
+                    <span id="cardFormationType" class="font-serif text-brand-goldLight font-bold">什家將十三位尊神完整體制</span>
+                  </div>
+                  <div>
+                    <span class="text-stone-500 block">文化法定身分</span>
+                    <span id="cardHeritageStatus" class="font-serif text-emerald-400 font-bold">無形文化資產保存團體</span>
+                  </div>
+                </div>
+
+                <!-- 深入介紹區塊 -->
+                <div class="space-y-3.5 text-xs sm:text-sm text-stone-300 leading-relaxed max-h-[220px] overflow-y-auto pr-1.5 custom-scrollbar">
+                  <div>
+                    <strong class="text-brand-goldLight font-serif block mb-0.5">【身段風格・步態武韻】</strong>
+                    <p id="cardStyleDesc">
+                      維持清代官式威儀，身段沉著大器，開大步而氣度端正莊嚴。行步講究呼吸沉穩、頓挫分明，謝范將軍對打高低跌宕，深具宮廷差役氣度。
+                    </p>
+                  </div>
+                  <div>
+                    <strong class="text-brand-goldLight font-serif block mb-0.5">【傳承歷史與開派法統】</strong>
+                    <p id="cardHistoryDesc">
+                      西來庵事件後，慈濟宮前輩於1918年親赴臺南全臺白龍庵如意增壽堂，迎請導師廖慈、面師陳明派傳承，在諸羅城創立振裕堂。此後開枝散葉出「振」字脈系（振樂堂、振祐堂等），為全台家將奉為圭臬的發祥基石。
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 底部操作列 -->
+              <div class="mt-5 pt-3.5 border-t border-brand-border/60 flex items-center justify-between text-xs text-stone-400">
+                <span class="flex items-center gap-1.5 text-brand-goldLight font-serif">
+                  <i data-lucide="check-circle" class="w-4 h-4"></i>
+                  <span>當前已聚焦該堂館座標與法統</span>
+                </span>
+                <span class="text-[11px] font-mono text-stone-500">Chiayi Heritage Map</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= 7. Interactive Quiz Module ================= -->
+    <section id="quiz" class="py-24 px-4 sm:px-6 lg:px-8 border-t border-brand-border bg-brand-surface/20">
+      <div class="max-w-3xl mx-auto">
+        <div class="text-center mb-12">
+          <div class="inline-flex items-center gap-2 text-brand-goldLight text-xs font-bold tracking-widest uppercase mb-3">
+            <i data-lucide="help-circle" class="w-4 h-4"></i>
+            <span>即時民俗互動問答</span>
+          </div>
+          <h2 class="font-serif text-3xl sm:text-5xl font-black text-stone-100 tracking-wider">
+            神將常識・<span class="text-gold-gradient">文化考核</span>
+          </h2>
+          <p class="mt-3 text-stone-400 text-base sm:text-lg">
+            挑戰 4 道精選問題，測試你對嘉義家將文化的認識！
+          </p>
+        </div>
+
+        <div class="bg-brand-surfaceCard rounded-2xl p-6 sm:p-10 border border-brand-border shadow-2xl relative overflow-hidden">
+          <div id="quizContent"></div>
+
+          <div id="quizResult" class="hidden text-center py-8">
+            <div class="w-16 h-16 mx-auto rounded-full bg-brand-gold/20 border border-brand-gold flex items-center justify-center text-brand-goldLight mb-4">
+              <i data-lucide="award" class="w-8 h-8"></i>
+            </div>
+            <h3 class="font-serif text-2xl font-bold text-stone-100 mb-2" id="resultTitle">完成測驗！</h3>
+            <p class="text-stone-300 text-sm mb-6" id="resultScoreDesc"></p>
+            <button id="retryQuizBtn" class="px-6 py-2.5 rounded-xl bg-brand-gold text-black font-bold text-xs uppercase tracking-wider hover:bg-brand-goldLight transition">
+              重新挑戰一次
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= Footer ================= -->
+  <footer class="bg-brand-dark border-t border-brand-border py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+      <div>
+        <div class="font-serif text-lg font-bold text-stone-100 flex items-center justify-center md:justify-start gap-2">
+          <span class="text-brand-goldLight">諸羅神將</span>
+          <span class="text-stone-600">|</span>
+          <span class="text-xs tracking-widest text-stone-400">嘉義家將文化數位圖鑑</span>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center justify-center gap-3 text-sm text-stone-400">
+        <a href="#hero" class="hover:text-brand-goldLight transition">回到頁首</a>
+        <span class="text-stone-700">・</span>
+        <a href="https://memory.culture.tw/" target="_blank" rel="noopener noreferrer" class="hover:text-brand-goldLight transition">國家文化記憶庫</a>
+        <span class="text-stone-700">・</span>
+        <a href="https://nchp.boch.gov.tw/" target="_blank" rel="noopener noreferrer" class="hover:text-brand-goldLight transition">國家文化資產網</a>
+        <span class="text-stone-700">・</span>
+        <a href="https://www.facebook.com/zhenyutang/" target="_blank" rel="noopener noreferrer" class="hover:text-brand-goldLight transition">嘉義慈濟宮振裕堂</a>
+      </div>
+    </div>
+    <div class="text-center text-xs text-stone-600 mt-8 border-t border-brand-border/40 pt-6">
+      © 2026 諸羅神將文化專題. All Rights Reserved. 嘉義無形民俗文化資產記錄推廣專案.
+    </div>
+  </footer>
+
+  <!-- ================= Vanilla JavaScript Logic ================= -->
+  <script>
+    // ---------------- 1. Quiz Logic ----------------
+    const quizQuestions = [
+      {
+        question: "嘉義家將文化之所以被尊稱為「家將窟」，最關鍵的百年起點源自哪一座堂館？",
+        options: [
+          "嘉義慈濟宮・如意振裕堂",
+          "嘉邑城隍廟・吉勝堂",
+          "宣信街共義堂",
+          "九天五義堂"
+        ],
+        answer: 0,
+        explanation: "1918年（大正七年）嘉義慈濟宮迎請台南白龍庵名師成立「如意振裕堂」，由此開枝散葉，奠定嘉義「家將窟」盛名。"
+      },
+      {
+        question: "在標準的什家將陣列最前端，挑著掛滿各類法器鐵鍊、沿路發出清脆金屬碰撞聲的是哪一位？",
+        options: [
+          "文差爺",
+          "刑具爺（什役）",
+          "甘將軍",
+          "武判官"
+        ],
+        answer: 1,
+        explanation: "刑具爺（什役）挑著刑具擔在最前方開路，擔子內裝有枷鎖、皮鞭、夾棍等，金屬撞擊聲代表警戒與除煞。"
+      },
+      {
+        question: "傳統民俗中，家將團員「開臉」並請神附體之後，口中含著草，嚴格禁止進行哪項行為？",
+        options: [
+          "禁止踏大步",
+          "禁止開口說話與嬉笑（噤聲）",
+          "禁止手持羽扇",
+          "禁止配戴帽子"
+        ],
+        answer: 1,
+        explanation: "開臉後將員即已「神格化」，口含「開口草」象徵由神明主宰，嚴格禁聲、不得妄言笑鬧，違反會受神懲。"
+      },
+      {
+        question: "在四爺將軍中，面部開「黑紅對開之陰陽臉」，手持戒棍板批的是哪一位神將？",
+        options: [
+          "范將軍（二爺）",
+          "謝將軍（大爺）",
+          "甘將軍（甘鵬飛）",
+          "柳將軍（柳鈺）"
+        ],
+        answer: 2,
+        explanation: "甘爺臉譜為陰陽臉（半紅半黑），象徵其日巡陽間、明辨是非、懲惡揚善的剛正職能。"
+      }
+    ];
+
+    let currentQuizIndex = 0;
+    let quizScore = 0;
+    let hasAnsweredCurrent = false;
+
+    const quizContent = document.getElementById('quizContent');
+    const quizResult = document.getElementById('quizResult');
+    const resultTitle = document.getElementById('resultTitle');
+    const resultScoreDesc = document.getElementById('resultScoreDesc');
+    const retryQuizBtn = document.getElementById('retryQuizBtn');
+
+    function loadQuizQuestion(index) {
+      hasAnsweredCurrent = false;
+      const q = quizQuestions[index];
+      
+      quizContent.innerHTML = `
+        <div class="flex items-center justify-between mb-4">
+          <span class="text-xs font-mono text-brand-goldLight tracking-widest uppercase">
+            QUESTION ${index + 1} OF ${quizQuestions.length}
+          </span>
+          <span class="text-xs text-stone-500 font-mono">
+            得分進度: ${quizScore * 25} 分
+          </span>
+        </div>
+
+        <h4 class="font-serif text-xl sm:text-2xl font-bold text-stone-100 mb-6 leading-snug">
+          ${q.question}
+        </h4>
+
+        <div class="space-y-4 mb-6" id="optionsBox">
+          ${q.options.map((opt, i) => `
+            <button class="quiz-opt-btn w-full text-left p-4 sm:p-5 rounded-xl bg-black/40 border border-brand-border hover:border-brand-goldLight text-stone-200 text-base sm:text-lg font-medium transition flex items-center justify-between" data-index="${i}">
+              <span>${opt}</span>
+              <span class="w-6 h-6 rounded-full border border-stone-600 flex items-center justify-center text-xs text-stone-400 opt-indicator">
+                ${String.fromCharCode(65 + i)}
+              </span>
+            </button>
+          `).join('')}
+        </div>
+
+        <div id="quizFeedback" class="hidden p-5 rounded-xl text-sm sm:text-base leading-relaxed mb-6"></div>
+
+        <div class="flex justify-end">
+          <button id="nextQuestionBtn" class="hidden px-7 py-3 rounded-xl bg-brand-gold text-black font-bold text-sm uppercase tracking-wider hover:bg-brand-goldLight transition">
+            ${index === quizQuestions.length - 1 ? '觀看測驗成果' : '下一題'}
+          </button>
+        </div>
+      `;
+
+      const optButtons = document.querySelectorAll('.quiz-opt-btn');
+      const feedbackBox = document.getElementById('quizFeedback');
+      const nextBtn = document.getElementById('nextQuestionBtn');
+
+      optButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (hasAnsweredCurrent) return;
+          hasAnsweredCurrent = true;
+          const selectedIdx = parseInt(btn.dataset.index);
+          const isCorrect = selectedIdx === q.answer;
+
+          if (isCorrect) {
+            quizScore++;
+            btn.classList.add('bg-emerald-950/70', 'border-emerald-500', 'text-emerald-200');
+            feedbackBox.className = "p-5 rounded-xl text-sm sm:text-base leading-relaxed mb-6 bg-emerald-950/60 border border-emerald-500/40 text-emerald-200 block";
+            feedbackBox.innerHTML = `<strong>恭喜答對！</strong><br>${q.explanation}`;
+          } else {
+            btn.classList.add('bg-red-950/70', 'border-red-500', 'text-red-200');
+            optButtons[q.answer].classList.add('bg-emerald-950/70', 'border-emerald-500', 'text-emerald-200');
+            feedbackBox.className = "p-5 rounded-xl text-sm sm:text-base leading-relaxed mb-6 bg-red-950/60 border border-red-500/40 text-red-200 block";
+            feedbackBox.innerHTML = `<strong>答錯囉！正確答案是：${q.options[q.answer]}</strong><br>${q.explanation}`;
+          }
+
+          nextBtn.classList.remove('hidden');
+        });
+      });
+
+      nextBtn.addEventListener('click', () => {
+        if (currentQuizIndex < quizQuestions.length - 1) {
+          currentQuizIndex++;
+          loadQuizQuestion(currentQuizIndex);
+        } else {
+          showQuizResults();
+        }
+      });
+    }
+
+    function showQuizResults() {
+      quizContent.classList.add('hidden');
+      quizResult.classList.remove('hidden');
+
+      const total = quizQuestions.length;
+      const pct = (quizScore / total) * 100;
+      
+      if (pct === 100) {
+        resultTitle.textContent = "神將堂傳人！滿分成就！";
+        resultScoreDesc.textContent = `你答對了全部 ${total} 題（得分 100%），對嘉義家將窟的歷史源流與面譜禮俗瞭若指掌！`;
+      } else if (pct >= 50) {
+        resultTitle.textContent = "威風凜凜！資深將迷！";
+        resultScoreDesc.textContent = `你在 ${total} 題中答對了 ${quizScore} 題（得分 ${pct}%），已經具備相當深厚的民俗常識底子！`;
+      } else {
+        resultTitle.textContent = "文化探索者！再接再厲！";
+        resultScoreDesc.textContent = `你答對了 ${quizScore} 題。重溫上述的圖鑑與儀軌章節，隨時再次挑戰吧！`;
+      }
+    }
+
+    retryQuizBtn.addEventListener('click', () => {
+      currentQuizIndex = 0;
+      quizScore = 0;
+      quizResult.classList.add('hidden');
+      quizContent.classList.remove('hidden');
+      loadQuizQuestion(0);
+    });
+
+    // ---------------- 2. 3D Card Flip Interaction ----------------
+    function initCardFlips() {
+      // 13 將神卡片翻轉
+      const cards = document.querySelectorAll('.roster-card');
+      cards.forEach(card => {
+        card.addEventListener('click', (e) => {
+          const inner = card.querySelector('.flip-inner');
+          if (inner) {
+            inner.classList.toggle('rotate-y-180');
+          }
+        });
+      });
+
+      // 步驟與戒律中標卡片個別翻轉
+      const subCards = document.querySelectorAll('.sub-flip-card');
+      subCards.forEach(card => {
+        card.addEventListener('click', (e) => {
+          const inner = card.querySelector('.sub-flip-inner');
+          if (inner) {
+            inner.classList.toggle('rotate-y-180');
+          }
+        });
+      });
+
+      // 陣法 2x2 卡片翻轉
+      const formationCards = document.querySelectorAll('.formation-flip-card');
+      formationCards.forEach(card => {
+        card.addEventListener('click', (e) => {
+          const inner = card.querySelector('.formation-flip-inner');
+          if (inner) {
+            inner.classList.toggle('rotate-y-180');
+          }
+        });
+      });
+    }
+
+    // ---------------- 3. Filter Buttons Logic ----------------
+    function initFilters() {
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      const cards = document.querySelectorAll('.roster-card');
+
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const filterValue = btn.getAttribute('data-filter');
+
+          // Update active styles
+          filterBtns.forEach(b => {
+            b.classList.remove('bg-gradient-to-r', 'from-amber-600', 'via-amber-500', 'to-yellow-600', 'text-black', 'shadow-lg', 'shadow-amber-500/20', 'scale-105', 'border-amber-400/80');
+            b.classList.add('bg-brand-surfaceCard', 'border-brand-border', 'text-stone-300');
+          });
+
+          btn.classList.add('bg-gradient-to-r', 'from-amber-600', 'via-amber-500', 'to-yellow-600', 'text-black', 'shadow-lg', 'shadow-amber-500/20', 'scale-105', 'border-amber-400/80');
+          btn.classList.remove('bg-brand-surfaceCard', 'border-brand-border', 'text-stone-300');
+
+          // Filter cards visibility
+          cards.forEach(card => {
+            const category = card.getAttribute('data-category');
+            
+            // Reset flipped state to front face when filtering
+            const inner = card.querySelector('.flip-inner');
+            if (inner && inner.classList.contains('rotate-y-180')) {
+              inner.classList.remove('rotate-y-180');
+            }
+
+            if (filterValue === 'all' || category === filterValue) {
+              card.style.display = 'block';
+              card.classList.remove('opacity-0', 'scale-95');
+              card.classList.add('opacity-100', 'scale-100');
+            } else {
+              card.style.display = 'none';
+              card.classList.add('opacity-0', 'scale-95');
+              card.classList.remove('opacity-100', 'scale-100');
+            }
+          });
+        });
+      });
+    }
+
+    // ---------------- 4. Mobile Menu Navigation ----------------
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+      });
+    });
+
+    // ---------------- 5. DomContentLoaded Initialization ----------------
+    window.addEventListener('DOMContentLoaded', () => {
+      loadQuizQuestion(0);
+      initCardFlips();
+      initFilters();
+      initJiangMapModule(); // 初始化家將地圖互動模組
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+    });
+
+    // ---------------- 6. Chiayi Jia-Jiang Map Interaction Logic ----------------
+    const jiangHallsData = {
+      zhenyutang: {
+        name: "嘉義慈濟宮・如意振裕堂",
+        lineage: "振",
+        lineageFull: "振字派始祖・台南白龍庵法脈",
+        year: "創立於 1918 年",
+        deity: "五福大帝（五靈公）",
+        address: "嘉義市西區國華街216巷2號",
+        formationType: "什家將十三位完整陣容",
+        heritageStatus: "嘉義市無形文化資產保存團體",
+        styleDesc: "維持清代官式威儀，身段沉著大器，開大步而氣度端正莊嚴。行步講究呼吸沉穩、節奏頓挫分明，謝范將軍對打身姿高低跌宕，深具古法官堂差役的肅穆威嚴。",
+        historyDesc: "西來庵事件後，慈濟宮董事沈良等人於1918年迎請臺南白龍庵如意增壽堂名師廖慈、陳明派親臨諸羅傳藝。作為嘉義首座家將堂，由此衍生出「振」字六大堂館，奠定嘉義「家將窟」盛名基石。"
+      },
+      jishengtang: {
+        name: "嘉邑城隍廟・吉勝堂",
+        lineage: "吉",
+        lineageFull: "吉字派大本營・官巡境主法統",
+        year: "創立於 1938 年",
+        deity: "綏靖侯城隍尊神",
+        address: "嘉義市東區吳鳳北路168號",
+        formationType: "什家將編制（隨護巡狩）",
+        heritageStatus: "國定古蹟重要駕前部將",
+        styleDesc: "動作剛勁威武、步伐步步生風。吉勝堂風格融合武術身段，走位敏捷且陣勢嚴密，於城隍尊神駕前專司威嚇陰幽鬼魅、開道破煞，具備強烈的軍旅作戰肅殺氣魄。",
+        historyDesc: "城隍廟自清代康熙年間即為諸羅信仰中心。日治時期庇護各地將員，並正式成立吉勝堂，傳承吉字派香火。每年農曆八月初一鬼門關後的「城隍夜巡・夯枷解厄」，吉勝堂家將與范謝將軍引領全城，為諸羅最具震撼力的百年古禮。"
+      },
+      gongyitang: {
+        name: "嘉義宣信街・共義堂",
+        lineage: "義",
+        lineageFull: "義字派代表・南台灣最大香火分支",
+        year: "創立約 1940 年代",
+        deity: "邢府千歲 / 九天玄女",
+        address: "嘉義市東區宣信街一帶",
+        formationType: "八家將 / 什家將武陣",
+        heritageStatus: "雲嘉南家將堂館名門",
+        styleDesc: "以風格剽悍、身法俐落著稱。在傳統八家將架構上衍生出極具張力的身段對打與高速穿梭陣法，將員身形敏捷矯健，動作拳拳生風，是南台灣民間進香期最具號召力的威猛派系。",
+        historyDesc: "源自嘉義九天殿法統，在嘉義東區宣信街扎根開花，分支遍佈雲嘉南及高屏地區，號稱「共字脈系三十六堂」。其嚴謹的團練與充滿力量感的陣法，展現諸羅家將強韌的草根生命力。"
+      },
+      gongjitang: {
+        name: "嘉義古樓・拱吉堂",
+        lineage: "拱",
+        lineageFull: "拱字派法統・文武兼備儒雅將儀",
+        year: "創立約 1950 年代",
+        deity: "白府千歲 / 五福大帝",
+        address: "嘉義市東區共和路古樓一帶",
+        formationType: "什家將精緻科儀編制",
+        heritageStatus: "諸羅名門家將團體",
+        styleDesc: "身形端莊靈秀，步調剛柔並濟。拱吉堂特別講究面譜彩繪線條的精緻典雅，將員踏步時神情凝煉，手執法器翻轉流暢如水，兼具宗教威儀與面具造型美學。",
+        historyDesc: "由嘉義吉字派分衍演變而來，成立後自成「拱」字一派體系，在傳統什家將的身段中融入了更精巧的擺陣變化，多次獲邀於各大文化季與學術交流中演出，深受藝文與民俗學者推崇。"
+      },
+      zhenletang: {
+        name: "嘉邑桃城・振樂堂",
+        lineage: "振",
+        lineageFull: "振字脈系名門・古禮法脈",
+        year: "創立約 1930 年代",
+        deity: "五福大帝 / 境主尊王",
+        address: "嘉義市西區中正路周邊舊城區",
+        formationType: "傳統八家將 / 什家將",
+        heritageStatus: "傳統信仰重要堂館",
+        styleDesc: "承襲白龍庵古典慢板身段，步伐沉雄剛健。法師施法催神細緻，面師勾勒臉譜嚴守祖訓，不出偏鋒，保留諸羅老家將質樸且令人肅然起敬的虔敬道骨。",
+        historyDesc: "為振裕堂直接分衍之嫡系堂館之一，堂內多代傳承老將員堅守戒律，維持出軍前齋戒坐禁與開口草儀規，是見證嘉義市二戰後民間家將文化傳承的重要活化石。"
+      },
+      wuyitang: {
+        name: "嘉義九天殿・五義堂",
+        lineage: "義",
+        lineageFull: "義字派宗脈・剛猛武法傳承",
+        year: "創立於 1960 年代",
+        deity: "九天玄女 / 邢府千歲",
+        address: "嘉義市東區朝陽街一帶",
+        formationType: "武法八家將編制",
+        heritageStatus: "義字派武將重鎮",
+        styleDesc: "步態剛猛迅捷、騰躍開闔幅度大。五義堂特別注重將員的體能極限與武術架構，對打時招式緊湊逼真，陣列變幻莫測，極具震撼眼球的視覺衝擊力。",
+        historyDesc: "與共義堂同屬嘉義「義字脈」代表性堂口。其祖師重視將團紀律與忠義精神，以扎實的武術底子訓練後輩，讓將員在陣式踩踏中體現替神明巡狩護法之無畏軍威。"
+      }
+    };
+
+    function initJiangMapModule() {
+      const markers = document.querySelectorAll('.map-marker-pin');
+      const selectBtns = document.querySelectorAll('.hall-select-btn');
+      const lineageBtns = document.querySelectorAll('.lineage-filter-btn');
+
+      // 更新詳細看板資料
+      function updateHallDetail(hallId) {
+        const data = jiangHallsData[hallId];
+        if (!data) return;
+
+        // 更新文字與屬性
+        document.getElementById('cardHallName').textContent = data.name;
+        document.getElementById('cardLineageBadge').textContent = data.lineageFull;
+        document.getElementById('cardYearBadge').textContent = data.year;
+        document.getElementById('cardDeity').textContent = data.deity;
+        document.getElementById('cardAddress').textContent = data.address;
+        document.getElementById('cardFormationType').textContent = data.formationType;
+        document.getElementById('cardHeritageStatus').textContent = data.heritageStatus;
+        document.getElementById('cardStyleDesc').textContent = data.styleDesc;
+        document.getElementById('cardHistoryDesc').textContent = data.historyDesc;
+
+        // 更新地圖標記 HighLight
+        markers.forEach(m => {
+          const isTarget = m.getAttribute('data-id') === hallId;
+          const coreCircle = m.querySelector('.pin-core');
+          const ping = m.querySelector('.pin-pulse');
+          const tagBox = m.querySelector('.pin-tag-box');
+
+          if (isTarget) {
+            if (coreCircle) {
+              coreCircle.setAttribute('r', '10.5');
+              coreCircle.setAttribute('stroke', '#f5c869');
+              coreCircle.setAttribute('stroke-width', '2.5');
+            }
+            if (ping) {
+              ping.setAttribute('r', '17');
+              ping.classList.add('animate-ping');
+            }
+            if (tagBox) {
+              tagBox.setAttribute('stroke-width', '1.6');
+              tagBox.setAttribute('stroke', '#f5c869');
+            }
+          } else {
+            if (coreCircle) {
+              coreCircle.setAttribute('r', '8');
+              coreCircle.setAttribute('stroke', '#ffffff');
+              coreCircle.setAttribute('stroke-width', '1.5');
+            }
+            if (ping) {
+              ping.setAttribute('r', '12');
+              ping.classList.remove('animate-ping');
+            }
+            if (tagBox) {
+              tagBox.setAttribute('stroke-width', '0.8');
+              tagBox.setAttribute('stroke', m.getAttribute('data-id') === 'jishengtang' ? '#bc2424' : (m.getAttribute('data-id') === 'gongjitang' ? '#10b981' : (m.getAttribute('data-id') === 'zhenyutang' ? '#e6a23c' : '#e74c3c')));
+            }
+          }
+        });
+
+        // 更新按鈕樣式
+        selectBtns.forEach(btn => {
+          const isTarget = btn.getAttribute('data-id') === hallId;
+          if (isTarget) {
+            btn.classList.add('border-brand-gold', 'text-brand-goldLight', 'bg-brand-gold/10');
+            btn.classList.remove('border-brand-border', 'text-stone-300', 'bg-black/40');
+          } else {
+            btn.classList.remove('border-brand-gold', 'text-brand-goldLight', 'bg-brand-gold/10');
+            btn.classList.add('border-brand-border', 'text-stone-300', 'bg-black/40');
+          }
+        });
+
+        // 重新繪製 Lucide 圖標
+        if (window.lucide) {
+          lucide.createIcons();
+        }
+      }
+
+      // 監聽 SVG Pins 點擊
+      markers.forEach(m => {
+        m.addEventListener('click', () => {
+          const id = m.getAttribute('data-id');
+          updateHallDetail(id);
+        });
+      });
+
+      // 監聽按鈕點擊
+      selectBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-id');
+          updateHallDetail(id);
+        });
+      });
+
+      // 派系過濾按鈕切換
+      lineageBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const lineage = btn.getAttribute('data-lineage');
+
+          lineageBtns.forEach(b => {
+            b.classList.remove('bg-gradient-to-r', 'from-amber-600', 'to-yellow-600', 'text-black', 'shadow-md');
+            b.classList.add('bg-brand-surfaceCard', 'border-brand-border', 'text-stone-300');
+          });
+          btn.classList.add('bg-gradient-to-r', 'from-amber-600', 'to-yellow-600', 'text-black', 'shadow-md');
+          btn.classList.remove('bg-brand-surfaceCard', 'border-brand-border', 'text-stone-300');
+
+          // 篩選地圖 Pin 與 按鈕
+          let firstMatch = null;
+          markers.forEach(m => {
+            const id = m.getAttribute('data-id');
+            const data = jiangHallsData[id];
+            const isMatch = lineage === 'all' || data.lineage === lineage;
+            m.style.display = isMatch ? 'inline' : 'none';
+            if (isMatch && !firstMatch) firstMatch = id;
+          });
+
+          selectBtns.forEach(b => {
+            const id = b.getAttribute('data-id');
+            const data = jiangHallsData[id];
+            const isMatch = lineage === 'all' || data.lineage === lineage;
+            b.style.display = isMatch ? 'flex' : 'none';
+          });
+
+          if (firstMatch) {
+            updateHallDetail(firstMatch);
+          }
+        });
+      });
+    }
+  </script>
+</body>
+</html>

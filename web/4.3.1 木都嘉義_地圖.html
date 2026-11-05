@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>木都嘉義．木業與木藝文創互動地圖</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Noto Serif TC & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Leaflet CSS & JS (穩定免金鑰地圖核心，杜絕 ApiProjectMapError) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            wood: {
+              50: '#fdfbf7',
+              100: '#f7f2ea',
+              200: '#eddcc8',
+              300: '#debfa0',
+              400: '#ca9b71',
+              500: '#b87c4a',
+              600: '#9b5d35',
+              700: '#7d462c',
+              800: '#643827',
+              900: '#432318',
+              950: '#27120c',
+            },
+            forest: {
+              500: '#2d5a43',
+              600: '#234734',
+              700: '#1b3729',
+            }
+          },
+          fontFamily: {
+            serif: ['"Noto Serif TC"', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* 自訂地圖 Popup 樣式 */
+    .leaflet-popup-content-wrapper {
+      padding: 0;
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 20px 25px -5px rgba(67, 35, 24, 0.15), 0 10px 10px -5px rgba(67, 35, 24, 0.08);
+      background: #fdfbf7;
+      border: 1px solid #eddcc8;
+    }
+    .leaflet-popup-content {
+      margin: 0 !important;
+      line-height: 1.5;
+    }
+    .leaflet-popup-tip {
+      background: #fdfbf7;
+      border: 1px solid #eddcc8;
+    }
+    /* Google Maps InfoWindow 優化樣式 */
+    .gm-style-iw-c {
+      padding: 0 !important;
+      border-radius: 1.25rem !important;
+      background: #fdfbf7 !important;
+      border: 1px solid #debfa0 !important;
+      box-shadow: 0 20px 25px -5px rgba(67, 35, 24, 0.2), 0 8px 10px -6px rgba(67, 35, 24, 0.1) !important;
+      max-width: 380px !important;
+    }
+    .gm-style-iw-d {
+      overflow: hidden !important;
+      padding: 0 !important;
+    }
+    .gm-ui-hover-effect {
+      top: 6px !important;
+      right: 6px !important;
+    }
+    /* 自訂圖釘徽章動畫 */
+    .custom-map-pin {
+      transition: transform 0.2s ease-in-out;
+    }
+    .custom-map-pin:hover {
+      transform: scale(1.18) translateY(-3px);
+      z-index: 9999 !important;
+    }
+    /* 自訂捲軸 */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f7f2ea;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #debfa0;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #ca9b71;
+    }
+  </style>
+</head>
+<body class="bg-wood-50 text-wood-950 font-sans antialiased overflow-hidden flex flex-col h-screen">
+
+  <!-- 頂部導航列 -->
+  <header class="bg-wood-900 text-wood-100 px-4 py-3 shadow-md flex items-center justify-between border-b border-wood-800 z-20 flex-shrink-0">
+    <div class="flex items-center space-x-3">
+      <div class="w-10 h-10 rounded-xl bg-wood-700/60 border border-wood-500/40 flex items-center justify-center text-amber-300 text-xl shadow-inner">
+        <i class="fa-solid fa-tree"></i>
+      </div>
+      <div>
+        <h1 class="text-lg md:text-xl font-bold font-serif tracking-wide text-amber-100 flex items-center gap-2">
+          木都嘉義
+          <span class="text-xs bg-wood-700/80 text-amber-200 border border-wood-600 px-2 py-0.5 rounded-full font-normal">產業與文創踏查</span>
+        </h1>
+        <p class="text-xs text-wood-300 hidden sm:block">匯聚跨組別參訪據點：重型製材、粧佛木雕、生活文創、家具行與林業文化資產</p>
+      </div>
+    </div>
+
+    <!-- 頂部操作按鈕 -->
+    <div class="flex items-center space-x-2">
+      <button id="toggleSidebarBtn" class="lg:hidden px-3 py-1.5 bg-wood-800 hover:bg-wood-700 text-amber-200 text-sm font-medium rounded-lg border border-wood-700 flex items-center gap-1.5 transition">
+        <i class="fa-solid fa-list-ul"></i>
+        <span>清單</span>
+      </button>
+
+      <!-- 地圖樣式快速切換選單 -->
+      <div class="relative inline-block text-left">
+        <select id="mapTypeSelect" onchange="changeMapLayer(this.value)" class="bg-wood-800 hover:bg-wood-700 text-amber-100 text-xs md:text-sm font-medium py-1.5 px-2.5 rounded-lg border border-wood-700 focus:outline-none focus:ring-1 focus:ring-amber-400 cursor-pointer">
+          <option value="satellite" selected>🛰️ 衛星航照影像圖</option>
+          <option value="topo">⛰️ 等高線地形圖</option>
+        </select>
+      </div>
+
+      <!-- Google Maps API Key 自訂彈窗按鈕 -->
+      <button onclick="openApiKeyModal()" title="設定個人 Google Maps API 金鑰" class="px-2.5 py-1.5 bg-wood-800 hover:bg-wood-700 text-amber-300 text-xs md:text-sm font-medium rounded-lg border border-wood-700 transition flex items-center gap-1.5">
+        <i class="fa-brands fa-google"></i>
+        <span class="hidden sm:inline" id="apiKeyStatusText">自訂金鑰</span>
+      </button>
+
+      <button onclick="resetMapView()" class="px-3 py-1.5 bg-forest-500 hover:bg-forest-600 text-emerald-100 text-xs md:text-sm font-medium rounded-lg shadow-sm transition flex items-center gap-1.5">
+        <i class="fa-solid fa-location-crosshairs"></i>
+        <span class="hidden md:inline">嘉義全景</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- 主工作區：側邊欄 + Google 地圖 -->
+  <div class="flex-1 flex relative overflow-hidden">
+
+    <!-- 左側面板 (側邊欄) -->
+    <aside id="sidebar" class="absolute lg:static top-0 left-0 h-full w-full sm:w-96 bg-wood-100 border-r border-wood-200 z-10 flex flex-col transition-transform duration-300 transform -translate-x-full lg:translate-x-0 shadow-2xl lg:shadow-none">
+      
+      <!-- 搜尋與統計 -->
+      <div class="p-4 border-b border-wood-200 bg-wood-50/80">
+        <!-- 搜尋欄 -->
+        <div class="relative mb-3">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-wood-400 text-sm"></i>
+          <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="搜尋據點、地址、工藝師、材料..." 
+            class="w-full pl-9 pr-8 py-2 rounded-xl text-sm bg-white border border-wood-200 text-wood-900 placeholder-wood-400 focus:outline-none focus:ring-2 focus:ring-wood-500 shadow-sm transition"
+          >
+          <button id="clearSearch" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-wood-400 hover:text-wood-600 text-xs">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <!-- 分類膠囊標籤 -->
+        <div class="flex flex-wrap gap-1.5 text-xs" id="categoryFilterContainer">
+          <button data-cat="all" class="cat-filter-btn px-2.5 py-1 rounded-full bg-wood-800 text-amber-100 font-medium transition shadow-sm">全部 (25)</button>
+          <button data-cat="sawmill" class="cat-filter-btn px-2.5 py-1 rounded-full bg-white text-wood-700 hover:bg-wood-200 border border-wood-200 transition">製材加工</button>
+          <button data-cat="carving" class="cat-filter-btn px-2.5 py-1 rounded-full bg-white text-wood-700 hover:bg-wood-200 border border-wood-200 transition">木雕粧佛</button>
+          <button data-cat="creative" class="cat-filter-btn px-2.5 py-1 rounded-full bg-white text-wood-700 hover:bg-wood-200 border border-wood-200 transition">手作文創</button>
+          <button data-cat="furniture" class="cat-filter-btn px-2.5 py-1 rounded-full bg-white text-wood-700 hover:bg-wood-200 border border-wood-200 transition">家具建材</button>
+          <button data-cat="heritage" class="cat-filter-btn px-2.5 py-1 rounded-full bg-white text-wood-700 hover:bg-wood-200 border border-wood-200 transition">歷史文資</button>
+        </div>
+      </div>
+
+      <!-- 統計摘要與提示條 -->
+      <div class="px-4 py-2 bg-wood-200/50 text-wood-700 text-xs flex justify-between items-center border-b border-wood-200">
+        <span>顯示點位：<b id="visibleCount" class="text-wood-900 font-bold">25</b> 處</span>
+        <span class="text-[11px] text-wood-600"><i class="fa-regular fa-hand-pointer mr-1"></i>點擊卡片跳轉</span>
+      </div>
+
+      <!-- 景點列表 -->
+      <div id="placeList" class="flex-1 overflow-y-auto p-3 space-y-2.5">
+        <!-- 動態渲染卡片 -->
+      </div>
+      
+      <!-- 底部組別標籤導引 -->
+      <div class="p-3 bg-wood-100 text-wood-600 text-[11px] border-t border-wood-200 flex items-center justify-between">
+        <span>資料來源：嘉大木都嘉義分組成果</span>
+        <button onclick="closeSidebarOnMobile()" class="lg:hidden text-wood-800 font-bold px-2 py-0.5 bg-wood-200 rounded">關閉清單</button>
+      </div>
+    </aside>
+
+    <!-- 地圖主區域 -->
+    <main class="flex-1 relative h-full">
+      <!-- 原生 Google Maps 容器 (當有合法 API Key 時切換) -->
+      <div id="googleMap" class="w-full h-full absolute inset-0 hidden z-0"></div>
+      
+      <!-- Leaflet 地圖容器 (預設免金鑰穩定運行) -->
+      <div id="map" class="w-full h-full absolute inset-0 z-0"></div>
+
+      <!-- 地圖上的懸浮快捷控制項 -->
+      <div class="absolute top-4 right-4 z-10 flex flex-col gap-2">
+        <div class="bg-white/95 backdrop-blur-md p-1.5 rounded-xl shadow-lg border border-wood-200 flex flex-col gap-1">
+          <button onclick="zoomInMap()" title="放大" class="w-9 h-9 rounded-lg hover:bg-wood-100 text-wood-800 flex items-center justify-center transition">
+            <i class="fa-solid fa-plus"></i>
+          </button>
+          <button onclick="zoomOutMap()" title="縮小" class="w-9 h-9 rounded-lg hover:bg-wood-100 text-wood-800 flex items-center justify-center transition">
+            <i class="fa-solid fa-minus"></i>
+          </button>
+          <div class="h-[1px] bg-wood-200 my-0.5"></div>
+          <button onclick="resetMapView()" title="回嘉義市區" class="w-9 h-9 rounded-lg hover:bg-wood-100 text-wood-800 flex items-center justify-center transition">
+            <i class="fa-solid fa-crosshairs"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 地圖圖例 (底端浮動) -->
+      <div class="absolute bottom-5 left-4 right-4 sm:right-auto sm:max-w-md z-10 pointer-events-none">
+        <div class="pointer-events-auto bg-wood-950/85 backdrop-blur text-wood-100 px-3.5 py-2.5 rounded-2xl shadow-xl border border-wood-700/60 text-xs flex flex-wrap items-center gap-3 justify-between">
+          <div class="flex items-center gap-2 font-serif font-semibold text-amber-200 text-xs">
+            <i class="fa-solid fa-layer-group"></i> 地圖圖例
+          </div>
+          <div class="flex items-center gap-2.5 flex-wrap">
+            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-600"></span>製材加工</span>
+            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-rose-600"></span>木雕粧佛</span>
+            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>手作文創</span>
+            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span>家具建材</span>
+            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-800"></span>文資古蹟</span>
+          </div>
+        </div>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- API Key 設定彈窗 -->
+  <div id="apiKeyModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-wood-50 rounded-2xl max-w-md w-full border border-wood-300 shadow-2xl p-6 relative">
+      <button onclick="closeApiKeyModal()" class="absolute top-4 right-4 text-wood-400 hover:text-wood-700 text-base">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div class="flex items-center gap-2 text-wood-900 font-serif font-bold text-lg mb-2">
+        <i class="fa-brands fa-google text-amber-600"></i>
+        <h3>啟用原生 Google Maps 引擎</h3>
+      </div>
+      <p class="text-xs text-wood-700 mb-4 leading-relaxed">
+        由於 Google 官方安全政策，直接載入 Google Maps API 需綁定有效的 Google Cloud API Key。未設定金鑰時，系統自動啟用高穩定度的免金鑰地圖模式（仍可隨時使用下方的 Google 路線導航與街景）。若您擁有專屬 API Key，可於此輸入：
+      </p>
+      <div class="mb-4">
+        <label class="block text-xs font-semibold text-wood-800 mb-1">Google Maps API Key</label>
+        <input type="text" id="googleApiKeyInput" placeholder="AIzaSy..." class="w-full px-3 py-2 text-xs rounded-xl border border-wood-300 focus:outline-none focus:ring-2 focus:ring-wood-500 bg-white">
+      </div>
+      <div class="flex justify-end gap-2 text-xs">
+        <button onclick="clearApiKey()" class="px-3 py-2 bg-wood-200 hover:bg-wood-300 text-wood-800 rounded-lg font-medium transition">清除金鑰</button>
+        <button onclick="saveApiKey()" class="px-4 py-2 bg-wood-800 hover:bg-wood-900 text-amber-100 rounded-lg font-medium transition">儲存並載入</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== 1. 資料庫建構 (第1、3、4、5、6、7、8組完整內容) =====
+    const PLACES = [
+      // 第一組
+      {
+        id: "p1",
+        group: "第1組 木業製材",
+        name: "新裕木材行 / 新裕建材行",
+        category: "furniture",
+        catName: "家具建材",
+        badgeColor: "bg-indigo-600",
+        pinColor: "#4f46e5",
+        lat: 23.478550,
+        lng: 120.454209,
+        address: "嘉義市西區國華里林森西路184號",
+        phone: "(05) 222-3076",
+        hours: "08:00 - 19:30 (週日公休)",
+        tagline: "跨越九十載、歷經三代傳承的木質歲月",
+        business: "室內裝潢建材批發零售、原木板材、精細客製代工",
+        desc: "創立於1930年代，第一代原籍新港於戰後創辦新裕木材行，專營檜木原木與進出口貿易；1968年因禁伐轉型為新裕建材行，承接在地裝潢統包工程；第三代主動求變，擺脫B2B價格戰，轉向深耕自用零售與高附加價值的精細客製代工。"
+      },
+      {
+        id: "p2",
+        group: "第1組 木業製材",
+        name: "福樟實業有限公司 (大林總廠)",
+        category: "sawmill",
+        catName: "製材加工",
+        badgeColor: "bg-amber-700",
+        pinColor: "#b45309",
+        lat: 23.618360,
+        lng: 120.465021,
+        address: "嘉義縣大林鎮三村里中正路901號",
+        phone: "(05) 265-0485",
+        hours: "週一至週五 08:00 - 17:30 (國定假日休息)",
+        tagline: "深耕近四十年，重型木構造領導品牌",
+        business: "木結構專案規劃、工程責任施工、進口與國產膠合木(GLT)、護木油銷售",
+        desc: "成立近四十年，從鋸木業和木材加工業起家，逐步發展為重型木構造領導企業。具備ISO 9001品質認證，積極推動國產材膠合木認證，曾承建嘉義產創中心、北門車站整修、嘉義火車站光環境整合等指標性木構造大案。",
+        youtubeId: "KYfuUzJMdWI", // 可替換為個人上傳之 YouTube 11碼影片 ID
+        videoTitle: "福樟實業大林廠360度導覽與木構造技術參訪"
+      },
+      {
+        id: "p3",
+        group: "第1組 木業製材",
+        name: "啟誠興業股份有限公司 (大埔美廠)",
+        category: "sawmill",
+        catName: "製材加工",
+        badgeColor: "bg-amber-700",
+        pinColor: "#b45309",
+        lat: 23.580995,
+        lng: 120.506983,
+        address: "嘉義縣大林鎮大埔美園區三路16號",
+        phone: "(05) 295-0894",
+        hours: "週一至週五 08:00 - 17:00 (六日休息)",
+        tagline: "引進機械手臂 CNC 精密加工，智慧木業升級",
+        business: "大型直樑/曲樑加工(最長可達13米)、Mass Timber工程、預製化木構",
+        desc: "福樟集團旗下專注於Mass Timber智慧製造核心據點。為改善傳統大型集成材人工放樣效率低與人才斷層問題，引進大型CNC機械手臂，可進行長達13米之直樑、弦高達2.2米之大跨距曲樑數位加工與高難度榫頭銑削。"
+      },
+      {
+        id: "p4",
+        group: "第1組 木業製材",
+        name: "嘉義建材行",
+        category: "furniture",
+        catName: "家具建材",
+        badgeColor: "bg-indigo-600",
+        pinColor: "#4f46e5",
+        lat: 23.470751,
+        lng: 120.447222,
+        address: "嘉義市西區育英里民生南路119號",
+        phone: "(05) 222-2511",
+        hours: "08:00 - 17:00 (週日公休)",
+        tagline: "一甲子老字號，見證嘉義城市泥作建材變遷",
+        business: "各類磁磚、木紋磚、水泥基礎建材銷售",
+        desc: "走過六十年歲月的老字號建材行。如今由第二代接棒，深長型的店面完整保留了昔日磨石子地、木作天花板與綠底金字招牌，維持樸實的「前店後倉」形式，更導入現代推拉展示架提供各式仿木紋磚與磁磚。"
+      },
+      {
+        id: "p5",
+        group: "第1組 木業製材",
+        name: "隆盛木業 (Long Shine Lumber)",
+        category: "sawmill",
+        catName: "製材加工",
+        badgeColor: "bg-amber-700",
+        pinColor: "#b45309",
+        lat: 23.503150,
+        lng: 120.441376,
+        address: "嘉義市東區荖藤里文化路936巷46號",
+        phone: "(05) 232-7442",
+        hours: "08:00 - 17:00 (週日公休)",
+        tagline: "科技人返鄉傳承，老製材廠的創生之路",
+        business: "柚木、烏心石、鐵木進口原木裁切、家具桌板客製、Open Factory",
+        desc: "在地45年製材廠。第二代呂育賢原在台北任職國泰世華銀行軟體工程師，2016年因不捨父親一輩子的心血中斷，毅然返鄉投入高溫木工廠。近年引進數位木作，並自2018年起推動Open Factory與木育講座，推廣愛木用木。"
+      },
+      {
+        id: "p6",
+        group: "第1組 木業製材",
+        name: "福樟良材-木創工坊 (嘉義舊監宿舍群)",
+        category: "creative",
+        catName: "手作文創",
+        badgeColor: "bg-emerald-600",
+        pinColor: "#059669",
+        lat: 23.484900,
+        lng: 120.459300,
+        address: "嘉義市東區維新路134巷37號",
+        phone: "(05) 276-7697",
+        hours: "週二至週六 09:00 - 18:00 (日、一公休)",
+        tagline: "以修代租活化百年官舍，木都教育推廣基地",
+        business: "預約制手作體驗、木製文創商品、場地租借、木材知識諮詢",
+        desc: "2017年福樟實業團隊響應嘉義市政府文化局「以修代租」計畫，進駐1921年建成的嘉義舊監獄日式宿舍群。秉持外觀保存、內部活用原則修復，2018年開幕，成為推廣木建築、環保木材教育與手作體驗的重要基地。"
+      },
+
+      // 第三組
+      {
+        id: "p7",
+        group: "第3組 木雕產業",
+        name: "倫の木工坊 (舊嘉義酒廠店)",
+        category: "creative",
+        catName: "手作文創",
+        badgeColor: "bg-emerald-600",
+        pinColor: "#059669",
+        lat: 23.474288,
+        lng: 120.440017,
+        address: "嘉義市西區中山路616號 (嘉創園區K棟1F)",
+        phone: "0937-351-141",
+        hours: "週一三五 14:00 - 21:00 / 週四 09:00 - 15:00 (二六日休)",
+        tagline: "傳統技藝生活化，舊酒廠裡的木藝新靈魂",
+        business: "大工教室、木工DIY、創意手作禮品、木育文化推廣",
+        desc: "由鄭宗倫老師創立，座落於舊嘉義酒廠文創園區。老師將生硬繁複的木雕工藝轉化成一般民眾、親子皆能輕鬆上手的日常生活器物體驗，讓木藝美學融入當代生活。"
+      },
+      {
+        id: "p8",
+        group: "第3組 木雕產業",
+        name: "神州檜木 (阿里山腳下)",
+        category: "creative",
+        catName: "手作文創",
+        badgeColor: "bg-emerald-600",
+        pinColor: "#059669",
+        lat: 23.450300,
+        lng: 120.484200,
+        address: "嘉義縣中埔鄉金蘭村頂山門27號",
+        phone: "(05) 230-7888",
+        hours: "09:00 - 17:00 (週二公休)",
+        tagline: "神州之美，結合職人雕刻與木質調精油保養",
+        business: "大型職人神獸木雕、台灣檜木精油、木質調療癒系洗髮/沐浴品",
+        desc: "座落於前往阿里山的主要動線上，展示極具工藝震撼力的龍龜、公雞等職人原木立體雕刻，並成功將珍貴台灣檜木蒸餾萃取，研發天然芬多精洗髮精與精油，將傳統木材昇華為現代生活保養品。"
+      },
+      {
+        id: "p9",
+        group: "第3組 木雕產業",
+        name: "桃城明山軒雕佛工作室",
+        category: "carving",
+        catName: "木雕粧佛",
+        badgeColor: "bg-rose-600",
+        pinColor: "#e11d48",
+        lat: 23.479104,
+        lng: 120.452156,
+        address: "嘉義市東區中正路328號",
+        phone: "0912-147-402",
+        hours: "週一至週日 12:00 - 22:00",
+        tagline: "「明朗如山」年輕二代開創新局之神尊雕刻",
+        business: "純手工神像雕刻、開斧粗胚細雕、客製化神尊造像",
+        desc: "2023年由年輕二代陳佑信創立。店名結合父親「廣明軒」的明與師父周福山的「山」，寓意如山可靠。歷經開斧、粗胚、修光開臉、入神、打底、漆線、研磨至安金開光，承繼深厚宗教與藝術寄託。"
+      },
+      {
+        id: "p10",
+        group: "第3組 木雕產業",
+        name: "廣明軒雕佛社",
+        category: "carving",
+        catName: "木雕粧佛",
+        badgeColor: "bg-rose-600",
+        pinColor: "#e11d48",
+        lat: 23.478996,
+        lng: 120.451809,
+        address: "嘉義市東區中正路309號",
+        phone: "(05) 225-9211",
+        hours: "週一至六 08:45-20:30 / 週日 08:45-17:00",
+        tagline: "三十五年老字號，電影《車頂上的玄天上帝》發揚地",
+        business: "手工木製神佛像雕刻、粧佛技藝傳承、客製化造像",
+        desc: "1988年由第一代陳榮吉師傅創立，至今從藝逾40年。堅信「以原木誠信雕佛，以廣泛擴展神明文化視野」，其高超的手工雕刻技術吸引各大廟宇及藝術電影《車頂上的玄天上帝》深度取景與合作。"
+      },
+      {
+        id: "p11",
+        group: "第3組 木雕產業",
+        name: "飄閣 (隨形木與佛雕)",
+        category: "carving",
+        catName: "木雕粧佛",
+        badgeColor: "bg-rose-600",
+        pinColor: "#e11d48",
+        lat: 23.475377,
+        lng: 120.449380,
+        address: "嘉義市西區文化路17-19號",
+        phone: "0912-991-138",
+        hours: "14:00 - 21:30 (需提前電話預約)",
+        tagline: "由信仰而生，枯木逢春的天然隨形木藝",
+        business: "隨形木進口販售、佛像雕刻、茶道原木擺件代購交流",
+        desc: "老闆因學佛而深研木雕，醉心於大自然鬼斧神工的天然隨形木。透過保留木頭枯朽或盤根錯節的原生姿態，結合禪宗意境精雕佛尊與茶藝空間擺件，實體空間採預約制交流。",
+        youtubeId: "PgGGmbLXZ2c", // 可替換為個人上傳之 YouTube 11碼影片 ID
+        videoTitle: "飄閣隨形木與佛像雕刻藝品實訪紀錄"
+      },
+
+      // 第四組
+      {
+        id: "p12",
+        group: "第4組 傳統雕刻文創",
+        name: "李宗霖木雕工作室 (玄木藝境)",
+        category: "carving",
+        catName: "木雕粧佛",
+        badgeColor: "bg-rose-600",
+        pinColor: "#e11d48",
+        lat: 23.489523,
+        lng: 120.502527,
+        address: "嘉義縣竹崎鄉灣橋村林森路761巷42號",
+        phone: "0937-359-338",
+        hours: "09:00 - 17:00",
+        tagline: "嘉義市無形文化資產保存者，傳承泉州蔡春派",
+        business: "傳統神像粧佛(牽粉線、安金)、鄉土藝術創作、木雕傳習教學",
+        desc: "李宗霖大師從藝逾50年，2020年獲嘉義市政府正式登錄為「木雕技藝保存者」。擅長以台灣早期農村生活如幼兒收涎、牛車犬隻（代表作《騎狗洞》）入木，能將硬木刻出宛如厚紙箱摺皺的溫潤生命力。",
+        youtubeId: "Vc7ydRzr1-w", // 可替換為個人上傳之 YouTube 11碼影片 ID
+        videoTitle: "李宗霖老師木雕工藝與粧佛傳習紀實"
+      },
+      {
+        id: "p13",
+        group: "第4組 傳統雕刻文創",
+        name: "竣琪木匾彫刻社",
+        category: "carving",
+        catName: "木雕粧佛",
+        badgeColor: "bg-rose-600",
+        pinColor: "#e11d48",
+        lat: 23.474786,
+        lng: 120.452632,
+        address: "嘉義市東區過溝里成仁街1之6號",
+        phone: "(05) 223-9932",
+        hours: "10:00 - 19:00 (週一公休)",
+        tagline: "座落美街成仁街，書法墨寶與檜木雕匾之絕品",
+        business: "宮廟大匾、開店誌慶匾額、台灣檜木客製陽刻/陰刻、神牌雕製",
+        desc: "位於文人薈萃的「美街」成仁街，林老闆夫婦深耕數十年。林老闆身懷深厚書法功力，將行草隸篆墨韻化為刀工，專挑頂級台灣檜木製作金字木匾與慶典贈匾，滿室檜木馨香。"
+      },
+      {
+        id: "p14",
+        group: "第4組 傳統雕刻文創",
+        name: "玄保軒神像工作室",
+        category: "carving",
+        catName: "木雕粧佛",
+        badgeColor: "bg-rose-600",
+        pinColor: "#e11d48",
+        lat: 23.483915,
+        lng: 120.440391,
+        address: "嘉義市西區後驛里北興街177巷7弄13號",
+        phone: "店家專線預約",
+        hours: "09:00 - 21:00",
+        tagline: "承襲古法粧佛，九天玄女仙姑為核心主神",
+        business: "傳統安金畫色、舊神尊修復去漆、神像入神開斧、外皮代工",
+        desc: "創辦人「保哥」18歲隨叔父習藝，三十歲獨立設軒。精通粧佛各繁複工序（一手畫色、一手粉線），尤其注重舊神佛重新脫漆、修補與重現金身之威嚴，兼具傳統神聖性與青年匠心。"
+      },
+      {
+        id: "p15",
+        group: "第4組 傳統雕刻文創",
+        name: "陳佐民 彫刻欄間の作り",
+        category: "carving",
+        catName: "木雕粧佛",
+        badgeColor: "bg-rose-600",
+        pinColor: "#e11d48",
+        lat: 23.502259,
+        lng: 120.421951,
+        address: "嘉義市西區北湖里北社尾路226巷265號",
+        phone: "0936-769-933",
+        hours: "工作室預約開放",
+        tagline: "全台唯一僅存！外銷日本之國寶級日式欄間工廠",
+        business: "日式欄間(花板)立體透雕、傳統泉州鑿花、透雕藝術燈飾(找光系列)",
+        desc: "文化部認證「傳統匠師(鑿花作)」、嘉義市無形文化資產保存者。全盛期嘉義曾有20多間外銷日本欄間廠，如今僅存陳老師一人。陳老師精通日語，作品見於日本大龜山神社及松山奉天宮，並持續跨界設計現代花板餐桌與透雕光影燈具。"
+      },
+      {
+        id: "p16",
+        group: "第4組 傳統雕刻文創",
+        name: "古夜天工坊 (阿里山腳頂中下街)",
+        category: "creative",
+        catName: "手作文創",
+        badgeColor: "bg-emerald-600",
+        pinColor: "#059669",
+        lat: 23.440059,
+        lng: 120.490127,
+        address: "嘉義縣中埔鄉頂中下街84-1號5鄰",
+        phone: "(05) 230-5878",
+        hours: "09:00 - 18:00 (週日公休)",
+        tagline: "「家居有木香，生活有溫度」老檜木重生文創",
+        business: "日式老宿舍檜木料再生花器、茶禪擺件、檜木按摩棒、小火車立體拼圖",
+        desc: "陳柏良、劉芳瑜夫妻創立於2013年。回收嘉義日式宿舍拆卸下的老檜木樑柱與邊角料，不作繁雜上漆，保留百年風化紋路改製成檜木花器、祈福筊杯及DIY小火車拼圖，體現廢材永續精神。"
+      },
+
+      // 第五組
+      {
+        id: "p17",
+        group: "第5組 木業製材",
+        name: "迪泉木業有限公司 / 信豐鋸木廠",
+        category: "sawmill",
+        catName: "製材加工",
+        badgeColor: "bg-amber-700",
+        pinColor: "#b45309",
+        lat: 23.498433,
+        lng: 120.440198,
+        address: "嘉義市西區北新里文化路769巷19號附1號",
+        phone: "(05) 232-9916",
+        hours: "週一至五 08:30 - 17:00 (六日公休)",
+        tagline: "半世紀木業廠區，巨木裁切與國際木材貿易",
+        business: "客製化原木剖鋸、大型木材加工、進口木材買賣、設備承租",
+        desc: "1975年呂振淵創立信豐鋸木廠，1978年登記迪泉木業拓展外銷。廠內至今保有極其壯觀的巨型帶鋸機與起重天車吊具，是嘉義文化路木業聚落走過台灣木材黃金時期的中流砥柱。",
+        youtubeId: "rmh3lNMUyPE", // 可替換為個人上傳之 YouTube 11碼影片 ID
+        videoTitle: "信豐鋸木廠360度巨木裁切與廠區踏查紀錄"
+      },
+      {
+        id: "p18",
+        group: "第5組 木業製材",
+        name: "振茂木業 (長茂鋸木工廠)",
+        category: "sawmill",
+        catName: "製材加工",
+        badgeColor: "bg-amber-700",
+        pinColor: "#b45309",
+        lat: 23.496000,
+        lng: 120.441000,
+        address: "嘉義市西區香湖里文化路716號",
+        phone: "(05) 232-2085",
+        hours: "週一至週五 08:00 - 17:00 (六日公休)",
+        tagline: "適材適用！自1967年起守護珍貴森林材料",
+        business: "柚木、花梨木、烏心石、北美材與南洋材客製剖料、營建景觀木料",
+        desc: "前身為1967年成立的「長茂鋸木工廠」，供應台灣一、二級木與家具珍貴木料；1998年成立振茂木業，堅持綠色環保不浪費，以精準剖鋸供應室內設計、古蹟寺廟修復與一般DIY零售木材。"
+      },
+      {
+        id: "p19",
+        group: "第5組 木業製材",
+        name: "貴成木業有限公司",
+        category: "sawmill",
+        catName: "製材加工",
+        badgeColor: "bg-amber-700",
+        pinColor: "#b45309",
+        lat: 23.501500,
+        lng: 120.442500,
+        address: "嘉義市東區荖藤里文化路864巷20號",
+        phone: "(05) 232-1975",
+        hours: "週一至週六 08:00 - 17:00 (週日公休)",
+        tagline: "民國75年開業，大型車體板與柳安木製材傳承",
+        business: "柳安木製材、特規大貨車車體板、重型木製品",
+        desc: "民國75年創立，隱身於文化路靜巷中。廠內整齊堆疊來自南洋的巨型柳安木原木，專精於高抗重壓的卡車底板及大型車體工業用材加工，見證傳統重工業木料的分工歷史。"
+      },
+
+      // 第六組
+      {
+        id: "p20",
+        group: "第6組 原木家具",
+        name: "慶豐傢俱行",
+        category: "furniture",
+        catName: "家具建材",
+        badgeColor: "bg-indigo-600",
+        pinColor: "#4f46e5",
+        lat: 23.474373,
+        lng: 120.457333,
+        address: "嘉義市東區宣信里垂楊路141號",
+        phone: "(05) 224-6509",
+        hours: "09:00 - 20:00 (週日營業至 19:30)",
+        tagline: "在地優質原木家具展售與全室居家配置",
+        business: "實木餐桌椅、實木衣櫃、原木茶几、現代沙發家居",
+        desc: "位於垂楊路上的在地資深家具行，長期精選溫潤扎實的實木家具，從中式傳統多功能原木櫥櫃到當代北歐簡約風實木椅一應俱全，服務無數嘉義家庭生活起居。"
+      },
+      {
+        id: "p21",
+        group: "第6組 原木家具",
+        name: "百福家具行 (義教街館)",
+        category: "furniture",
+        catName: "家具建材",
+        badgeColor: "bg-indigo-600",
+        pinColor: "#4f46e5",
+        lat: 23.498418,
+        lng: 120.458927,
+        address: "嘉義市東區頂庄里義教街480號",
+        phone: "0934-009-977",
+        hours: "10:00 - 19:30 (週一 09:00 開始)",
+        tagline: "寬敞展場，自然原木厚板桌與實木沙發專賣",
+        business: "原木大板桌、無垢實木家具、客廳實木沙發椅組、客製化訂作",
+        desc: "座落於義教街佔地遼闊的家具展售館。主打一木一器的一枚板無垢餐桌、電視櫃與實木沙發，展現原木自然邊緣與獨特木紋，深受喜愛自然木韻的屋主喜愛。"
+      },
+      {
+        id: "p22",
+        group: "第6組 原木家具",
+        name: "良木製所 (中埔和睦工作室)",
+        category: "creative",
+        catName: "手作文創",
+        badgeColor: "bg-emerald-600",
+        pinColor: "#059669",
+        lat: 23.449429,
+        lng: 120.464923,
+        address: "嘉義縣中埔鄉和睦村4號",
+        phone: "0919-791-508",
+        hours: "08:00 - 17:00 (六日公休)",
+        tagline: "保留原木生命痕跡，用心磨製每件日常木品",
+        business: "客製原木家具、木作研磨、生活木食器、居家木飾",
+        desc: "門外堆放各類珍貴木塊原木，空氣中瀰漫天然芬多精。師傅專注於手工將每一片粗胚料細細刨光研磨，將大自然的年輪與溫暖質地融入客製餐桌與居家藝品中。"
+      },
+      {
+        id: "p23",
+        group: "第6組 原木家具",
+        name: "桂寶軒 (原木/老件/仿古藝術傢俱)",
+        category: "furniture",
+        catName: "家具建材",
+        badgeColor: "bg-indigo-600",
+        pinColor: "#4f46e5",
+        lat: 23.521944,
+        lng: 120.467339,
+        address: "嘉義縣民雄鄉大崎村大丘園11號",
+        phone: "0980-119-992",
+        hours: "09:00 - 18:00 (可預約)",
+        tagline: "大器典雅，珍稀老木料與仿古禪風藝術家具",
+        business: "訂製原木大板、老件拆料再生、仿古中式藝術家具、茶空間規劃",
+        desc: "隱身民雄的木藝殿堂。收集海內外珍貴大口徑老木材，由老師傅巧手打造成充滿文人氣韻的茶桌、太師椅與古董花架，為居家增添深邃的人文歷史風華。",
+        youtubeId: "VfGfkhngV2g", // 可替換為個人上傳之 YouTube 11碼影片 ID
+        videoTitle: "桂寶軒360度環景與仿古藝術家具展品導覽"
+      },
+
+      // 第七與八組 (教育、體驗與文化資產)
+      {
+        id: "p24",
+        group: "第8組 教育與體驗",
+        name: "嘉義營林俱樂部 (阿里山招待所)",
+        category: "heritage",
+        catName: "歷史文資",
+        badgeColor: "bg-amber-800",
+        pinColor: "#78350f",
+        lat: 23.486000,
+        lng: 120.454850,
+        address: "嘉義市東區林森里共和路370號",
+        phone: "(05) 276-1601",
+        hours: "10:00 - 18:00 (週一二休館以官網為準)",
+        tagline: "市定古蹟！台灣極罕見之英式都鐸式半木造洋樓",
+        business: "林業歷史特展、藝文活動、文化導覽參觀",
+        desc: "約於1914年興建，日治時期供總督府營林局貴賓與高級官員休閒娛樂之招待所。外觀擁有洋風半木構造斜屋頂與凸窗，見證阿里山鐵道開發與嘉義製材全盛期，現為嘉義重要林業展覽空間。"
+      },
+      {
+        id: "p25",
+        group: "第8組 教育與體驗",
+        name: "嘉義實驗木場 (舊監日式宿舍群)",
+        category: "heritage",
+        catName: "歷史文資",
+        badgeColor: "bg-amber-800",
+        pinColor: "#78350f",
+        lat: 23.485275,
+        lng: 120.459376,
+        address: "嘉義市東區太平里維新路134巷24號",
+        phone: "文化局專線洽詢",
+        hours: "配合特展與研習活動預約開放",
+        tagline: "產官學木構研發心臟，獲國際建築大獎肯定",
+        business: "木構建築工法研究、木業人才培育傳習、木構原型展示",
+        desc: "嘉義市推動「木都2.0」關鍵核心。由兩棟舊監官舍改建，一棟展示傳統榫接穿斗木工藝，另一棟展示現代CLT與新式鋼構接頭木結構，榮獲多項國內外建築設計大獎，是台灣木構創新的前哨基地。"
+      },
+      {
+        id: "p26",
+        group: "第8組 教育與體驗",
+        name: "北門車站 (北門驛)",
+        category: "heritage",
+        catName: "歷史文資",
+        badgeColor: "bg-amber-800",
+        pinColor: "#78350f",
+        lat: 23.487690,
+        lng: 120.452070,
+        address: "嘉義市東區林森里共和路428號",
+        phone: "(05) 276-8094",
+        hours: "鐵道園區全日開放 (站體依林鐵營運時間)",
+        tagline: "市定古蹟！全棟台灣特級紅檜打造的森林鐵路起點",
+        business: "阿里山森林鐵路起點車站、鐵道文物展示、木造車站地標",
+        desc: "竣工於1912年，是阿里山林業鐵路實質上的樞紐起點，運載著無數自高山砍伐的檜木下山加工。全站以特級阿里山紅檜興建，抗腐耐蛀，2024年由天驥營造等團隊完成精湛周邊整修，風華再現。",
+        youtubeId: "fgapMHVOb0Y", // 可替換為個人上傳之 YouTube 11碼影片 ID
+        videoTitle: "北門車站全檜木古蹟建築與林業鐵路紀錄"
+      },
+      {
+        id: "p27",
+        group: "第8組 教育與體驗",
+        name: "木田創藝坊 (嘉義文創園區)",
+        category: "creative",
+        catName: "手作文創",
+        badgeColor: "bg-emerald-600",
+        pinColor: "#059669",
+        lat: 23.477005,
+        lng: 120.440020,
+        address: "嘉義市西區書院里中山路616號S棟304",
+        phone: "0934-084-769",
+        hours: "10:30 - 18:00 (預約制)",
+        tagline: "廢棄舊檜木料的再生詩篇，細膩烙畫與手作",
+        business: "木藝小品展售、檜木燒烙畫DIY體驗、客製雷雕紀念品",
+        desc: "秉持循環永續概念，將嘉義舊木屋拆除的檜木廢料細緻加工，搭配獨特的烙畫噴染與立體雕鑿，將嘉義山林美景燒繪於木版之上，讓遊客親手帶回一塊有歷史香氣的木都記憶。"
+      },
+      {
+        id: "p28",
+        group: "第8組 教育與體驗",
+        name: "檜意森活村 - 奇木風景館",
+        category: "creative",
+        catName: "手作文創",
+        badgeColor: "bg-emerald-600",
+        pinColor: "#059669",
+        lat: 23.486119,
+        lng: 120.454239,
+        address: "嘉義市東區林森里共和路199巷9號",
+        phone: "(05) 276-5601",
+        hours: "10:00 - 18:00 全年無休",
+        tagline: "檜木聚落裡的五感沉浸體驗",
+        business: "天然檜木精油嗅覺體驗、木造茶具、創意木製生活小品展售",
+        desc: "座落於全台最大日式官舍聚落「檜意森活村」。店內強調視覺、觸覺與嗅覺的五感融合，引導遊客透過天然精油試聞與原木茶盤接觸，輕鬆體驗嘉義最純粹的森林芬芳。"
+      }
+    ];
+
+    // ===== 2. 地圖狀態與初始化 (預設採用免金鑰穩定引擎，避免 ApiProjectMapError) =====
+    let leafletMap = null;
+    let leafletMarkers = {};
+    let leafletLayers = {};
+    let isGoogleMapMode = false;
+    let googleMapInstance = null;
+    let googleMarkers = {};
+    let googleInfoWindow = null;
+
+    let activeFilter = 'all';
+    let searchQuery = '';
+    const CHIAYI_CENTER = [23.483, 120.458];
+
+    function initMapEngine() {
+      const savedKey = localStorage.getItem('CHIAYI_GOOGLE_MAPS_KEY');
+      if (savedKey) {
+        document.getElementById('googleApiKeyInput').value = savedKey;
+        document.getElementById('apiKeyStatusText').textContent = "已套用金鑰";
+        loadGoogleMapsScript(savedKey);
+      } else {
+        initLeafletMap();
+      }
+    }
+
+    // 初始化 Leaflet 地圖 (免金鑰、穩定不崩潰)
+    function initLeafletMap() {
+      document.getElementById('map').classList.remove('hidden');
+      document.getElementById('googleMap').classList.add('hidden');
+      isGoogleMapMode = false;
+
+      if (leafletMap) return;
+
+      leafletMap = L.map('map', {
+        center: CHIAYI_CENTER,
+        zoom: 14,
+        zoomControl: false
+      });
+
+      // 各式免金鑰圖層
+      leafletLayers.satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Esri, Maxar, Earthstar Geographics'
+      }).addTo(leafletMap);
+
+      leafletLayers.topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenTopoMap contributors'
+      });
+
+      // 建立標記點
+      PLACES.forEach(place => {
+        const pinHtml = `
+          <div class="custom-map-pin flex items-center justify-center w-8 h-8 rounded-full shadow-lg border-2 border-white cursor-pointer" style="background-color: ${place.pinColor};">
+            <i class="fa-solid fa-tree text-white text-xs"></i>
+          </div>
+        `;
+        const customIcon = L.divIcon({
+          html: pinHtml,
+          className: '',
+          iconSize: [32, 32],
+          iconAnchor: [16, 32],
+          popupAnchor: [0, -32]
+        });
+
+        const marker = L.marker([place.lat, place.lng], { icon: customIcon }).addTo(leafletMap);
+        marker.bindPopup(createPopupContent(place), { maxWidth: 320 });
+        
+        marker.on('click', () => {
+          highlightCard(place.id);
+        });
+
+        leafletMarkers[place.id] = marker;
+      });
+
+      renderPlaceList();
+    }
+
+    // 動態載入 Google Maps JavaScript API (若使用者自行填入金鑰)
+    function loadGoogleMapsScript(key) {
+      if (window.google && window.google.maps) {
+        initNativeGoogleMap();
+        return;
+      }
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(key)}&v=weekly`;
+      script.async = true;
+      script.onload = () => {
+        initNativeGoogleMap();
+      };
+      script.onerror = () => {
+        console.warn("Google Maps API 載入失敗，將回退至安全地圖模式。");
+        localStorage.removeItem('CHIAYI_GOOGLE_MAPS_KEY');
+        document.getElementById('apiKeyStatusText').textContent = "自訂金鑰";
+        initLeafletMap();
+      };
+      document.head.appendChild(script);
+    }
+
+    function initNativeGoogleMap() {
+      try {
+        document.getElementById('map').classList.add('hidden');
+        document.getElementById('googleMap').classList.remove('hidden');
+        isGoogleMapMode = true;
+
+        googleMapInstance = new google.maps.Map(document.getElementById("googleMap"), {
+          center: { lat: CHIAYI_CENTER[0], lng: CHIAYI_CENTER[1] },
+          zoom: 14,
+          mapTypeId: google.maps.MapTypeId.HYBRID,
+          disableDefaultUI: true,
+          zoomControl: false
+        });
+
+        googleInfoWindow = new google.maps.InfoWindow();
+
+        PLACES.forEach(place => {
+          const markerSvg = {
+            path: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z",
+            fillColor: place.pinColor,
+            fillOpacity: 1.0,
+            strokeWeight: 2,
+            strokeColor: "#ffffff",
+            scale: 1.5,
+            anchor: new google.maps.Point(12, 22),
+          };
+
+          const marker = new google.maps.Marker({
+            position: { lat: place.lat, lng: place.lng },
+            map: googleMapInstance,
+            title: place.name,
+            icon: markerSvg
+          });
+
+          marker.addListener("click", () => {
+            googleInfoWindow.setContent(createPopupContent(place));
+            googleInfoWindow.open(googleMapInstance, marker);
+            highlightCard(place.id);
+          });
+
+          googleMarkers[place.id] = marker;
+        });
+
+        renderPlaceList();
+      } catch (err) {
+        console.error("Google Maps 初始化異常，自動切換至相容地圖模式：", err);
+        initLeafletMap();
+      }
+    }
+
+    // 切換地圖圖層
+    function changeMapLayer(layerKey) {
+      if (isGoogleMapMode && googleMapInstance) {
+        if (layerKey === "topo") {
+          googleMapInstance.setMapTypeId(google.maps.MapTypeId.TERRAIN);
+        } else {
+          googleMapInstance.setMapTypeId(google.maps.MapTypeId.HYBRID);
+        }
+        return;
+      }
+
+      if (!leafletMap) return;
+      Object.values(leafletLayers).forEach(layer => leafletMap.removeLayer(layer));
+      if (leafletLayers[layerKey]) {
+        leafletLayers[layerKey].addTo(leafletMap);
+      } else {
+        leafletLayers.satellite.addTo(leafletMap);
+      }
+    }
+
+    // 生成彈窗內容 (提供一鍵開啟 Google 導航與 360° 實景街景，支援 YouTube 影音嵌入)
+    function createPopupContent(p) {
+      const videoSection = p.youtubeId ? `
+        <div class="mb-3">
+          <div class="flex items-center justify-between text-xs font-semibold text-wood-800 mb-1.5">
+            <span class="flex items-center gap-1.5 text-rose-700">
+              <i class="fa-brands fa-youtube text-sm text-red-600"></i>
+              <span class="font-serif truncate max-w-[200px]">${p.videoTitle || '現場影音紀錄'}</span>
+            </span>
+            <a href="https://www.youtube.com/watch?v=${p.youtubeId}" target="_blank" rel="noopener noreferrer" class="text-[11px] text-wood-600 hover:text-red-600 flex items-center gap-1 transition">
+              <span>全片</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+            </a>
+          </div>
+          <div class="relative w-full rounded-xl overflow-hidden shadow-inner bg-black aspect-video border border-wood-200">
+            <iframe 
+              class="w-full h-full" 
+              src="https://www.youtube-nocookie.com/embed/${p.youtubeId}?rel=0" 
+              title="${p.name}" 
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              allowfullscreen>
+            </iframe>
+          </div>
+          <div class="mt-1.5 text-right">
+            <a href="https://www.youtube.com/watch?v=${p.youtubeId}" target="_blank" rel="noopener noreferrer" 
+              class="inline-flex items-center gap-1 text-[11px] font-semibold text-red-700 hover:text-red-800 transition">
+              <i class="fa-brands fa-youtube"></i> YouTube 觀看全片
+            </a>
+          </div>
+        </div>
+      ` : '';
+
+      return `
+        <div class="p-3.5 bg-wood-50 text-wood-950 font-sans max-w-[340px]">
+          <div class="flex items-center justify-between gap-2 mb-1.5">
+            <span class="text-[10px] font-bold text-white px-2 py-0.5 rounded-full ${p.badgeColor}">${p.catName}</span>
+            <span class="text-[11px] text-wood-500 font-medium">${p.group}</span>
+          </div>
+          <h3 class="text-base font-bold font-serif text-wood-900 leading-snug mb-1">${p.name}</h3>
+          <p class="text-xs text-wood-700 italic mb-2 border-l-2 border-wood-400 pl-2 font-serif">${p.tagline}</p>
+          
+          ${videoSection}
+
+          <div class="space-y-1 text-xs text-wood-800 bg-wood-100/80 p-2.5 rounded-xl border border-wood-200/70 mb-2.5">
+            <div class="flex items-start gap-1.5">
+              <i class="fa-solid fa-location-dot text-wood-500 mt-0.5 text-xs"></i>
+              <span>${p.address}</span>
+            </div>
+            ${p.phone ? `
+            <div class="flex items-center gap-1.5">
+              <i class="fa-solid fa-phone text-wood-500 text-xs"></i>
+              <span>${p.phone}</span>
+            </div>` : ''}
+            ${p.hours ? `
+            <div class="flex items-center gap-1.5">
+              <i class="fa-regular fa-clock text-wood-500 text-xs"></i>
+              <span>${p.hours}</span>
+            </div>` : ''}
+          </div>
+
+          <div class="text-xs text-wood-700 leading-relaxed mb-3">
+            <b>業務特色：</b>${p.business}
+          </div>
+
+          <div class="grid grid-cols-2 gap-1.5">
+            <a href="https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}" target="_blank" rel="noopener noreferrer" 
+              class="inline-flex items-center justify-center gap-1.5 py-1.5 px-2 bg-wood-800 hover:bg-wood-900 text-amber-100 rounded-lg text-xs font-medium transition shadow-sm">
+              <i class="fa-solid fa-diamond-turn-right text-amber-400"></i> Google 導航
+            </a>
+            <a href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${p.lat},${p.lng}" target="_blank" rel="noopener noreferrer" 
+              class="inline-flex items-center justify-center gap-1.5 py-1.5 px-2 bg-wood-200 hover:bg-wood-300 text-wood-900 rounded-lg text-xs font-medium transition border border-wood-300">
+              <i class="fa-solid fa-street-view text-wood-600"></i> 實景街景
+            </a>
+          </div>
+        </div>
+      `;
+    }
+
+    // ===== 3. 側邊欄渲染與過濾邏輯 =====
+    function renderPlaceList() {
+      const container = document.getElementById('placeList');
+      container.innerHTML = '';
+
+      const filtered = PLACES.filter(p => {
+        const matchCategory = (activeFilter === 'all') || (p.category === activeFilter);
+        const query = searchQuery.trim().toLowerCase();
+        const matchSearch = !query || 
+          p.name.toLowerCase().includes(query) ||
+          p.address.toLowerCase().includes(query) ||
+          p.desc.toLowerCase().includes(query) ||
+          p.business.toLowerCase().includes(query) ||
+          p.group.toLowerCase().includes(query);
+
+        return matchCategory && matchSearch;
+      });
+
+      document.getElementById('visibleCount').textContent = filtered.length;
+
+      // 更新地圖標記顯示/隱藏
+      PLACES.forEach(p => {
+        const isVisible = filtered.some(f => f.id === p.id);
+        if (isGoogleMapMode && googleMarkers[p.id]) {
+          googleMarkers[p.id].setVisible(isVisible);
+        } else if (leafletMarkers[p.id] && leafletMap) {
+          if (isVisible) {
+            if (!leafletMap.hasLayer(leafletMarkers[p.id])) {
+              leafletMarkers[p.id].addTo(leafletMap);
+            }
+          } else {
+            if (leafletMap.hasLayer(leafletMarkers[p.id])) {
+              leafletMap.removeLayer(leafletMarkers[p.id]);
+            }
+          }
+        }
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="p-6 text-center text-wood-400">
+            <i class="fa-regular fa-face-frown text-3xl mb-2"></i>
+            <p class="text-xs">找不到符合條件的木業據點</p>
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach(p => {
+        const card = document.createElement('div');
+        card.id = `card-${p.id}`;
+        card.className = "place-card bg-white hover:bg-wood-50/90 p-3.5 rounded-2xl border border-wood-200/90 shadow-sm cursor-pointer transition-all duration-200 hover:shadow-md hover:border-wood-400";
+        
+        const videoBadge = p.youtubeId ? `
+          <span class="inline-flex items-center gap-1 text-[10px] font-bold bg-red-100 text-red-600 px-1.5 py-0.5 rounded-full border border-red-200">
+            <i class="fa-brands fa-youtube text-red-600"></i> 影音導覽
+          </span>
+        ` : '';
+
+        card.innerHTML = `
+          <div class="flex items-center justify-between gap-2 mb-1">
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <span class="text-[10px] font-semibold text-white px-2 py-0.5 rounded-full ${p.badgeColor}">${p.catName}</span>
+              ${videoBadge}
+            </div>
+            <span class="text-[10px] text-wood-500 font-mono">${p.group.split(' ')[0]}</span>
+          </div>
+          <h4 class="text-sm font-bold text-wood-900 font-serif mb-1 group-hover:text-wood-600">${p.name}</h4>
+          <p class="text-[11px] text-wood-600 line-clamp-1 mb-2 font-medium">${p.tagline}</p>
+          
+          <div class="text-[11px] text-wood-500 space-y-0.5">
+            <div class="truncate"><i class="fa-solid fa-location-dot w-3.5 text-wood-400"></i> ${p.address}</div>
+            ${p.phone ? `<div class="truncate"><i class="fa-solid fa-phone w-3.5 text-wood-400"></i> ${p.phone}</div>` : ''}
+          </div>
+        `;
+
+        card.addEventListener('click', () => {
+          focusPlace(p.id);
+          if (window.innerWidth < 1024) {
+            closeSidebarOnMobile();
+          }
+        });
+
+        container.appendChild(card);
+      });
+    }
+
+    // 聚焦特定景點
+    function focusPlace(id) {
+      const p = PLACES.find(item => item.id === id);
+      if (!p) return;
+
+      if (isGoogleMapMode && googleMapInstance) {
+        const marker = googleMarkers[id];
+        if (marker) {
+          googleMapInstance.panTo({ lat: p.lat, lng: p.lng });
+          googleMapInstance.setZoom(16);
+          googleInfoWindow.setContent(createPopupContent(p));
+          googleInfoWindow.open(googleMapInstance, marker);
+        }
+      } else if (leafletMap) {
+        const marker = leafletMarkers[id];
+        if (marker) {
+          leafletMap.setView([p.lat, p.lng], 16, { animate: true });
+          marker.openPopup();
+        }
+      }
+      highlightCard(id);
+    }
+
+    function highlightCard(id) {
+      document.querySelectorAll('.place-card').forEach(c => {
+        c.classList.remove('ring-2', 'ring-wood-600', 'bg-wood-100');
+      });
+      const activeCard = document.getElementById(`card-${id}`);
+      if (activeCard) {
+        activeCard.classList.add('ring-2', 'ring-wood-600', 'bg-wood-100');
+        activeCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+
+    // 重置全視角
+    function resetMapView() {
+      if (isGoogleMapMode && googleMapInstance) {
+        const bounds = new google.maps.LatLngBounds();
+        let count = 0;
+        Object.values(googleMarkers).forEach(m => {
+          if (m.getVisible()) {
+            bounds.extend(m.getPosition());
+            count++;
+          }
+        });
+        if (count > 0) googleMapInstance.fitBounds(bounds);
+        else {
+          googleMapInstance.panTo({ lat: CHIAYI_CENTER[0], lng: CHIAYI_CENTER[1] });
+          googleMapInstance.setZoom(14);
+        }
+      } else if (leafletMap) {
+        const visibleMarkers = Object.values(leafletMarkers).filter(m => leafletMap.hasLayer(m));
+        if (visibleMarkers.length > 0) {
+          const group = L.featureGroup(visibleMarkers);
+          leafletMap.fitBounds(group.getBounds().pad(0.1));
+        } else {
+          leafletMap.setView(CHIAYI_CENTER, 14);
+        }
+      }
+    }
+
+    function zoomInMap() {
+      if (isGoogleMapMode && googleMapInstance) googleMapInstance.setZoom(googleMapInstance.getZoom() + 1);
+      else if (leafletMap) leafletMap.zoomIn();
+    }
+
+    function zoomOutMap() {
+      if (isGoogleMapMode && googleMapInstance) googleMapInstance.setZoom(googleMapInstance.getZoom() - 1);
+      else if (leafletMap) leafletMap.zoomOut();
+    }
+
+    // 側邊欄控制
+    const sidebar = document.getElementById('sidebar');
+    const toggleSidebarBtn = document.getElementById('toggleSidebarBtn');
+
+    toggleSidebarBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('-translate-x-full');
+    });
+
+    function closeSidebarOnMobile() {
+      if (window.innerWidth < 1024) {
+        sidebar.classList.add('-translate-x-full');
+      }
+    }
+
+    // 分類篩選按鈕
+    document.querySelectorAll('.cat-filter-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        document.querySelectorAll('.cat-filter-btn').forEach(b => {
+          b.className = "cat-filter-btn px-2.5 py-1 rounded-full bg-white text-wood-700 hover:bg-wood-200 border border-wood-200 transition";
+        });
+        const target = e.currentTarget;
+        target.className = "cat-filter-btn px-2.5 py-1 rounded-full bg-wood-800 text-amber-100 font-medium transition shadow-sm";
+        activeFilter = target.getAttribute('data-cat');
+        renderPlaceList();
+      });
+    });
+
+    // 搜尋功能
+    const searchInput = document.getElementById('searchInput');
+    const clearSearch = document.getElementById('clearSearch');
+
+    searchInput.addEventListener('input', (e) => {
+      searchQuery = e.target.value;
+      if (searchQuery.length > 0) {
+        clearSearch.classList.remove('hidden');
+      } else {
+        clearSearch.classList.add('hidden');
+      }
+      renderPlaceList();
+    });
+
+    clearSearch.addEventListener('click', () => {
+      searchInput.value = '';
+      searchQuery = '';
+      clearSearch.classList.add('hidden');
+      renderPlaceList();
+    });
+
+    // API Key 彈窗處理
+    function openApiKeyModal() {
+      document.getElementById('apiKeyModal').classList.remove('hidden');
+    }
+    function closeApiKeyModal() {
+      document.getElementById('apiKeyModal').classList.add('hidden');
+    }
+    function saveApiKey() {
+      const key = document.getElementById('googleApiKeyInput').value.trim();
+      if (key) {
+        localStorage.setItem('CHIAYI_GOOGLE_MAPS_KEY', key);
+        document.getElementById('apiKeyStatusText').textContent = "已套用金鑰";
+        closeApiKeyModal();
+        loadGoogleMapsScript(key);
+      }
+    }
+    function clearApiKey() {
+      localStorage.removeItem('CHIAYI_GOOGLE_MAPS_KEY');
+      document.getElementById('googleApiKeyInput').value = '';
+      document.getElementById('apiKeyStatusText').textContent = "自訂金鑰";
+      closeApiKeyModal();
+      initLeafletMap();
+    }
+
+    // 頁面載入初始化
+    window.addEventListener('DOMContentLoaded', () => {
+      initMapEngine();
+    });
+  </script>
+</body>
+</html>
